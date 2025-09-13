@@ -12,17 +12,19 @@ import {
   DollarSign,
   Calendar,
   Moon,
-  Sun
+  Sun,
+  Shield
 } from 'lucide-react';
 
 // Section Components
 import ExecutiveSummary from '@/components/gtm-sections/ExecutiveSummary';
 import MarketAnalysis from '@/components/gtm-sections/MarketAnalysis';
 import ProductStrategy from '@/components/gtm-sections/ProductStrategy';
-import GTMPhases from '@/components/gtm-sections/GTMPhases';
+import { GTMPhasesEditable } from '@/components/gtm-sections/GTMPhasesEditable';
 import BusinessModel from '@/components/gtm-sections/BusinessModel';
 import TargetMarkets from '@/components/gtm-sections/TargetMarkets';
 import MetricsKPIs from '@/components/gtm-sections/MetricsKPIs';
+import { DataVerificationManager } from '@/components/DataVerificationManager';
 
 const GTMReport = () => {
   const [activeTab, setActiveTab] = useState('executive');
@@ -90,6 +92,13 @@ const GTMReport = () => {
       icon: BarChart3,
       color: 'text-gtm-metrics',
       bgColor: 'bg-gtm-metrics/10'
+    },
+    {
+      id: 'verification',
+      label: 'Data Verification',
+      icon: Shield,
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-100'
     }
   ];
 
@@ -123,7 +132,7 @@ const GTMReport = () => {
       <main className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
           {/* Navigation Tabs */}
-          <TabsList className="grid w-full grid-cols-7 bg-gradient-glass p-1 rounded-xl border border-primary/10 h-auto">
+          <TabsList className="grid w-full grid-cols-8 bg-gradient-glass p-1 rounded-xl border border-primary/10 h-auto">
             {sections.map((section) => {
               const Icon = section.icon;
               return (
@@ -154,7 +163,7 @@ const GTMReport = () => {
             </TabsContent>
 
             <TabsContent value="phases" className="space-y-6">
-              <GTMPhases />
+              <GTMPhasesEditable />
             </TabsContent>
 
             <TabsContent value="business" className="space-y-6">
@@ -167,6 +176,10 @@ const GTMReport = () => {
 
             <TabsContent value="metrics" className="space-y-6">
               <MetricsKPIs />
+            </TabsContent>
+
+            <TabsContent value="verification" className="space-y-6">
+              <DataVerificationManager />
             </TabsContent>
           </div>
         </Tabs>

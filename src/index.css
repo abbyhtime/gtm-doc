@@ -29,6 +29,10 @@
     --phase-scale: 271 81% 56%;        /* Ready to Scale - Purple */
     --phase-north: 14 91% 43%;         /* True North - Orange */
     
+    /* Data verification colors */
+    --verified: 142 76% 36%;           /* Verified data - Green */
+    --unverified: 24 95% 53%;          /* Unverified data - Orange */
+    
     /* GTM Section Colors */
     --gtm-executive: 158 64% 52%;      /* Executive Summary - Primary Green */
     --gtm-market: 199 89% 48%;         /* Market Analysis - Blue */

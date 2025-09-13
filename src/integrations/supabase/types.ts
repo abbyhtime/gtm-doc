@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      data_verification: {
+        Row: {
+          created_at: string
+          data_key: string
+          id: string
+          is_verified: boolean
+          notes: string | null
+          section: string
+          source_url: string | null
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          data_key: string
+          id?: string
+          is_verified?: boolean
+          notes?: string | null
+          section: string
+          source_url?: string | null
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          created_at?: string
+          data_key?: string
+          id?: string
+          is_verified?: boolean
+          notes?: string | null
+          section?: string
+          source_url?: string | null
+          updated_at?: string
+          value?: string
+        }
+        Relationships: []
+      }
       gtm_content: {
         Row: {
           content_type: string
@@ -38,6 +74,168 @@ export type Database = {
           id?: string
           section?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      gtm_phase_activities: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          order_index: number
+          phase_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_index?: number
+          phase_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_index?: number
+          phase_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gtm_phase_activities_phase_id_fkey"
+            columns: ["phase_id"]
+            isOneToOne: false
+            referencedRelation: "gtm_phases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gtm_phase_criteria: {
+        Row: {
+          created_at: string
+          criterion: string
+          id: string
+          order_index: number
+          phase_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          criterion: string
+          id?: string
+          order_index?: number
+          phase_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          criterion?: string
+          id?: string
+          order_index?: number
+          phase_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gtm_phase_criteria_phase_id_fkey"
+            columns: ["phase_id"]
+            isOneToOne: false
+            referencedRelation: "gtm_phases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gtm_phase_metrics: {
+        Row: {
+          created_at: string
+          current_value: string | null
+          id: string
+          metric_name: string
+          order_index: number
+          phase_id: string
+          target_value: string
+          unit: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_value?: string | null
+          id?: string
+          metric_name: string
+          order_index?: number
+          phase_id: string
+          target_value: string
+          unit?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_value?: string | null
+          id?: string
+          metric_name?: string
+          order_index?: number
+          phase_id?: string
+          target_value?: string
+          unit?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gtm_phase_metrics_phase_id_fkey"
+            columns: ["phase_id"]
+            isOneToOne: false
+            referencedRelation: "gtm_phases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gtm_phases: {
+        Row: {
+          created_at: string
+          description: string
+          features_goal: string | null
+          id: string
+          name: string
+          phase_number: number
+          revenue_goal: string | null
+          status: string
+          timeline: string
+          updated_at: string
+          users_goal: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          features_goal?: string | null
+          id?: string
+          name: string
+          phase_number: number
+          revenue_goal?: string | null
+          status?: string
+          timeline: string
+          updated_at?: string
+          users_goal?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          features_goal?: string | null
+          id?: string
+          name?: string
+          phase_number?: number
+          revenue_goal?: string | null
+          status?: string
+          timeline?: string
+          updated_at?: string
+          users_goal?: string | null
         }
         Relationships: []
       }

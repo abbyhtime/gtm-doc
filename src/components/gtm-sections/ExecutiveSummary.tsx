@@ -353,11 +353,11 @@ const ExecutiveSummary = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Market Problem Statistics */}
-            <div className="lg:col-span-2 space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* The Scheduling Crisis */}
+            <div className="space-y-6">
+              <h4 className="font-semibold text-lg">The Scheduling Crisis</h4>
               <div className="space-y-4">
-                <h4 className="font-semibold text-lg">The Scheduling Crisis</h4>
                 {marketStats.map((stat) => {
                   const Icon = stat.icon;
                   return (
@@ -367,7 +367,7 @@ const ExecutiveSummary = () => {
                           <Icon className={`h-4 w-4 ${stat.color}`} />
                           <span className="text-sm font-medium">{stat.label}</span>
                         </div>
-                        <span className="text-sm font-bold">{stat.value}%</span>
+                        <span className="text-sm font-bold text-orange-600 dark:text-orange-500">{stat.value}%</span>
                       </div>
                       <Progress value={stat.value} className="h-2" />
                       <p className="text-xs text-muted-foreground">{stat.description}</p>
@@ -378,13 +378,13 @@ const ExecutiveSummary = () => {
             </div>
             
             {/* Market Size & Opportunity */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               <h4 className="font-semibold text-lg">Market Facts</h4>
               <div className="space-y-3">
                 {marketFacts.map((fact) => (
                   <div key={fact.label} className="flex justify-between items-center p-3 rounded-lg bg-muted/50">
                     <span className="text-sm font-medium">{fact.label}</span>
-                    <Badge variant="secondary">{fact.value}</Badge>
+                    <Badge variant="secondary" className="text-orange-600 dark:text-orange-500">{fact.value}</Badge>
                   </div>
                 ))}
               </div>
