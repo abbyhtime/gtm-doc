@@ -21,11 +21,13 @@ export default {
         foreground: "hsl(var(--foreground))",
         
         // Business intelligence color palette
+        "primary-light": "hsl(var(--primary-light))",
         "primary-glow": "hsl(var(--primary-glow))",
         "accent-success": "hsl(var(--accent-success))",
         "accent-warning": "hsl(var(--accent-warning))",
         "accent-danger": "hsl(var(--accent-danger))",
         "accent-info": "hsl(var(--accent-info))",
+        "accent-emerald": "hsl(var(--accent-emerald))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

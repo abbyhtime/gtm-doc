@@ -13,12 +13,12 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ theme, onToggle }) => 
       variant="ghost"
       size="icon"
       onClick={onToggle}
-      className="h-10 w-10 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm transition-all duration-300"
+      className="h-10 w-10 rounded-lg glass-card hover:shadow-elevated border-0 transition-all duration-300"
     >
       {theme === 'light' ? (
-        <Moon className="h-5 w-5 text-white" />
+        <Moon className="h-5 w-5 text-foreground" />
       ) : (
-        <Sun className="h-5 w-5 text-white" />
+        <Sun className="h-5 w-5 text-foreground" />
       )}
       <span className="sr-only">Toggle theme</span>
     </Button>
