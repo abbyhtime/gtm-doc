@@ -358,8 +358,8 @@ const DataAnalytics = () => {
                           {analysis.period}
                         </Badge>
                       </div>
-                      <p className="text-sm text-muted-foreground">{analysis.outcome}</p>
-                      <p className="text-sm font-medium">{analysis.reason}</p>
+                      <p className="text-sm text-foreground dark:text-foreground">{analysis.outcome}</p>
+                      <p className="text-sm font-medium text-foreground">{analysis.reason}</p>
                     </div>
                     <div className="text-right space-y-1">
                       {analysis.status === 'failed' ? (
@@ -367,7 +367,7 @@ const DataAnalytics = () => {
                       ) : (
                         <CheckCircle className="h-5 w-5 text-green-700" />
                       )}
-                      <p className="text-xs text-muted-foreground">{analysis.funding}</p>
+                      <p className="text-xs text-foreground dark:text-foreground">{analysis.funding}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -382,7 +382,7 @@ const DataAnalytics = () => {
               <Lightbulb className="h-4 w-4" />
               Key Learning: Technology Timing
             </h4>
-            <p className="text-sm text-blue-800">
+            <p className="text-sm text-blue-900 dark:text-blue-900">
               The failure of early AI schedulers (Clara, x.ai) vs. the current momentum shows that 
               <strong> timing is critical</strong>. Modern LLMs (GPT, Gemini) and changed user expectations 
               now enable what wasn't possible 5 years ago. The technology and market readiness have finally aligned.

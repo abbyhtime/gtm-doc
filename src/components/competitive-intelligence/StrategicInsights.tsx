@@ -290,16 +290,16 @@ const StrategicInsights = () => {
                 <CardContent className="space-y-3">
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div>
-                      <span className="text-muted-foreground">Trend:</span>
+                      <span className="text-foreground dark:text-foreground">Trend:</span>
                       <Badge variant="outline" className="ml-2 text-xs bg-foreground/5 text-foreground border-foreground/20">{useCase.trend}</Badge>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Competition:</span>
+                      <span className="text-foreground dark:text-foreground">Competition:</span>
                       <Badge variant="outline" className="ml-2 text-xs bg-foreground/5 text-foreground border-foreground/20">{useCase.competition}</Badge>
                     </div>
                   </div>
                   <div>
-                    <span className="text-sm text-muted-foreground">Current Leaders:</span>
+                    <span className="text-sm text-foreground dark:text-foreground">Current Leaders:</span>
                     <div className="flex flex-wrap gap-1 mt-1">
                       {useCase.leaders.map((leader, i) => (
                         <Badge key={i} variant="secondary" className="text-xs bg-primary/10 text-primary">
@@ -309,7 +309,7 @@ const StrategicInsights = () => {
                     </div>
                   </div>
                   <div className="bg-white/80 p-3 rounded border">
-                    <span className="text-xs font-medium text-muted-foreground">Strategic Recommendation:</span>
+                    <span className="text-xs font-medium text-foreground dark:text-foreground">Strategic Recommendation:</span>
                     <p className="text-sm mt-1">{useCase.recommendation}</p>
                   </div>
                 </CardContent>
@@ -371,10 +371,10 @@ const StrategicInsights = () => {
                     </div>
                     <div className="space-y-2">
                       <div>
-                        <span className="text-xs font-medium text-muted-foreground">Key Players:</span>
+                        <span className="text-xs font-medium text-foreground dark:text-foreground">Key Players:</span>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {advantage.companies.map((company, i) => (
-                            <Badge key={i} variant="secondary" className="text-xs">
+                            <Badge key={i} variant="secondary" className="text-xs bg-primary/10 text-primary">
                               {company}
                             </Badge>
                           ))}
@@ -382,7 +382,7 @@ const StrategicInsights = () => {
                       </div>
                       <div className="bg-red-50 border border-red-200 p-2 rounded text-xs">
                         <span className="font-medium text-red-700">Risk:</span>
-                        <span className="text-red-600 ml-1">{advantage.risk}</span>
+                        <span className="text-red-800 ml-1">{advantage.risk}</span>
                       </div>
                     </div>
                   </div>
@@ -479,10 +479,10 @@ const StrategicInsights = () => {
                         </div>
                         <div className="text-right space-y-1">
                           <Badge variant="outline" className="text-xs bg-foreground/5 text-foreground border-foreground/20">{rec.investment} Investment</Badge>
-                          <div className="text-xs text-muted-foreground">{rec.risk} Risk</div>
+                          <div className="text-xs text-foreground dark:text-foreground">{rec.risk} Risk</div>
                         </div>
                       </div>
-                      <p className="text-sm text-muted-foreground">{rec.reasoning}</p>
+                      <p className="text-sm text-foreground dark:text-foreground">{rec.reasoning}</p>
                     </div>
                   </div>
                 </CardContent>
