@@ -23,7 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useGTMPhases } from "@/hooks/useGTMPhases";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 const getStatusIcon = (status: string) => {
   switch (status) {
@@ -49,6 +49,7 @@ const getStatusColor = (status: string) => {
 
 export const GTMPhasesEditable = () => {
   const { phases, activities, criteria, metrics, loading, error, updatePhase, addActivity, updateActivity, deleteActivity } = useGTMPhases();
+  const { toast } = useToast();
   const [selectedPhase, setSelectedPhase] = useState(0);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingPhase, setEditingPhase] = useState<any>(null);
@@ -94,9 +95,9 @@ export const GTMPhasesEditable = () => {
       await updatePhase(currentPhase.id, editingPhase);
       setIsEditMode(false);
       setEditingPhase(null);
-      toast.success("Phase updated successfully");
+      toast({ title: "Success", description: "Phase updated successfully" });
     } catch (err) {
-      toast.error("Failed to update phase");
+      toast({ title: "Error", description: "Failed to update phase", variant: "destructive" });
     }
   };
 
@@ -111,9 +112,9 @@ export const GTMPhasesEditable = () => {
       });
       setNewActivity({ title: "", description: "" });
       setShowAddActivity(false);
-      toast.success("Activity added successfully");
+      toast({ title: "Success", description: "Activity added successfully" });
     } catch (err) {
-      toast.error("Failed to add activity");
+      toast({ title: "Error", description: "Failed to add activity", variant: "destructive" });
     }
   };
 
@@ -121,18 +122,18 @@ export const GTMPhasesEditable = () => {
     try {
       await updateActivity(activityId, updates);
       setEditingActivity(null);
-      toast.success("Activity updated successfully");
+      toast({ title: "Success", description: "Activity updated successfully" });
     } catch (err) {
-      toast.error("Failed to update activity");
+      toast({ title: "Error", description: "Failed to update activity", variant: "destructive" });
     }
   };
 
   const handleDeleteActivity = async (activityId: string) => {
     try {
       await deleteActivity(activityId);
-      toast.success("Activity deleted successfully");
+      toast({ title: "Success", description: "Activity deleted successfully" });
     } catch (err) {
-      toast.error("Failed to delete activity");
+      toast({ title: "Error", description: "Failed to delete activity", variant: "destructive" });
     }
   };
 

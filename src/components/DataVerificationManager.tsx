@@ -8,10 +8,11 @@ import { Switch } from "@/components/ui/switch";
 import { useDataVerification } from "@/hooks/useDataVerification";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Edit, Check, X, ExternalLink } from "lucide-react";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 export const DataVerificationManager = () => {
   const { verifications, loading, error, updateVerification } = useDataVerification();
+  const { toast } = useToast();
   const [editingItem, setEditingItem] = useState<string | null>(null);
   const [editForm, setEditForm] = useState({
     value: "",
@@ -34,9 +35,9 @@ export const DataVerificationManager = () => {
     try {
       await updateVerification(verification.section, verification.data_key, editForm);
       setEditingItem(null);
-      toast.success("Verification status updated");
+      toast({ title: "Success", description: "Verification status updated" });
     } catch (err) {
-      toast.error("Failed to update verification");
+      toast({ title: "Error", description: "Failed to update verification", variant: "destructive" });
     }
   };
 

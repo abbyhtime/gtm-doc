@@ -1,41 +1,18 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { useDataVerification } from "@/hooks/useDataVerification";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface VerifiedTextProps {
-  section: string;
-  dataKey: string;
+  isVerified?: boolean;
   children: React.ReactNode;
   className?: string;
 }
 
-export const VerifiedText = ({ section, dataKey, children, className }: VerifiedTextProps) => {
-  const { getVerificationStatus } = useDataVerification();
-  const isVerified = getVerificationStatus(section, dataKey);
-  
-  // If verification status is unknown, render normally
-  if (isVerified === null) {
-    return <span className={className}>{children}</span>;
-  }
-
+export const VerifiedText = ({ isVerified = false, children, className }: VerifiedTextProps) => {
   const textColor = isVerified ? "" : "text-orange-600 dark:text-orange-500";
   
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <span className={cn(textColor, className)}>
-          {children}
-        </span>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>
-          {isVerified 
-            ? "✓ Verified data from credible sources" 
-            : "⚠ Unverified data - may be synthetic or estimated"
-          }
-        </p>
-      </TooltipContent>
-    </Tooltip>
+    <span className={cn(textColor, className)} title={isVerified ? "Verified data" : "Unverified data"}>
+      {children}
+    </span>
   );
 };
