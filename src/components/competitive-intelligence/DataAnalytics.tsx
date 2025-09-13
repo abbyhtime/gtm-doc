@@ -64,35 +64,35 @@ const DataAnalytics = () => {
   // Historical failures vs current successes
   const historicalAnalysis = [
     { 
+      name: 'Clara Labs', 
+      period: '2014-2020', 
+      funding: '$1M+ operational costs', 
+      outcome: 'Failed - Shut Down',
+      reason: 'Human-in-the-loop model unsustainable, AI not ready for practical automation',
+      status: 'failed'
+    },
+    { 
       name: 'x.ai "Amy"', 
       period: '2014-2021', 
-      funding: '$44M', 
-      outcome: 'Failed - Acquired & Shut Down',
-      reason: 'AI limitations, user friction',
+      funding: '$44M burned', 
+      outcome: 'Failed - Acquired by Bizzabo',
+      reason: 'Over-engineered AI, limited practical value, poor user experience',
       status: 'failed'
     },
     { 
-      name: 'Clara Labs', 
-      period: '2015-2020', 
-      funding: 'Undisclosed', 
-      outcome: 'Failed - Acquired & Shut Down',
-      reason: 'Accuracy issues, scaling challenges',
-      status: 'failed'
-    },
-    { 
-      name: 'Meet-Ting', 
-      period: '2024-Present', 
-      funding: '£250K', 
-      outcome: 'Active - Modern LLM approach',
-      reason: 'Advanced NLP, user acceptance',
+      name: 'Motion', 
+      period: '2019-Present', 
+      funding: '$75M total', 
+      outcome: 'Success - $10M ARR in 4 months',
+      reason: 'Practical AI + task management, perfect timing for mature AI capabilities',
       status: 'success'
     },
     { 
-      name: 'Motion AI Agents', 
-      period: '2025', 
-      funding: '$75M total', 
-      outcome: 'Success - $10M ARR in 4 months',
-      reason: 'Integrated workflow, proven ROI',
+      name: 'Reclaim.ai', 
+      period: '2019-2022', 
+      funding: '$15M (acquired)', 
+      outcome: 'Success - Acquired by Dropbox',
+      reason: 'Focused habit scheduling, specialized AI applications win first',
       status: 'success'
     }
   ];

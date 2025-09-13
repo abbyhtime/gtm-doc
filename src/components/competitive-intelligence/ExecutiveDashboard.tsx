@@ -6,35 +6,35 @@ import { TrendingUp, TrendingDown, DollarSign, Users, Zap, Target, BarChart3, Ar
 
 const ExecutiveDashboard = () => {
   const marketMetrics = [
-    { label: 'Current Market Size', value: '$400M', trend: '+16%', icon: DollarSign, color: 'text-green-500' },
-    { label: 'Projected 2032', value: '$1.6B', trend: '300%', icon: TrendingUp, color: 'text-blue-500' },
-    { label: 'Total Users', value: '500M+', trend: '+25%', icon: Users, color: 'text-purple-500' },
-    { label: 'Active Startups', value: '12+', trend: 'New', icon: Zap, color: 'text-orange-500' },
+    { label: 'Current Market Size', value: '$400M', trend: '2023', icon: DollarSign, color: 'text-green-500' },
+    { label: 'Projected 2032', value: '$1.6B', trend: '16% CAGR', icon: TrendingUp, color: 'text-blue-500' },
+    { label: 'Total Funding', value: '$1B+', trend: 'Startups', icon: DollarSign, color: 'text-purple-500' },
+    { label: 'Time Saved/User', value: '1.5hr/week', trend: 'ROI', icon: Zap, color: 'text-orange-500' },
   ];
 
   const keyInsights = [
     {
-      title: 'Market Leadership',
-      insight: 'Calendly dominates with 20M users and $276M revenue, but faces AI-native disruption',
-      impact: 'High',
+      title: 'AI Renaissance Timing',
+      insight: 'Unlike past failures (Clara Labs, x.ai), current AI capabilities enable practical scheduling automation with proven ROI',
+      impact: 'Critical',
       color: 'bg-red-50 border-red-200 text-red-700'
     },
     {
-      title: 'AI Integration Trend',
-      insight: 'All major players investing heavily in AI features - from Google Duet to Microsoft Copilot',
-      impact: 'Critical',
+      title: 'Rapid Revenue Growth',
+      insight: 'Motion achieved $10M ARR in just 4 months, demonstrating enterprise demand for AI-powered productivity',
+      impact: 'High',
       color: 'bg-orange-50 border-orange-200 text-orange-700'
     },
     {
-      title: 'Funding Surge',
-      insight: 'Over $500M invested in scheduling startups in past 3-4 years',
+      title: 'Market Consolidation Beginning',
+      insight: 'Dropbox acquired Reclaim.ai for $15M, Bizzabo acquired x.ai assets - consolidation phase starting',
       impact: 'High',
       color: 'bg-blue-50 border-blue-200 text-blue-700'
     },
     {
-      title: 'Productivity ROI',
-      insight: 'Teams save 1.5 hours/week with AI assistants, 20% productivity boost',
-      impact: 'Medium',
+      title: 'Productivity Impact Proven',
+      insight: 'Users save 1.5 hours/week, 20% productivity boost, 75% faster scheduling vs manual methods',
+      impact: 'High',
       color: 'bg-green-50 border-green-200 text-green-700'
     }
   ];
@@ -49,7 +49,7 @@ const ExecutiveDashboard = () => {
             Executive Summary
           </CardTitle>
           <CardDescription className="text-base">
-            The AI-powered scheduling market is experiencing explosive growth as hybrid work drives demand for intelligent meeting coordination.
+            The AI-powered scheduling market is poised for explosive growth from $400M (2023) to $1.6B (2032) at a 16% CAGR, driven by mature AI capabilities, remote work adoption, and proven productivity ROI.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

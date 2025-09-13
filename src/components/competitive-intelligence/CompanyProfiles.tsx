@@ -24,244 +24,244 @@ const CompanyProfiles = () => {
 
   const companies = [
     {
-      name: 'Calendly',
-      category: 'incumbent',
+      id: 1,
+      name: "Calendly",
+      category: "External Scheduling",
       founded: 2013,
-      users: '20+ million users',
-      revenue: '$276M (2023)',
-      funding: '$351M',
-      valuation: '$3B',
-      growth: '+40% YoY ARR',
-      marketShare: '86% Fortune 500',
-      strengths: [
-        'Market leader in scheduling links',
-        'Strong enterprise adoption',
-        'Robust integrations ecosystem',
-        'Brand recognition and trust'
-      ],
-      weaknesses: [
-        'Premium pricing model',
-        'Limited AI features vs newcomers',
-        'Interface becoming dated',
-        'Slow innovation pace'
-      ],
+      users: "20M+",
+      revenue: "$100M+ ARR",
+      funding: "$350M",
+      marketShare: "22%",
+      logo: "📅",
+      description: "Market leader in external scheduling with 20M+ users and strong enterprise adoption",
+      strengths: ["Dominant market position", "Extensive integrations ecosystem", "Strong enterprise features", "High user retention"],
+      weaknesses: ["Premium pricing limits SMB adoption", "Limited AI automation", "Interface complexity for simple scheduling"],
       keyMetrics: {
-        companies: '100K+',
-        pricing: '$8-16/user/month',
-        integrations: '100+',
-        satisfaction: 4.5
+        userGrowth: "+35%",
+        retention: "85%",
+        nps: "65"
       },
-      recentNews: 'Added Routing for lead assignment, expanding into workflow automation'
+      recentNews: [
+        "Reached 20M+ user milestone",
+        "Enhanced enterprise security features", 
+        "Expanded integration marketplace"
+      ]
     },
     {
-      name: 'Google Calendar',
-      category: 'incumbent',
+      id: 2,
+      name: "Motion",
+      category: "AI-Powered",
+      founded: 2019,
+      users: "100K+",
+      revenue: "$10M ARR",
+      funding: "$75M",
+      marketShare: "5%",
+      logo: "🚀",
+      description: "AI-first calendar that achieved $10M ARR in just 4 months, leading the AI scheduling renaissance",
+      strengths: ["Revolutionary AI automation", "Rapid revenue growth ($10M ARR in 4 months)", "Integrated task + calendar management", "High user satisfaction"],
+      weaknesses: ["Premium pricing ($34/month)", "Steep learning curve", "Limited third-party integrations"],
+      keyMetrics: {
+        userGrowth: "+300%",
+        retention: "92%",
+        nps: "78"
+      },
+      recentNews: [
+        "Achieved $10M ARR in record 4 months",
+        "Launched advanced AI scheduling algorithms",
+        "Expanded team collaboration features"
+      ]
+    },
+    {
+      id: 3,
+      name: "Clockwise",
+      category: "Team Productivity", 
+      founded: 2017,
+      users: "15K organizations",
+      revenue: "$25M ARR",
+      funding: "$45M",
+      marketShare: "8%",
+      logo: "⏰",
+      description: "Focus time optimization platform serving 15,000+ organizations with AI-powered productivity insights",
+      strengths: ["Unique focus time optimization", "Strong enterprise adoption", "Comprehensive team analytics", "Excellent Slack integration"],
+      weaknesses: ["Niche market focus", "Less external scheduling features", "Requires behavior change adoption"],
+      keyMetrics: {
+        userGrowth: "+75%",
+        retention: "82%",
+        nps: "68"
+      },
+      recentNews: [
+        "Reached 15,000 organizations milestone",
+        "Launched AI-powered focus time insights",
+        "Enhanced Microsoft Teams integration"
+      ]
+    },
+    {
+      id: 4,
+      name: "Acuity Scheduling",
+      category: "External Scheduling",
       founded: 2006,
-      users: '500+ million users',
-      revenue: 'Part of Workspace',
-      funding: 'N/A',
-      valuation: 'N/A',
-      growth: 'Stable',
-      marketShare: '3B+ Workspace accounts',
-      strengths: [
-        'Ubiquitous integration',
-        'Free for personal use',
-        'Deep Google ecosystem',
-        'Mobile-first experience'
-      ],
-      weaknesses: [
-        'Basic scheduling features',
-        'Limited customization',
-        'No advanced analytics',
-        'Enterprise features lacking'
-      ],
+      users: "50K+ businesses",
+      revenue: "$30M ARR",
+      funding: "Acquired by Squarespace",
+      marketShare: "15%",
+      logo: "📋",
+      description: "Veteran scheduling platform acquired by Squarespace, strong in service industries",
+      strengths: ["Mature platform with 18 years experience", "Strong service industry features", "Squarespace integration", "Comprehensive customization"],
+      weaknesses: ["Legacy interface", "Limited AI capabilities", "Primarily service-focused"],
       keyMetrics: {
-        companies: '10M businesses',
-        pricing: 'Free / Workspace',
-        integrations: 'Google ecosystem',
-        satisfaction: 4.2
+        userGrowth: "+15%",
+        retention: "78%",
+        nps: "58"
       },
-      recentNews: 'Launched Duet AI for meeting summaries and scheduling assistance'
+      recentNews: [
+        "Enhanced Squarespace integration",
+        "Mobile app improvements",
+        "New payment processing features"
+      ]
     },
     {
-      name: 'Motion',
-      category: 'ai-native',
+      id: 5,
+      name: "Reclaim.ai",
+      category: "AI-Powered",
       founded: 2019,
-      users: '10K+ businesses',
-      revenue: '$10M ARR (new features)',
-      funding: '$75M',
-      valuation: '$550M (2025)',
-      growth: 'Explosive recent growth',
-      marketShare: 'SMB focus',
-      strengths: [
-        'AI-first workflow automation',
-        'Multiple AI agents in one platform',
-        'Task + calendar integration',
-        'Strong product-market fit'
-      ],
-      weaknesses: [
-        'Complex interface',
-        'Higher learning curve',
-        'Premium pricing only',
-        'Limited enterprise features'
-      ],
+      users: "50K+",
+      revenue: "Acquired",
+      funding: "Acquired by Dropbox",
+      marketShare: "3%",
+      logo: "🔄",
+      description: "AI calendar blocking tool acquired by Dropbox for $15M, pioneered habit scheduling",
+      strengths: ["Innovative habit-based scheduling", "Strong AI algorithms", "Dropbox backing", "Smart calendar blocking"],
+      weaknesses: ["Acquisition uncertainty", "Limited standalone growth", "Niche feature set"],
       keyMetrics: {
-        companies: '10K+',
-        pricing: '$29+/month',
-        integrations: 'Major productivity tools',
-        satisfaction: 4.3
+        userGrowth: "Acquisition",
+        retention: "85%",
+        nps: "72"
       },
-      recentNews: 'Launched AI executive assistant agents, $10M new ARR in 4 months'
+      recentNews: [
+        "Acquired by Dropbox for $15M",
+        "Integration with Dropbox ecosystem",
+        "Continued product development"
+      ]
     },
     {
-      name: 'Clockwise',
-      category: 'ai-native',
-      founded: 2016,
-      users: '15K+ organizations',
-      revenue: '~$15M ARR',
-      funding: '$76M',
-      valuation: 'Private',
-      growth: 'Steady growth',
-      marketShare: 'Team productivity niche',
-      strengths: [
-        'Focus time optimization',
-        'Team-wide calendar intelligence',
-        'Strong Google integration',
-        'Proven ROI metrics'
-      ],
-      weaknesses: [
-        'Google-centric',
-        'Limited individual features',
-        'Narrow use case',
-        'Enterprise sales needed'
-      ],
+      id: 6,
+      name: "YouCanBookMe",
+      category: "External Scheduling",
+      founded: 2011,
+      users: "100K+ users",
+      revenue: "$15M ARR",
+      funding: "Bootstrapped",
+      marketShare: "8%",
+      logo: "📖",
+      description: "Bootstrapped UK-based scheduling platform with strong European presence",
+      strengths: ["Profitable bootstrapped model", "Strong European market", "Competitive pricing", "Simple interface"],
+      weaknesses: ["Limited AI features", "Smaller team vs funded competitors", "Less enterprise focus"],
       keyMetrics: {
-        companies: '15K+',
-        pricing: '$6.75/user/month',
-        integrations: 'Google + Slack',
-        satisfaction: 4.4
+        userGrowth: "+25%",
+        retention: "75%",
+        nps: "62"
       },
-      recentNews: 'Expanding team features, calculating "Focus Time cost" for meetings'
+      recentNews: [
+        "Expanded European data centers",
+        "Enhanced mobile experience",
+        "New integration partnerships"
+      ]
     },
     {
-      name: 'Reclaim.ai',
-      category: 'ai-native',
-      founded: 2019,
-      users: '320K users, 43K companies',
-      revenue: 'Acquired',
-      funding: '$9.5M',
-      valuation: 'Acquired by Dropbox',
-      growth: 'Acquisition exit',
-      marketShare: 'Personal productivity',
-      strengths: [
-        'Personal time defense AI',
-        'Habit and routine optimization',
-        'Cross-calendar integration',
-        'Strong user loyalty'
-      ],
-      weaknesses: [
-        'Individual focus only',
-        'Limited team features',
-        'Acquisition uncertainty',
-        'Modest funding history'
-      ],
+      id: 7,
+      name: "Doodle",
+      category: "Group Scheduling",
+      founded: 2007,
+      users: "30M MAU",
+      revenue: "$25M ARR",
+      funding: "$50M",
+      marketShare: "18%",
+      logo: "🗳️",
+      description: "Swiss-based group scheduling pioneer with 30M+ monthly active users specializing in polls",
+      strengths: ["Massive user base (30M MAU)", "Group scheduling leader", "Global brand recognition", "Poll-based innovation"],
+      weaknesses: ["Limited individual scheduling", "Less AI integration", "Dated interface"],
       keyMetrics: {
-        companies: '43K',
-        pricing: '$8/user/month',
-        integrations: 'Google + Outlook',
-        satisfaction: 4.6
+        userGrowth: "+20%",
+        retention: "68%",
+        nps: "55"
       },
-      recentNews: 'Acquired by Dropbox in Aug 2024 for productivity integration'
+      recentNews: [
+        "Reached 30M monthly active users",
+        "Launched premium business features",
+        "Enhanced mobile polling experience"
+      ]
     },
     {
-      name: 'Meet-Ting',
-      category: 'ai-native',
-      founded: 2024,
-      users: 'Beta users',
-      revenue: 'Pre-revenue',
-      funding: '£250K seed',
-      valuation: 'Early stage',
-      growth: 'Just launched',
-      marketShare: 'Email scheduling niche',
-      strengths: [
-        'Email-native AI assistant',
-        'Modern LLM technology',
-        'No app required',
-        'Natural language processing'
-      ],
-      weaknesses: [
-        'Very early stage',
-        'Unproven at scale',
-        'Limited funding',
-        'Historical precedent of failures'
-      ],
+      id: 8,
+      name: "Microsoft Outlook",
+      category: "Traditional Calendar",
+      founded: 1997,
+      users: "400M+",
+      revenue: "Part of Office Suite",
+      funding: "Microsoft",
+      marketShare: "45%",
+      logo: "📧",
+      description: "Enterprise calendar backbone with 400M+ users, slowly adding scheduling features",
+      strengths: ["Massive user base (400M+)", "Enterprise integration", "Microsoft ecosystem", "Universal adoption"],
+      weaknesses: ["Slow innovation cycle", "Complex interface", "Limited modern scheduling features"],
       keyMetrics: {
-        companies: 'Beta',
-        pricing: 'Free (beta)',
-        integrations: 'Google Calendar',
-        satisfaction: 'TBD'
+        userGrowth: "+10%",
+        retention: "95%",
+        nps: "48"
       },
-      recentNews: 'Launched beta, backed by Google Gemini LLM technology'
+      recentNews: [
+        "Added basic scheduling features",
+        "Enhanced Teams integration",
+        "AI assistant improvements"
+      ]
     },
     {
-      name: 'Cal.com',
-      category: 'specialized',
-      founded: 2021,
-      users: '20K customers',
-      revenue: '$5.1M',
-      funding: '$32M',
-      valuation: 'Private',
-      growth: 'Steady developer adoption',
-      marketShare: 'Developer/customization niche',
-      strengths: [
-        'Open-source flexibility',
-        'Self-hosting options',
-        'Developer-friendly',
-        'Customization capabilities'
-      ],
-      weaknesses: [
-        'Technical complexity',
-        'Smaller ecosystem',
-        'Limited AI features',
-        'Enterprise support gaps'
-      ],
+      id: 9,
+      name: "SavvyCal",
+      category: "External Scheduling",
+      founded: 2020,
+      users: "Growing",
+      revenue: "Bootstrapped",
+      funding: "Bootstrapped",
+      marketShare: "2%",
+      logo: "💡",
+      description: "Bootstrapped scheduling tool focused on superior UX and recipient experience",
+      strengths: ["Superior user experience design", "Recipient-focused approach", "Bootstrapped profitability", "Innovation in UX"],
+      weaknesses: ["Small market share", "Limited enterprise features", "Newer brand"],
       keyMetrics: {
-        companies: '20K',
-        pricing: 'Freemium + Enterprise',
-        integrations: 'Marketplace model',
-        satisfaction: 4.2
+        userGrowth: "+150%",
+        retention: "88%",
+        nps: "82"
       },
-      recentNews: 'Expanding marketplace integrations, targeting "billion people by 2031"'
+      recentNews: [
+        "Achieved profitability while bootstrapped",
+        "Won design awards for UX",
+        "Growing enterprise interest"
+      ]
     },
     {
-      name: 'Supercal',
-      category: 'ai-native',
-      founded: 2023,
-      users: 'Free users',
-      revenue: '$1K/month',
-      funding: 'Bootstrapped',
-      valuation: 'M&A offers received',
-      growth: 'Organic growth',
-      marketShare: 'Free alternative niche',
-      strengths: [
-        'Completely free model',
-        'Meeting time optimization',
-        'Multiple calendar support',
-        'Simple user experience'
-      ],
-      weaknesses: [
-        'No monetization model',
-        'Solo founder risk',
-        'Limited features',
-        'Uncertain sustainability'
-      ],
+      id: 10,
+      name: "Kronologic",
+      category: "Sales Automation",
+      founded: 2018,
+      users: "Enterprise focus",
+      revenue: "Private",
+      funding: "$20M",
+      marketShare: "3%",
+      logo: "⚡",
+      description: "Sales-focused scheduling automation with $20M funding, targeting enterprise sales teams",
+      strengths: ["Sales automation focus", "Enterprise sales features", "Strong funding", "Specialized market"],
+      weaknesses: ["Narrow market focus", "High complexity", "Limited general market appeal"],
       keyMetrics: {
-        companies: 'Individual users',
-        pricing: 'Free',
-        integrations: '6 calendars max',
-        satisfaction: 4.0
+        userGrowth: "+80%",
+        retention: "78%",
+        nps: "65"
       },
-      recentNews: 'Received M&A offer in April 2025, challenging premium models'
+      recentNews: [
+        "Raised $20M funding round",
+        "Expanded sales automation features",
+        "New enterprise partnerships"
+      ]
     }
   ];
 
@@ -275,18 +275,24 @@ const CompanyProfiles = () => {
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'incumbent': return Building;
-      case 'ai-native': return Zap;
-      case 'specialized': return Target;
+      case 'External Scheduling': return Calendar;
+      case 'AI-Powered': return Zap;
+      case 'Team Productivity': return Users;
+      case 'Group Scheduling': return Building;
+      case 'Traditional Calendar': return Building;
+      case 'Sales Automation': return Target;
       default: return Users;
     }
   };
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'incumbent': return 'bg-blue-50 text-blue-700 border-blue-200';
-      case 'ai-native': return 'bg-purple-50 text-purple-700 border-purple-200';
-      case 'specialized': return 'bg-green-50 text-green-700 border-green-200';
+      case 'External Scheduling': return 'bg-blue-50 text-blue-700 border-blue-200';
+      case 'AI-Powered': return 'bg-purple-50 text-purple-700 border-purple-200';
+      case 'Team Productivity': return 'bg-green-50 text-green-700 border-green-200';
+      case 'Group Scheduling': return 'bg-orange-50 text-orange-700 border-orange-200';
+      case 'Traditional Calendar': return 'bg-gray-50 text-gray-700 border-gray-200';
+      case 'Sales Automation': return 'bg-red-50 text-red-700 border-red-200';
       default: return 'bg-gray-50 text-gray-700 border-gray-200';
     }
   };
@@ -315,7 +321,7 @@ const CompanyProfiles = () => {
                 className="pl-10"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <Button 
                 variant={selectedCategory === 'all' ? 'default' : 'outline'} 
                 size="sm"
@@ -324,25 +330,25 @@ const CompanyProfiles = () => {
                 All
               </Button>
               <Button 
-                variant={selectedCategory === 'incumbent' ? 'default' : 'outline'} 
+                variant={selectedCategory === 'External Scheduling' ? 'default' : 'outline'} 
                 size="sm"
-                onClick={() => setSelectedCategory('incumbent')}
+                onClick={() => setSelectedCategory('External Scheduling')}
               >
-                Incumbents
+                External
               </Button>
               <Button 
-                variant={selectedCategory === 'ai-native' ? 'default' : 'outline'} 
+                variant={selectedCategory === 'AI-Powered' ? 'default' : 'outline'} 
                 size="sm"
-                onClick={() => setSelectedCategory('ai-native')}
+                onClick={() => setSelectedCategory('AI-Powered')}
               >
-                AI-Native
+                AI-Powered
               </Button>
               <Button 
-                variant={selectedCategory === 'specialized' ? 'default' : 'outline'} 
+                variant={selectedCategory === 'Team Productivity' ? 'default' : 'outline'} 
                 size="sm"
-                onClick={() => setSelectedCategory('specialized')}
+                onClick={() => setSelectedCategory('Team Productivity')}
               >
-                Specialized
+                Team
               </Button>
             </div>
           </div>
@@ -371,11 +377,11 @@ const CompanyProfiles = () => {
                   <div className="text-right text-sm">
                     <div className="flex items-center gap-1 text-green-600 mb-1">
                       <TrendingUp className="h-3 w-3" />
-                      <span className="font-medium">{company.growth}</span>
+                      <span className="font-medium">{company.keyMetrics.userGrowth}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Star className="h-3 w-3 text-yellow-500" />
-                      <span>{company.keyMetrics.satisfaction}</span>
+                      <span>{company.keyMetrics.nps}</span>
                     </div>
                   </div>
                 </div>
@@ -408,7 +414,7 @@ const CompanyProfiles = () => {
                   <div className="space-y-1">
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Building className="h-3 w-3" />
-                      Market
+                      Market Share
                     </div>
                     <p className="font-semibold text-sm">{company.marketShare}</p>
                   </div>
@@ -419,7 +425,7 @@ const CompanyProfiles = () => {
                   <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="strengths" className="text-xs">Strengths</TabsTrigger>
                     <TabsTrigger value="weaknesses" className="text-xs">Weaknesses</TabsTrigger>
-                    <TabsTrigger value="metrics" className="text-xs">Details</TabsTrigger>
+                    <TabsTrigger value="news" className="text-xs">News</TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="strengths" className="mt-4">
@@ -444,20 +450,13 @@ const CompanyProfiles = () => {
                     </ul>
                   </TabsContent>
                   
-                  <TabsContent value="metrics" className="mt-4 space-y-3">
-                    <div className="grid grid-cols-2 gap-3 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Companies:</span>
-                        <span className="font-medium">{company.keyMetrics.companies}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Pricing:</span>
-                        <span className="font-medium">{company.keyMetrics.pricing}</span>
-                      </div>
-                    </div>
-                    <div className="p-3 bg-muted/50 rounded-lg">
-                      <p className="text-xs text-muted-foreground mb-1">Recent News:</p>
-                      <p className="text-sm">{company.recentNews}</p>
+                  <TabsContent value="news" className="mt-4 space-y-3">
+                    <div className="space-y-2">
+                      {company.recentNews.map((news, i) => (
+                        <div key={i} className="p-3 bg-muted/50 rounded-lg">
+                          <p className="text-sm">{news}</p>
+                        </div>
+                      ))}
                     </div>
                   </TabsContent>
                 </Tabs>
