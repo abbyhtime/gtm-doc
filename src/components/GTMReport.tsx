@@ -28,10 +28,10 @@ import { DataVerificationManager } from '@/components/DataVerificationManager';
 
 const GTMReport = () => {
   const [activeTab, setActiveTab] = useState('executive');
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     setTheme(savedTheme);
     document.documentElement.classList.toggle('dark', savedTheme === 'dark');
   }, []);
