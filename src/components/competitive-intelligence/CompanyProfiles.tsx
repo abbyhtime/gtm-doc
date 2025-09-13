@@ -380,7 +380,7 @@ const CompanyProfiles = () => {
                       <span className="font-medium">{company.keyMetrics.userGrowth}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Star className="h-3 w-3 text-yellow-500" />
+                      <Star className="h-3 w-3 text-yellow-600" />
                       <span>{company.keyMetrics.nps}</span>
                     </div>
                   </div>
@@ -432,7 +432,7 @@ const CompanyProfiles = () => {
                     <ul className="space-y-2">
                       {company.strengths.map((strength, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm">
-                          <TrendingUp className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
+                          <TrendingUp className="h-3 w-3 text-green-700 mt-0.5 flex-shrink-0" />
                           <span>{strength}</span>
                         </li>
                       ))}
@@ -443,7 +443,7 @@ const CompanyProfiles = () => {
                     <ul className="space-y-2">
                       {company.weaknesses.map((weakness, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm">
-                          <AlertCircle className="h-3 w-3 text-red-500 mt-0.5 flex-shrink-0" />
+                          <AlertCircle className="h-3 w-3 text-red-700 mt-0.5 flex-shrink-0" />
                           <span>{weakness}</span>
                         </li>
                       ))}

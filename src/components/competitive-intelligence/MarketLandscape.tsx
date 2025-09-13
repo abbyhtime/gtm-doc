@@ -129,7 +129,7 @@ const MarketLandscape = () => {
       title: 'Incumbent Leaders',
       description: 'Established platforms with massive user bases',
       companies: ['Calendly', 'Google Calendar', 'Microsoft Outlook', 'Doodle'],
-      color: 'bg-blue-50 border-blue-200',
+      color: 'bg-blue-50 border-blue-200 text-blue-800',
       icon: Building,
       stats: '920M+ total users'
     },
@@ -137,7 +137,7 @@ const MarketLandscape = () => {
       title: 'AI-Native Disruptors',
       description: 'Startups built with AI-first approach',
       companies: ['Motion', 'Clockwise', 'Reclaim.ai', 'Meet-Ting', 'Supercal'],
-      color: 'bg-purple-50 border-purple-200',
+      color: 'bg-purple-50 border-purple-200 text-purple-800',
       icon: Zap,
       stats: '$150M+ raised'
     },
@@ -145,7 +145,7 @@ const MarketLandscape = () => {
       title: 'Specialized Players',
       description: 'Focused solutions for specific use cases',
       companies: ['Cal.com', 'SavvyCal', 'Kronologic'],
-      color: 'bg-green-50 border-green-200',
+      color: 'bg-green-50 border-green-200 text-green-800',
       icon: Target,
       stats: 'Niche dominance'
     }
@@ -344,9 +344,9 @@ const MarketLandscape = () => {
             ].map((milestone, index) => (
               <div key={index} className="flex gap-4">
                 <div className="flex-shrink-0">
-                  <Badge variant="outline" className="bg-primary/10 text-primary">
-                    {milestone.year}
-                  </Badge>
+              <Badge variant="outline" className="bg-primary/10 text-primary border-primary">
+                {milestone.year}
+              </Badge>
                 </div>
                 <div className="space-y-1">
                   <h4 className="font-semibold">{milestone.event}</h4>

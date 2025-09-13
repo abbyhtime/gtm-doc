@@ -17,25 +17,25 @@ const ExecutiveDashboard = () => {
       title: 'AI Renaissance Timing',
       insight: 'Unlike past failures (Clara Labs, x.ai), current AI capabilities enable practical scheduling automation with proven ROI',
       impact: 'Critical',
-      color: 'bg-red-50 border-red-200 text-red-700'
+      color: 'bg-red-50 border-red-200 text-red-800'
     },
     {
       title: 'Rapid Revenue Growth',
       insight: 'Motion achieved $10M ARR in just 4 months, demonstrating enterprise demand for AI-powered productivity',
       impact: 'High',
-      color: 'bg-orange-50 border-orange-200 text-orange-700'
+      color: 'bg-orange-50 border-orange-200 text-orange-800'
     },
     {
       title: 'Market Consolidation Beginning',
       insight: 'Dropbox acquired Reclaim.ai for $15M, Bizzabo acquired x.ai assets - consolidation phase starting',
       impact: 'High',
-      color: 'bg-blue-50 border-blue-200 text-blue-700'
+      color: 'bg-blue-50 border-blue-200 text-blue-800'
     },
     {
       title: 'Productivity Impact Proven',
       insight: 'Users save 1.5 hours/week, 20% productivity boost, 75% faster scheduling vs manual methods',
       impact: 'High',
-      color: 'bg-green-50 border-green-200 text-green-700'
+      color: 'bg-green-50 border-green-200 text-green-800'
     }
   ];
 
@@ -187,7 +187,7 @@ const ExecutiveDashboard = () => {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <h4 className="font-semibold">{insight.title}</h4>
-                      <Badge variant="outline" className="text-xs">
+                      <Badge variant="outline" className="text-xs bg-foreground text-background border-foreground">
                         {insight.impact}
                       </Badge>
                     </div>

@@ -115,7 +115,7 @@ const DataAnalytics = () => {
                 <p className="text-2xl font-bold text-blue-900">$588M+</p>
                 <p className="text-xs text-blue-600">Across all startups</p>
               </div>
-              <DollarSign className="h-8 w-8 text-blue-500" />
+              <DollarSign className="h-8 w-8 text-blue-700" />
             </div>
           </CardContent>
         </Card>
@@ -128,7 +128,7 @@ const DataAnalytics = () => {
                 <p className="text-2xl font-bold text-green-900">920M+</p>
                 <p className="text-xs text-green-600">Across major platforms</p>
               </div>
-              <Users className="h-8 w-8 text-green-500" />
+              <Users className="h-8 w-8 text-green-700" />
             </div>
           </CardContent>
         </Card>
@@ -141,7 +141,7 @@ const DataAnalytics = () => {
                 <p className="text-2xl font-bold text-purple-900">60%</p>
                 <p className="text-xs text-purple-600">In 2025 (projected)</p>
               </div>
-              <Zap className="h-8 w-8 text-purple-500" />
+              <Zap className="h-8 w-8 text-purple-700" />
             </div>
           </CardContent>
         </Card>
@@ -154,7 +154,7 @@ const DataAnalytics = () => {
                 <p className="text-2xl font-bold text-orange-900">16%</p>
                 <p className="text-xs text-orange-600">2023-2032</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-orange-500" />
+              <TrendingUp className="h-8 w-8 text-orange-700" />
             </div>
           </CardContent>
         </Card>
@@ -177,7 +177,7 @@ const DataAnalytics = () => {
               <div className="flex items-center justify-between text-sm">
                 <span className="font-medium">{company.name}</span>
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="outline" className="text-xs bg-foreground/5 text-foreground border-foreground/20">
                     {company.category}
                   </Badge>
                   <span className="text-muted-foreground">
@@ -225,7 +225,7 @@ const DataAnalytics = () => {
                   <div className="flex items-center gap-2">
                     <span className="text-muted-foreground">${company.amount}M</span>
                     {company.valuation && (
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="secondary" className="text-xs bg-primary/10 text-primary">
                         ${company.valuation}M valuation
                       </Badge>
                     )}
@@ -289,7 +289,7 @@ const DataAnalytics = () => {
             {/* Market Size Growth */}
             <div className="space-y-4">
               <h4 className="font-semibold text-sm flex items-center gap-2">
-                <DollarSign className="h-4 w-4 text-green-500" />
+                <DollarSign className="h-4 w-4 text-green-700" />
                 Market Size (Millions USD)
               </h4>
               {marketEvolution.map((year, index) => (
@@ -306,7 +306,7 @@ const DataAnalytics = () => {
             {/* AI Adoption */}
             <div className="space-y-4">
               <h4 className="font-semibold text-sm flex items-center gap-2">
-                <Zap className="h-4 w-4 text-purple-500" />
+                <Zap className="h-4 w-4 text-purple-700" />
                 AI Feature Adoption (%)
               </h4>
               {marketEvolution.map((year, index) => (
@@ -351,8 +351,8 @@ const DataAnalytics = () => {
                           variant="outline" 
                           className={`text-xs ${
                             analysis.status === 'failed'
-                              ? 'bg-red-100 text-red-700 border-red-300'
-                              : 'bg-green-100 text-green-700 border-green-300'
+                              ? 'bg-red-100 text-red-800 border-red-400'
+                              : 'bg-green-100 text-green-800 border-green-400'
                           }`}
                         >
                           {analysis.period}
@@ -363,9 +363,9 @@ const DataAnalytics = () => {
                     </div>
                     <div className="text-right space-y-1">
                       {analysis.status === 'failed' ? (
-                        <AlertTriangle className="h-5 w-5 text-red-500" />
+                        <AlertTriangle className="h-5 w-5 text-red-700" />
                       ) : (
-                        <CheckCircle className="h-5 w-5 text-green-500" />
+                        <CheckCircle className="h-5 w-5 text-green-700" />
                       )}
                       <p className="text-xs text-muted-foreground">{analysis.funding}</p>
                     </div>

@@ -29,7 +29,7 @@ const StrategicInsights = () => {
       competition: 'High',
       recommendation: 'Focus on AI-driven personal insights and habit formation',
       icon: Users,
-      color: 'bg-blue-50 border-blue-200 text-blue-700'
+      color: 'bg-blue-50 border-blue-200 text-blue-800'
     },
     {
       useCase: 'Team Coordination',
@@ -40,7 +40,7 @@ const StrategicInsights = () => {
       competition: 'Medium',
       recommendation: 'Opportunity for AI-powered team workflow optimization',
       icon: Building,
-      color: 'bg-green-50 border-green-200 text-green-700'
+      color: 'bg-green-50 border-green-200 text-green-800'
     },
     {
       useCase: 'External Scheduling',
@@ -51,7 +51,7 @@ const StrategicInsights = () => {
       competition: 'Very High',
       recommendation: 'Differentiate through AI personalization and integration depth',
       icon: Target,
-      color: 'bg-orange-50 border-orange-200 text-orange-700'
+      color: 'bg-orange-50 border-orange-200 text-orange-800'
     },
     {
       useCase: 'Email-based AI',
@@ -62,7 +62,7 @@ const StrategicInsights = () => {
       competition: 'Low',
       recommendation: 'High-risk, high-reward if technology timing is right',
       icon: Zap,
-      color: 'bg-purple-50 border-purple-200 text-purple-700'
+      color: 'bg-purple-50 border-purple-200 text-purple-800'
     }
   ];
 
@@ -231,7 +231,7 @@ const StrategicInsights = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="bg-white/60 p-4 rounded-lg border">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-green-500" />
+                <TrendingUp className="h-4 w-4 text-green-700" />
                 Market Momentum
               </h4>
               <p className="text-sm text-muted-foreground">
@@ -241,7 +241,7 @@ const StrategicInsights = () => {
             </div>
             <div className="bg-white/60 p-4 rounded-lg border">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
-                <Target className="h-4 w-4 text-blue-500" />
+                <Target className="h-4 w-4 text-blue-700" />
                 Competitive Dynamics
               </h4>
               <p className="text-sm text-muted-foreground">
@@ -251,7 +251,7 @@ const StrategicInsights = () => {
             </div>
             <div className="bg-white/60 p-4 rounded-lg border">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
-                <Zap className="h-4 w-4 text-purple-500" />
+                <Zap className="h-4 w-4 text-purple-700" />
                 Technology Timing
               </h4>
               <p className="text-sm text-muted-foreground">
@@ -291,18 +291,18 @@ const StrategicInsights = () => {
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div>
                       <span className="text-muted-foreground">Trend:</span>
-                      <Badge variant="outline" className="ml-2 text-xs">{useCase.trend}</Badge>
+                      <Badge variant="outline" className="ml-2 text-xs bg-foreground/5 text-foreground border-foreground/20">{useCase.trend}</Badge>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Competition:</span>
-                      <Badge variant="outline" className="ml-2 text-xs">{useCase.competition}</Badge>
+                      <Badge variant="outline" className="ml-2 text-xs bg-foreground/5 text-foreground border-foreground/20">{useCase.competition}</Badge>
                     </div>
                   </div>
                   <div>
                     <span className="text-sm text-muted-foreground">Current Leaders:</span>
                     <div className="flex flex-wrap gap-1 mt-1">
                       {useCase.leaders.map((leader, i) => (
-                        <Badge key={i} variant="secondary" className="text-xs">
+                        <Badge key={i} variant="secondary" className="text-xs bg-primary/10 text-primary">
                           {leader}
                         </Badge>
                       ))}
@@ -346,9 +346,9 @@ const StrategicInsights = () => {
                         <Badge 
                           variant="outline" 
                           className={`text-xs ${
-                            advantage.strength === 'Very High' ? 'bg-green-100 text-green-700 border-green-300' :
-                            advantage.strength === 'High' ? 'bg-blue-100 text-blue-700 border-blue-300' :
-                            'bg-orange-100 text-orange-700 border-orange-300'
+                            advantage.strength === 'Very High' ? 'bg-green-100 text-green-800 border-green-400' :
+                            advantage.strength === 'High' ? 'bg-blue-100 text-blue-800 border-blue-400' :
+                            'bg-orange-100 text-orange-800 border-orange-400'
                           }`}
                         >
                           {advantage.strength}
@@ -359,10 +359,10 @@ const StrategicInsights = () => {
                         <Badge 
                           variant="outline" 
                           className={`text-xs ${
-                            advantage.sustainability === 'Very High' ? 'bg-green-100 text-green-700 border-green-300' :
-                            advantage.sustainability === 'High' ? 'bg-blue-100 text-blue-700 border-blue-300' :
-                            advantage.sustainability === 'Medium' ? 'bg-orange-100 text-orange-700 border-orange-300' :
-                            'bg-red-100 text-red-700 border-red-300'
+                            advantage.sustainability === 'Very High' ? 'bg-green-100 text-green-800 border-green-400' :
+                            advantage.sustainability === 'High' ? 'bg-blue-100 text-blue-800 border-blue-400' :
+                            advantage.sustainability === 'Medium' ? 'bg-orange-100 text-orange-800 border-orange-400' :
+                            'bg-red-100 text-red-800 border-red-400'
                           }`}
                         >
                           {advantage.sustainability}
@@ -416,8 +416,8 @@ const StrategicInsights = () => {
                         <Badge 
                           variant="outline" 
                           className={`text-xs ${
-                            gap.opportunity === 'High' ? 'bg-green-100 text-green-700 border-green-300' :
-                            'bg-blue-100 text-blue-700 border-blue-300'
+                            gap.opportunity === 'High' ? 'bg-green-100 text-green-800 border-green-400' :
+                            'bg-blue-100 text-blue-800 border-blue-400'
                           }`}
                         >
                           {gap.opportunity} Opportunity
@@ -435,9 +435,9 @@ const StrategicInsights = () => {
                       <Badge 
                         variant="outline" 
                         className={`${
-                          gap.difficulty === 'High' ? 'bg-red-100 text-red-700 border-red-300' :
-                          gap.difficulty === 'Medium' ? 'bg-orange-100 text-orange-700 border-orange-300' :
-                          'bg-green-100 text-green-700 border-green-300'
+                          gap.difficulty === 'High' ? 'bg-red-100 text-red-800 border-red-400' :
+                          gap.difficulty === 'Medium' ? 'bg-orange-100 text-orange-800 border-orange-400' :
+                          'bg-green-100 text-green-800 border-green-400'
                         }`}
                       >
                         {gap.difficulty}
@@ -478,7 +478,7 @@ const StrategicInsights = () => {
                           <p className="text-sm font-medium text-primary mt-1">{rec.recommendation}</p>
                         </div>
                         <div className="text-right space-y-1">
-                          <Badge variant="outline" className="text-xs">{rec.investment} Investment</Badge>
+                          <Badge variant="outline" className="text-xs bg-foreground/5 text-foreground border-foreground/20">{rec.investment} Investment</Badge>
                           <div className="text-xs text-muted-foreground">{rec.risk} Risk</div>
                         </div>
                       </div>
@@ -517,9 +517,9 @@ const StrategicInsights = () => {
                     <Badge 
                       variant="outline" 
                       className={`text-xs ${
-                        outlook.impact === 'Very High' ? 'bg-red-100 text-red-700 border-red-300' :
-                        outlook.impact === 'High' ? 'bg-orange-100 text-orange-700 border-orange-300' :
-                        'bg-blue-100 text-blue-700 border-blue-300'
+                        outlook.impact === 'Very High' ? 'bg-red-100 text-red-800 border-red-400' :
+                        outlook.impact === 'High' ? 'bg-orange-100 text-orange-800 border-orange-400' :
+                        'bg-blue-100 text-blue-800 border-blue-400'
                       }`}
                     >
                       {outlook.impact} Impact
