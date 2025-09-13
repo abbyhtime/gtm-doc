@@ -1,7 +1,7 @@
-import CompetitiveIntelligence from '@/components/CompetitiveIntelligence';
+import GTMReport from '@/components/GTMReport';
 
 const Index = () => {
-  return <CompetitiveIntelligence />;
+  return <GTMReport />;
 };
 
 export default Index;

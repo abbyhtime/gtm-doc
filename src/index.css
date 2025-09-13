@@ -23,6 +23,21 @@
     --accent-info: 199 89% 48%;
     --accent-emerald: 160 84% 39%;
     
+    /* hTime GTM Phase Colors */
+    --phase-mission: 221 83% 53%;      /* Mission Possible - Blue */
+    --phase-wild: 158 64% 52%;         /* Into the Wild - Green */
+    --phase-scale: 271 81% 56%;        /* Ready to Scale - Purple */
+    --phase-north: 14 91% 43%;         /* True North - Orange */
+    
+    /* GTM Section Colors */
+    --gtm-executive: 158 64% 52%;      /* Executive Summary - Primary Green */
+    --gtm-market: 199 89% 48%;         /* Market Analysis - Blue */
+    --gtm-product: 271 81% 56%;        /* Product Strategy - Purple */
+    --gtm-phases: 38 92% 50%;          /* GTM Phases - Orange */
+    --gtm-business: 142 76% 36%;       /* Business Model - Emerald */
+    --gtm-targets: 221 83% 53%;        /* Target Markets - Blue */
+    --gtm-metrics: 0 84% 60%;          /* Metrics & KPIs - Red */
+    
     /* Modern green gradients */
     --gradient-primary: linear-gradient(135deg, hsl(158 64% 52%), hsl(158 76% 65%));
     --gradient-secondary: linear-gradient(135deg, hsl(158 40% 98%), hsl(158 20% 95%));
