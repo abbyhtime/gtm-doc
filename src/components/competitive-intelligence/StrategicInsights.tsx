@@ -277,7 +277,7 @@ const StrategicInsights = () => {
         <CardContent>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {useCaseAnalysis.map((useCase, index) => (
-              <Card key={index} className={`${useCase.color} border`}>
+              <Card key={index} className={`${useCase.color} border [&_*]:!text-gray-800 dark:[&_*]:!text-gray-900`}>
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-2">
                     <useCase.icon className="h-5 w-5" />
@@ -308,7 +308,7 @@ const StrategicInsights = () => {
                       ))}
                     </div>
                   </div>
-                  <div className="bg-white/80 p-3 rounded border">
+                  <div className="bg-white/80 p-3 rounded border [&_*]:!text-gray-800 dark:[&_*]:!text-gray-900">
                     <span className="text-xs font-medium text-foreground dark:text-foreground">Strategic Recommendation:</span>
                     <p className="text-sm mt-1">{useCase.recommendation}</p>
                   </div>

@@ -341,7 +341,7 @@ const DataAnalytics = () => {
                 analysis.status === 'failed' 
                   ? 'bg-red-50 border-red-200' 
                   : 'bg-green-50 border-green-200'
-              }`}>
+              } [&_*]:!text-gray-800 dark:[&_*]:!text-gray-900`}>
                 <CardContent className="pt-4">
                   <div className="flex items-start justify-between">
                     <div className="space-y-2 flex-1">
@@ -377,7 +377,7 @@ const DataAnalytics = () => {
           
           <Separator className="my-6" />
           
-          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg [&_*]:!text-blue-900 dark:[&_*]:!text-blue-900">
             <h4 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
               <Lightbulb className="h-4 w-4" />
               Key Learning: Technology Timing
