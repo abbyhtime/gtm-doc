@@ -70,11 +70,13 @@ export default {
         "gradient-secondary": "var(--gradient-secondary)",
         "gradient-surface": "var(--gradient-surface)",
         "gradient-glass": "var(--gradient-glass)",
+        "gradient-glass-dark": "var(--gradient-glass-dark)",
       },
       boxShadow: {
         "card": "var(--shadow-card)",
         "elevated": "var(--shadow-elevated)",
         "glow": "var(--shadow-glow)",
+        "glass": "var(--shadow-glass)",
       },
       borderRadius: {
         lg: "var(--radius)",
