@@ -22,64 +22,74 @@ import CompetitiveIntelligence from '@/components/CompetitiveIntelligence';
 const MarketAnalysis = () => {
   const [showCompetitiveIntel, setShowCompetitiveIntel] = useState(false);
 
+  // Real market data from insights report
   const marketSegments = [
     {
-      name: 'Enterprise (1000+ employees)',
-      size: '$2.1B',
-      growth: '+52%',
-      share: '47%',
-      description: 'Large organizations with complex scheduling needs',
+      name: 'Tech/Software',
+      size: '10.9 hrs/week',
+      growth: '+47%',
+      share: '32%',
+      description: 'Software professionals with high meeting load, 5.6 hours potential savings',
       color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300',
       icon: Building
     },
     {
-      name: 'Mid-Market (100-999 employees)',
-      size: '$1.8B',
-      growth: '+48%',
-      share: '40%',
-      description: 'Growing companies scaling their operations',
+      name: 'Consulting/Professional Services',
+      size: '50-80 hrs/week',
+      growth: '+34%',
+      share: '28%',
+      description: '34-40% cite inefficient meetings as top productivity drain',
       color: 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-300',
       icon: Briefcase
     },
     {
-      name: 'SMB (<100 employees)',
-      size: '$600M',
-      growth: '+35%',
-      share: '13%',
-      description: 'Small businesses seeking efficiency gains',
+      name: 'Recruiting',
+      size: '35% of time',
+      growth: '+28%',
+      share: '25%',
+      description: 'Recruiters spend over 1/3 of time coordinating interviews',
       color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/20 dark:text-purple-300',
       icon: Users
+    },
+    {
+      name: 'Sales',
+      size: '31 hrs/month',
+      growth: '+22%',
+      share: '15%',
+      description: 'Complex multi-party scheduling with prospects and internal teams',
+      color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/20 dark:text-orange-300',
+      icon: TrendingUp
     }
   ];
 
   const marketTrends = [
     {
-      trend: 'AI Adoption Acceleration',
+      trend: 'AI Productivity Tool Adoption',
       impact: 'High',
       timeline: '2024-2025',
-      description: 'Enterprises rapidly adopting AI tools for productivity gains',
-      percentage: 85
+      description: '94% of large-company workers curious about AI productivity tools',
+      percentage: 94
     },
     {
-      trend: 'Remote/Hybrid Work Normalization',
-      impact: 'High',
+      trend: 'Remote Work Coordination Burden',
+      impact: 'Critical',
       timeline: '2024-2026',
-      description: 'Increased coordination complexity driving scheduling tool demand',
-      percentage: 78
+      description: '89% spend 4+ hours/week on scheduling coordination',
+      percentage: 89
     },
     {
-      trend: 'Email Integration Preference',
-      impact: 'Medium',
+      trend: 'Email Overhead Reduction',
+      impact: 'High',
       timeline: '2024-2025',
-      description: 'Users prefer tools that integrate with existing email workflows',
+      description: 'Average 7.3 emails per meeting, 15 minutes admin work per meeting',
       percentage: 67
     },
     {
-      trend: 'Security & Compliance Focus',
-      impact: 'High',
+      trend: 'Meeting Load Growth at Scale',
+      impact: 'Medium',
       timeline: '2025-2027',
-      description: 'Enterprise buyers prioritizing security-first solutions',
-      percentage: 92
+      description: '3.2 more hours/week meeting time at larger companies',
+      percentage: 78
     }
   ];
 
@@ -140,19 +150,19 @@ const MarketAnalysis = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center space-y-2">
-              <div className="text-3xl font-bold text-primary">$4.5B</div>
-              <div className="text-sm font-medium">Current Market Size</div>
-              <div className="text-xs text-muted-foreground">2024</div>
+              <div className="text-3xl font-bold text-primary">$457B</div>
+              <div className="text-sm font-medium">Annual Global Loss</div>
+              <div className="text-xs text-muted-foreground">$399B US + $58B UK</div>
             </div>
             <div className="text-center space-y-2">
-              <div className="text-3xl font-bold text-green-600">$12.8B</div>
-              <div className="text-sm font-medium">Projected Market Size</div>
-              <div className="text-xs text-muted-foreground">2027</div>
+              <div className="text-3xl font-bold text-green-600">$600B+</div>
+              <div className="text-sm font-medium">Market Opportunity</div>
+              <div className="text-xs text-muted-foreground">Projected growth</div>
             </div>
             <div className="text-center space-y-2">
-              <div className="text-3xl font-bold text-orange-600">45%</div>
-              <div className="text-sm font-medium">CAGR</div>
-              <div className="text-xs text-muted-foreground">2024-2027</div>
+              <div className="text-3xl font-bold text-orange-600">31 hrs/mo</div>
+              <div className="text-sm font-medium">Time Wasted</div>
+              <div className="text-xs text-muted-foreground">Per professional</div>
             </div>
           </div>
         </CardContent>
@@ -166,7 +176,7 @@ const MarketAnalysis = () => {
             Market Segments
           </CardTitle>
           <CardDescription>
-            Breakdown of addressable market by company size
+            Breakdown of addressable market by professional segments
           </CardDescription>
         </CardHeader>
         <CardContent>

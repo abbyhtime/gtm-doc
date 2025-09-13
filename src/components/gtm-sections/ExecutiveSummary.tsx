@@ -5,6 +5,7 @@ import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useGTMContent } from '@/hooks/useGTMContent';
 import { 
   Target, 
   Lightbulb, 
@@ -21,11 +22,20 @@ import {
   X,
   Mail,
   Calendar,
-  UserCheck
+  UserCheck,
+  Edit3
 } from 'lucide-react';
 
 const ExecutiveSummary = () => {
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isVisionEdit, setIsVisionEdit] = useState(false);
+  const [isMissionEdit, setIsMissionEdit] = useState(false);
+  const [tempVision, setTempVision] = useState("");
+  const [tempMission, setTempMission] = useState("");
+  
+  const { content: vision, updateContent: updateVision, loading: visionLoading } = useGTMContent("vision");
+  const { content: mission, updateContent: updateMission, loading: missionLoading } = useGTMContent("mission");
+  
   const [editedPillars, setEditedPillars] = useState([
     {
       title: 'AI-Native Experience',
@@ -163,38 +173,134 @@ const ExecutiveSummary = () => {
     setEditedPillars(updated);
   };
 
+  const handleVisionEdit = () => {
+    setTempVision(vision);
+    setIsVisionEdit(true);
+  };
+
+  const handleVisionSave = async () => {
+    await updateVision(tempVision);
+    setIsVisionEdit(false);
+  };
+
+  const handleVisionCancel = () => {
+    setTempVision("");
+    setIsVisionEdit(false);
+  };
+
+  const handleMissionEdit = () => {
+    setTempMission(mission);
+    setIsMissionEdit(true);
+  };
+
+  const handleMissionSave = async () => {
+    await updateMission(tempMission);
+    setIsMissionEdit(false);
+  };
+
+  const handleMissionCancel = () => {
+    setTempMission("");
+    setIsMissionEdit(false);
+  };
+
   return (
     <div className="space-y-8">
       {/* Vision & Mission */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="glass-card">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Lightbulb className="h-5 w-5 text-primary" />
+      <Card className="glass-card">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Target className="h-5 w-5 text-primary" />
+            Vision & Mission
+          </CardTitle>
+          <CardDescription>Our core purpose and strategic direction</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div>
+            <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
+              <Globe className="h-4 w-4 text-blue-500" />
               Vision
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-lg font-medium">
-              "Rethink how the world keeps time"
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="glass-card">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Target className="h-5 w-5 text-primary" />
+              {!isVisionEdit && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleVisionEdit}
+                  className="ml-auto h-6 w-6 p-0"
+                >
+                  <Edit3 className="h-3 w-3" />
+                </Button>
+              )}
+            </h3>
+            {isVisionEdit ? (
+              <div className="space-y-2">
+                <Input
+                  value={tempVision}
+                  onChange={(e) => setTempVision(e.target.value)}
+                  placeholder="Enter vision statement..."
+                  maxLength={100}
+                  className="w-full"
+                />
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>{tempVision.length}/100 characters</span>
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="ghost" onClick={handleVisionCancel}>
+                      <X className="h-3 w-3 mr-1" /> Cancel
+                    </Button>
+                    <Button size="sm" onClick={handleVisionSave}>
+                      <Save className="h-3 w-3 mr-1" /> Save
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <p className="text-muted-foreground leading-relaxed">
+                {visionLoading ? "Loading..." : vision || "No vision statement set"}
+              </p>
+            )}
+          </div>
+          <div>
+            <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
+              <Zap className="h-4 w-4 text-yellow-500" />
               Mission
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-lg font-medium">
-              "Make scheduling just work across multiple people, calendars and time zones by connecting all calendars"
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+              {!isMissionEdit && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleMissionEdit}
+                  className="ml-auto h-6 w-6 p-0"
+                >
+                  <Edit3 className="h-3 w-3" />
+                </Button>
+              )}
+            </h3>
+            {isMissionEdit ? (
+              <div className="space-y-2">
+                <Textarea
+                  value={tempMission}
+                  onChange={(e) => setTempMission(e.target.value)}
+                  placeholder="Enter mission statement..."
+                  maxLength={200}
+                  className="w-full min-h-[80px]"
+                />
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>{tempMission.length}/200 characters</span>
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="ghost" onClick={handleMissionCancel}>
+                      <X className="h-3 w-3 mr-1" /> Cancel
+                    </Button>
+                    <Button size="sm" onClick={handleMissionSave}>
+                      <Save className="h-3 w-3 mr-1" /> Save
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <p className="text-muted-foreground leading-relaxed">
+                {missionLoading ? "Loading..." : mission || "No mission statement set"}
+              </p>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Key Metrics */}
       <Card className="glass-card">

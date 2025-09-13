@@ -14,7 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      gtm_content: {
+        Row: {
+          content_type: string
+          content_value: Json
+          created_at: string | null
+          id: string
+          section: string
+          updated_at: string | null
+        }
+        Insert: {
+          content_type: string
+          content_value: Json
+          created_at?: string | null
+          id?: string
+          section: string
+          updated_at?: string | null
+        }
+        Update: {
+          content_type?: string
+          content_value?: Json
+          created_at?: string | null
+          id?: string
+          section?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
