@@ -229,32 +229,32 @@ const StrategicInsights = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="bg-white/60 p-4 rounded-lg border">
+            <div className="bg-white/60 p-4 rounded-lg border [&_*]:!text-gray-800 dark:[&_*]:!text-gray-900">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
                 <TrendingUp className="h-4 w-4 text-green-700" />
                 Market Momentum
               </h4>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm">
                 AI scheduling tools are reaching inflection point with proven ROI (1.5hr/week savings, 20% productivity boost) 
                 driving rapid enterprise adoption.
               </p>
             </div>
-            <div className="bg-white/60 p-4 rounded-lg border">
+            <div className="bg-white/60 p-4 rounded-lg border [&_*]:!text-gray-800 dark:[&_*]:!text-gray-900">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
                 <Target className="h-4 w-4 text-blue-700" />
                 Competitive Dynamics
               </h4>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm">
                 Incumbents adding AI features while startups focus on AI-native experiences. 
                 Consolidation beginning (Dropbox-Reclaim) signals market maturation.
               </p>
             </div>
-            <div className="bg-white/60 p-4 rounded-lg border">
+            <div className="bg-white/60 p-4 rounded-lg border [&_*]:!text-gray-800 dark:[&_*]:!text-gray-900">
               <h4 className="font-semibold mb-2 flex items-center gap-2">
                 <Zap className="h-4 w-4 text-purple-700" />
                 Technology Timing
               </h4>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm">
                 Modern LLMs enable capabilities that failed previously (x.ai, Clara). 
                 User acceptance of AI assistants creates window for email-based scheduling revival.
               </p>
