@@ -1,30 +1,45 @@
-import { useState, useEffect } from 'react';
-import { getAuthSession, clearAuthSession } from '@/lib/auth';
+import { useState, useEffect } from "react";
 
-export function useAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+interface AuthState {
+  isAuthenticated: boolean;
+  isLoading: boolean;
+}
+
+export const useAuth = () => {
+  const [authState, setAuthState] = useState<AuthState>({
+    isAuthenticated: false,
+    isLoading: true,
+  });
 
   useEffect(() => {
-    // Check for existing session on mount
-    const hasSession = getAuthSession();
-    setIsAuthenticated(hasSession);
-    setIsLoading(false);
+    // Check for existing session
+    const isAuth = localStorage.getItem("gtm_authenticated") === "true";
+    setAuthState({
+      isAuthenticated: isAuth,
+      isLoading: false,
+    });
   }, []);
 
   const login = () => {
-    setIsAuthenticated(true);
+    localStorage.setItem("gtm_authenticated", "true");
+    setAuthState({
+      isAuthenticated: true,
+      isLoading: false,
+    });
   };
 
   const logout = () => {
-    clearAuthSession();
-    setIsAuthenticated(false);
+    localStorage.removeItem("gtm_authenticated");
+    setAuthState({
+      isAuthenticated: false,
+      isLoading: false,
+    });
   };
 
   return {
-    isAuthenticated,
-    isLoading,
+    isAuthenticated: authState.isAuthenticated,
+    isLoading: authState.isLoading,
     login,
-    logout
+    logout,
   };
-}
+};
