@@ -83,12 +83,8 @@ const ExecutiveSummary = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-lg font-medium mb-4">
-              "To eliminate the friction of scheduling and give time back to what matters most"
-            </p>
-            <p className="text-muted-foreground">
-              We envision a world where scheduling is invisible, intelligent, and effortless. 
-              Where professionals spend their time creating value, not coordinating calendars.
+            <p className="text-lg font-medium">
+              "Rethink how the world keeps time"
             </p>
           </CardContent>
         </Card>
@@ -101,12 +97,8 @@ const ExecutiveSummary = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-lg font-medium mb-4">
-              "Revolutionize scheduling through AI-powered email assistance"
-            </p>
-            <p className="text-muted-foreground">
-              We're building the world's most intelligent scheduling assistant that works 
-              seamlessly through email, understanding context, preferences, and priorities.
+            <p className="text-lg font-medium">
+              "Make scheduling just work across multiple people, calendars and time zones by connecting all calendars"
             </p>
           </CardContent>
         </Card>
@@ -184,66 +176,6 @@ const ExecutiveSummary = () => {
         </CardContent>
       </Card>
 
-      {/* Market Opportunity Summary */}
-      <Card className="glass-card">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Globe className="h-5 w-5 text-primary" />
-            Market Opportunity
-          </CardTitle>
-          <CardDescription>
-            The perfect storm for AI-powered scheduling disruption
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <h3 className="font-semibold">Market Dynamics</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">AI Adoption Readiness</span>
-                  <span className="text-sm font-medium">85%</span>
-                </div>
-                <Progress value={85} className="h-2" />
-                
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Remote Work Impact</span>
-                  <span className="text-sm font-medium">92%</span>
-                </div>
-                <Progress value={92} className="h-2" />
-                
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Scheduling Pain Points</span>
-                  <span className="text-sm font-medium">78%</span>
-                </div>
-                <Progress value={78} className="h-2" />
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <h3 className="font-semibold">Competitive Advantage</h3>
-              <div className="space-y-3 text-sm text-muted-foreground">
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-1.5" />
-                  <span>First-mover advantage in AI-native email scheduling</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-1.5" />
-                  <span>Superior user experience through contextual AI</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-1.5" />
-                  <span>Enterprise-grade security and compliance</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-1.5" />
-                  <span>Seamless integration with existing workflows</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };

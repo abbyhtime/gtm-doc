@@ -398,7 +398,7 @@ const TargetMarkets = () => {
                       {Object.entries(persona.demographics).map(([key, value]) => (
                         <div key={key} className="flex justify-between">
                           <span className="capitalize">{key.replace('_', ' ')}:</span>
-                          <span className="font-medium">{value}</span>
+                          <span className="font-medium">{String(value)}</span>
                         </div>
                       ))}
                     </div>
@@ -430,7 +430,7 @@ const TargetMarkets = () => {
                   {Object.entries(icp.firmographics).map(([key, value]) => (
                     <div key={key} className="text-sm">
                       <div className="font-medium capitalize">{key.replace('_', ' ')}</div>
-                      <div className="text-muted-foreground">{value}</div>
+                       <div className="text-muted-foreground">{String(value)}</div>
                     </div>
                   ))}
                 </div>
@@ -442,7 +442,7 @@ const TargetMarkets = () => {
                   {Object.entries(icp.technographics).map(([key, value]) => (
                     <div key={key} className="text-sm">
                       <div className="font-medium capitalize">{key.replace('_', ' ')}</div>
-                      <div className="text-muted-foreground">{value}</div>
+                       <div className="text-muted-foreground">{String(value)}</div>
                     </div>
                   ))}
                 </div>
@@ -454,7 +454,7 @@ const TargetMarkets = () => {
                   {Object.entries(icp.behavioral).map(([key, value]) => (
                     <div key={key} className="text-sm">
                       <div className="font-medium capitalize">{key.replace('_', ' ')}</div>
-                      <div className="text-muted-foreground">{value}</div>
+                      <div className="text-muted-foreground">{String(value)}</div>
                     </div>
                   ))}
                 </div>

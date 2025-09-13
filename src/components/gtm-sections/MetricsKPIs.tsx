@@ -360,7 +360,7 @@ const MetricsKPIs = () => {
                     <div key={i} className="space-y-2">
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">{criteria.metric}</span>
-                        <Badge size="sm" className={getStatusColor(criteria.status)}>
+                        <Badge className={getStatusColor(criteria.status)}>
                           {getStatusIcon(criteria.status)}
                         </Badge>
                       </div>

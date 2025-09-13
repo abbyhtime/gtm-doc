@@ -102,25 +102,11 @@ const GTMReport = () => {
             <div className="space-y-2">
               <div className="flex items-center gap-4">
                 <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                  hTime GTM Report 2025
+                  hTime GTM Plan 2025 V1.5
                 </h1>
                 <Badge variant="secondary" className="text-xs">
                   Go-to-Market Strategy
                 </Badge>
-              </div>
-              <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
-                  <span>AI-Powered Scheduling Platform</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4" />
-                  <span>Q1 2025 Launch</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Target className="h-4 w-4" />
-                  <span>$50M ARR by 2027</span>
-                </div>
               </div>
             </div>
             <button
@@ -137,14 +123,14 @@ const GTMReport = () => {
       <main className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
           {/* Navigation Tabs */}
-          <TabsList className="grid w-full grid-cols-7 gap-2 bg-gradient-glass p-2 rounded-xl border border-primary/10">
+          <TabsList className="grid w-full grid-cols-7 bg-gradient-glass p-1 rounded-xl border border-primary/10 h-auto">
             {sections.map((section) => {
               const Icon = section.icon;
               return (
                 <TabsTrigger
                   key={section.id}
                   value={section.id}
-                  className={`flex flex-col items-center gap-2 p-4 rounded-lg transition-all duration-300 hover:scale-105 data-[state=active]:${section.bgColor} data-[state=active]:${section.color} data-[state=active]:shadow-elevated`}
+                  className={`flex flex-col items-center justify-center gap-2 p-3 rounded-lg transition-all duration-300 hover:scale-105 data-[state=active]:${section.bgColor} data-[state=active]:${section.color} data-[state=active]:shadow-elevated min-h-[80px]`}
                 >
                   <Icon className="h-5 w-5" />
                   <span className="text-xs font-medium hidden sm:block">{section.label}</span>
