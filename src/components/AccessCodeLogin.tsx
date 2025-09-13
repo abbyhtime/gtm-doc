@@ -10,15 +10,14 @@ interface AccessCodeLoginProps {
   onSuccess: () => void;
 }
 
-// Simple hash function for access codes
+// Simple hash function for access codes - matches database
 const simpleHash = (str: string): string => {
-  let hash = 0;
+  // Convert string to hex for simple but consistent hashing
+  let result = '';
   for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
+    result += str.charCodeAt(i).toString(16);
   }
-  return Math.abs(hash).toString(16).padStart(8, '0');
+  return result.substring(0, 8);
 };
 
 export const AccessCodeLogin = ({ onSuccess }: AccessCodeLoginProps) => {
@@ -28,13 +27,17 @@ export const AccessCodeLogin = ({ onSuccess }: AccessCodeLoginProps) => {
 
   const validateCode = async (inputCode: string) => {
     const codeHash = simpleHash(inputCode);
+    console.log("Input code:", inputCode);
+    console.log("Generated hash:", codeHash);
     
     const { data, error } = await supabase
       .from("access_codes")
       .select("id")
       .eq("code_hash", codeHash)
       .eq("is_active", true)
-      .single();
+      .maybeSingle();
+
+    console.log("Query result:", { data, error });
 
     if (error || !data) {
       return false;
