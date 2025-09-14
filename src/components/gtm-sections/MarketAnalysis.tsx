@@ -195,19 +195,19 @@ const MarketAnalysis = () => {
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <ClickableTile className="text-center space-y-2 p-6" hoverScale={false}>
-              <div className="text-3xl font-bold text-primary">$457B</div>
-              <div className="text-sm font-medium">Annual Global Loss</div>
-              <div className="text-xs text-muted-foreground">$399B US + $58B UK</div>
+              <div className="text-3xl font-bold text-primary">$5.71B</div>
+              <div className="text-sm font-medium">Current Market Size</div>
+              <div className="text-xs text-muted-foreground">2024 Global Scheduling Software</div>
             </ClickableTile>
             <ClickableTile className="text-center space-y-2 p-6" hoverScale={false}>
-              <div className="text-3xl font-bold text-green-600">$600B+</div>
-              <div className="text-sm font-medium">Market Opportunity</div>
-              <div className="text-xs text-muted-foreground">Projected growth</div>
+              <div className="text-3xl font-bold text-green-600">$16.37B</div>
+              <div className="text-sm font-medium">2030 Market Target</div>
+              <div className="text-xs text-muted-foreground">10.4% CAGR growth</div>
             </ClickableTile>
             <ClickableTile className="text-center space-y-2 p-6" hoverScale={false}>
-              <div className="text-3xl font-bold text-orange-600">31 hrs/mo</div>
-              <div className="text-sm font-medium">Time Wasted</div>
-              <div className="text-xs text-muted-foreground">Per professional</div>
+              <div className="text-3xl font-bold text-orange-600">$20B</div>
+              <div className="text-sm font-medium">TAM Opportunity</div>
+              <div className="text-xs text-muted-foreground">Total addressable market</div>
             </ClickableTile>
           </div>
         </div>
@@ -342,19 +342,19 @@ const MarketAnalysis = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center space-y-2">
-              <div className="text-3xl font-bold text-primary">$457B</div>
-              <div className="text-sm font-medium">Annual Global Loss</div>
-              <div className="text-xs text-muted-foreground">$399B US + $58B UK</div>
+              <div className="text-3xl font-bold text-primary">$5.71B</div>
+              <div className="text-sm font-medium">Current Market Size</div>
+              <div className="text-xs text-muted-foreground">2024 Global Scheduling Software</div>
             </div>
             <div className="text-center space-y-2">
-              <div className="text-3xl font-bold text-green-600">$600B+</div>
-              <div className="text-sm font-medium">Market Opportunity</div>
-              <div className="text-xs text-muted-foreground">Projected growth</div>
+              <div className="text-3xl font-bold text-green-600">$16.37B</div>
+              <div className="text-sm font-medium">2030 Market Target</div>
+              <div className="text-xs text-muted-foreground">10.4% CAGR growth</div>
             </div>
             <div className="text-center space-y-2">
-              <div className="text-3xl font-bold text-orange-600">31 hrs/mo</div>
-              <div className="text-sm font-medium">Time Wasted</div>
-              <div className="text-xs text-muted-foreground">Per professional</div>
+              <div className="text-3xl font-bold text-orange-600">$20B</div>
+              <div className="text-sm font-medium">TAM Opportunity</div>
+              <div className="text-xs text-muted-foreground">Total addressable market</div>
             </div>
           </div>
         </CardContent>

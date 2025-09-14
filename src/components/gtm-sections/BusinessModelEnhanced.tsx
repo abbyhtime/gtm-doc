@@ -135,20 +135,20 @@ const BusinessModel = () => {
   const marketSizing = [
     {
       segment: 'Total Addressable Market (TAM)',
-      size: '$4.5B',
-      description: 'Global scheduling software market',
+      size: '$20B',
+      description: 'Global scheduling software ecosystem',
       color: 'text-blue-600'
     },
     {
       segment: 'Serviceable Addressable Market (SAM)',
-      size: '$1.8B',
-      description: 'AI-powered scheduling tools segment',
+      size: '$5.71B',
+      description: 'Current scheduling software market (2024)',
       color: 'text-green-600'
     },
     {
       segment: 'Serviceable Obtainable Market (SOM)',
-      size: '$450M',
-      description: 'Realistic market capture (25% of SAM)',
+      size: '$1.4B',
+      description: 'AI scheduling subsegment (25% CAGR)',
       color: 'text-purple-600'
     }
   ];

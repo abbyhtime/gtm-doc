@@ -65,33 +65,33 @@ const ExecutiveSummary = () => {
   const keyMetrics = [
     {
       label: 'Market Size',
-      value: '$4.5B',
-      description: 'AI Scheduling Market 2024',
-      trend: '+45%',
+      value: '$5.71B',
+      description: 'Global Scheduling Software 2024',
+      trend: '10.4% CAGR',
       icon: Globe,
       color: 'text-blue-600'
     },
     {
-      label: 'Target ARR',
-      value: '$50M',
-      description: 'By 2027',
-      trend: '+300%',
+      label: 'Market Target',
+      value: '$16.37B',
+      description: 'Projected by 2030',
+      trend: '+187%',
       icon: DollarSign,
       color: 'text-green-600'
     },
     {
-      label: 'Time Savings',
-      value: '2.5hrs',
-      description: 'Per user per week',
-      trend: '+150%',
-      icon: Clock,
+      label: 'AI Subsegment',
+      value: '$1.4B',
+      description: 'AI Scheduling by 2025',
+      trend: '25% CAGR',
+      icon: Zap,
       color: 'text-purple-600'
     },
     {
-      label: 'User Base',
-      value: '500K',
-      description: 'Target by 2026',
-      trend: '+250%',
+      label: 'Penetration Rate',
+      value: '51.68%',
+      description: 'Current market adoption',
+      trend: '+15%',
       icon: Users,
       color: 'text-orange-600'
     }
@@ -106,9 +106,9 @@ const ExecutiveSummary = () => {
       color: 'text-red-600'
     },
     {
-      label: 'Annual productivity loss (US)',
-      value: 85, // Representing $399B as a high percentage
-      description: '$399B lost to scheduling inefficiency',
+      label: 'Annual productivity loss (Global)',
+      value: 85, // Representing $457B as a high percentage
+      description: '$457B lost globally ($399B US + $58B UK)',
       icon: DollarSign,
       color: 'text-red-600'
     },
@@ -127,9 +127,9 @@ const ExecutiveSummary = () => {
       color: 'text-blue-600'
     },
     {
-      label: 'Recruiter time spent on interview scheduling',
-      value: 35,
-      description: '35% of total working time',
+      label: 'Total Addressable Market (TAM)',
+      value: 35, // Representing $20B as percentage
+      description: '$20B total addressable market opportunity',
       icon: UserCheck,
       color: 'text-purple-600'
     }
@@ -137,11 +137,11 @@ const ExecutiveSummary = () => {
 
   const marketFacts = [
     { label: 'Calendly Users Globally', value: '20M+' },
-    { label: 'Fortune 500 Adoption', value: '86%' },
-    { label: 'Weekly Time Savings Potential', value: '1.5hrs' },
-    { label: 'Conversion Rate Increase', value: '340%' },
-    { label: 'Workers Excited About AI Scheduling', value: '49%' },
-    { label: 'Productivity Increase with AI', value: '20%' }
+    { label: 'Market CAGR (2024-2030)', value: '10.4%' },
+    { label: 'Weekly Time Savings Potential', value: '71%' },
+    { label: 'AI Scheduling Market Growth', value: '25%' },
+    { label: 'Workers Excited About AI Scheduling', value: '94%' },
+    { label: 'North America Market Size', value: '$139.5M' }
   ];
 
   const handleSave = () => {

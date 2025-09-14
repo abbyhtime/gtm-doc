@@ -53,12 +53,13 @@ const DataAnalytics = () => {
 
   // Market evolution data
   const marketEvolution = [
-    { year: 2020, marketSize: 250, aiAdoption: 5 },
-    { year: 2021, marketSize: 280, aiAdoption: 12 },
-    { year: 2022, marketSize: 320, aiAdoption: 22 },
-    { year: 2023, marketSize: 400, aiAdoption: 35 },
-    { year: 2024, marketSize: 480, aiAdoption: 45 },
-    { year: 2025, marketSize: 580, aiAdoption: 60 }
+    { year: 2020, marketSize: 320, aiAdoption: 5 },
+    { year: 2021, marketSize: 380, aiAdoption: 12 },
+    { year: 2022, marketSize: 450, aiAdoption: 22 },
+    { year: 2023, marketSize: 520, aiAdoption: 35 },
+    { year: 2024, marketSize: 571, aiAdoption: 45 },
+    { year: 2025, marketSize: 630, aiAdoption: 60 },
+    { year: 2030, marketSize: 1637, aiAdoption: 85 }
   ];
 
   // Historical failures vs current successes
@@ -111,9 +112,9 @@ const DataAnalytics = () => {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-blue-600 font-medium">Total Funding</p>
-                <p className="text-2xl font-bold text-blue-900">$588M+</p>
-                <p className="text-xs text-blue-600">Across all startups</p>
+                <p className="text-sm text-blue-600 font-medium">Market Size</p>
+                <p className="text-2xl font-bold text-blue-900">$5.71B</p>
+                <p className="text-xs text-blue-600">2024 Global Scheduling</p>
               </div>
               <DollarSign className="h-8 w-8 text-blue-700" />
             </div>
@@ -124,11 +125,11 @@ const DataAnalytics = () => {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-green-600 font-medium">Active Users</p>
-                <p className="text-2xl font-bold text-green-900">920M+</p>
-                <p className="text-xs text-green-600">Across major platforms</p>
+                <p className="text-sm text-green-600 font-medium">2030 Target</p>
+                <p className="text-2xl font-bold text-green-900">$16.37B</p>
+                <p className="text-xs text-green-600">10.4% CAGR Growth</p>
               </div>
-              <Users className="h-8 w-8 text-green-700" />
+              <TrendingUp className="h-8 w-8 text-green-700" />
             </div>
           </CardContent>
         </Card>
@@ -137,9 +138,9 @@ const DataAnalytics = () => {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-purple-600 font-medium">AI Adoption</p>
-                <p className="text-2xl font-bold text-purple-900">60%</p>
-                <p className="text-xs text-purple-600">In 2025 (projected)</p>
+                <p className="text-sm text-purple-600 font-medium">AI Subsegment</p>
+                <p className="text-2xl font-bold text-purple-900">$1.4B</p>
+                <p className="text-xs text-purple-600">By 2025 (25% CAGR)</p>
               </div>
               <Zap className="h-8 w-8 text-purple-700" />
             </div>
@@ -150,11 +151,11 @@ const DataAnalytics = () => {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-orange-600 font-medium">Market CAGR</p>
-                <p className="text-2xl font-bold text-orange-900">16%</p>
-                <p className="text-xs text-orange-600">2023-2032</p>
+                <p className="text-sm text-orange-600 font-medium">Market Penetration</p>
+                <p className="text-2xl font-bold text-orange-900">51.68%</p>
+                <p className="text-xs text-orange-600">Current adoption rate</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-orange-700" />
+              <Users className="h-8 w-8 text-orange-700" />
             </div>
           </CardContent>
         </Card>
@@ -298,7 +299,7 @@ const DataAnalytics = () => {
                     <span>{year.year}</span>
                     <span className="font-medium">${year.marketSize}M</span>
                   </div>
-                  <Progress value={(year.marketSize / 580) * 100} className="h-2" />
+                  <Progress value={(year.marketSize / 1637) * 100} className="h-2" />
                 </div>
               ))}
             </div>
