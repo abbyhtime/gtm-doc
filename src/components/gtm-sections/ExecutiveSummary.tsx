@@ -431,89 +431,111 @@ const ExecutiveSummary = () => {
           <CardDescription>Our core purpose and strategic direction</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div>
-            <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-              <Globe className="h-4 w-4 text-blue-500" />
-              Vision
-              {!isVisionEdit && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleVisionEdit}
-                  className="ml-auto h-6 w-6 p-0"
-                >
-                  <Edit3 className="h-3 w-3" />
-                </Button>
-              )}
-            </h3>
-            {isVisionEdit ? (
-              <div className="space-y-2">
-                <Input
-                  value={tempVision}
-                  onChange={(e) => setTempVision(e.target.value)}
-                  placeholder="Enter vision statement..."
-                  maxLength={100}
-                  className="w-full"
-                />
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>{tempVision.length}/100 characters</span>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="ghost" onClick={handleVisionCancel}>
-                      <X className="h-3 w-3 mr-1" /> Cancel
-                    </Button>
-                    <Button size="sm" onClick={handleVisionSave}>
-                      <Save className="h-3 w-3 mr-1" /> Save
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <p className="text-muted-foreground leading-relaxed">
-                {visionLoading ? "Loading..." : vision || "No vision statement set"}
-              </p>
-            )}
-          </div>
-          <div>
-            <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-              <Zap className="h-4 w-4 text-yellow-500" />
-              Mission
-              {!isMissionEdit && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleMissionEdit}
-                  className="ml-auto h-6 w-6 p-0"
-                >
-                  <Edit3 className="h-3 w-3" />
-                </Button>
-              )}
-            </h3>
-            {isMissionEdit ? (
-              <div className="space-y-2">
-                <Textarea
-                  value={tempMission}
-                  onChange={(e) => setTempMission(e.target.value)}
-                  placeholder="Enter mission statement..."
-                  maxLength={200}
-                  className="w-full min-h-[80px]"
-                />
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>{tempMission.length}/200 characters</span>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="ghost" onClick={handleMissionCancel}>
-                      <X className="h-3 w-3 mr-1" /> Cancel
-                    </Button>
-                    <Button size="sm" onClick={handleMissionSave}>
-                      <Save className="h-3 w-3 mr-1" /> Save
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <p className="text-muted-foreground leading-relaxed">
-                {missionLoading ? "Loading..." : mission || "No mission statement set"}
-              </p>
-            )}
+          {/* Vision & Mission */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <ClickableTile onClick={() => openPresentation('vision')}>
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Globe className="h-5 w-5 text-blue-500" />
+                    Our Vision
+                    {!isVisionEdit && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleVisionEdit();
+                        }}
+                        className="ml-auto h-6 w-6 p-0"
+                      >
+                        <Edit3 className="h-3 w-3" />
+                      </Button>
+                    )}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {isVisionEdit ? (
+                    <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
+                      <Input
+                        value={tempVision}
+                        onChange={(e) => setTempVision(e.target.value)}
+                        placeholder="Enter vision statement..."
+                        maxLength={100}
+                        className="w-full"
+                      />
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <span>{tempVision.length}/100 characters</span>
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="ghost" onClick={handleVisionCancel}>
+                            <X className="h-3 w-3 mr-1" /> Cancel
+                          </Button>
+                          <Button size="sm" onClick={handleVisionSave}>
+                            <Save className="h-3 w-3 mr-1" /> Save
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-muted-foreground leading-relaxed">
+                      {visionLoading ? "Loading..." : vision || "To revolutionize how teams collaborate and manage time by creating the world's most intelligent, intuitive scheduling platform."}
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            </ClickableTile>
+            
+            <ClickableTile onClick={() => openPresentation('mission')}>
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Zap className="h-5 w-5 text-yellow-500" />
+                    Our Mission
+                    {!isMissionEdit && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleMissionEdit();
+                        }}
+                        className="ml-auto h-6 w-6 p-0"
+                      >
+                        <Edit3 className="h-3 w-3" />
+                      </Button>
+                    )}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {isMissionEdit ? (
+                    <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
+                      <Textarea
+                        value={tempMission}
+                        onChange={(e) => setTempMission(e.target.value)}
+                        placeholder="Enter mission statement..."
+                        maxLength={200}
+                        className="w-full min-h-[80px]"
+                      />
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <span>{tempMission.length}/200 characters</span>
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="ghost" onClick={handleMissionCancel}>
+                            <X className="h-3 w-3 mr-1" /> Cancel
+                          </Button>
+                          <Button size="sm" onClick={handleMissionSave}>
+                            <Save className="h-3 w-3 mr-1" /> Save
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-muted-foreground leading-relaxed">
+                      {missionLoading ? "Loading..." : mission || "We empower organizations to eliminate scheduling friction and optimize team productivity through AI-powered calendar intelligence."}
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            </ClickableTile>
           </div>
         </CardContent>
       </Card>

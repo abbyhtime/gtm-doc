@@ -139,7 +139,11 @@ const GTMReport = () => {
                 <TabsTrigger
                   key={section.id}
                   value={section.id}
-                  className={`flex flex-col items-center justify-center gap-2 p-3 rounded-lg transition-all duration-300 hover:scale-105 data-[state=active]:${section.bgColor} data-[state=active]:${section.color} data-[state=active]:shadow-elevated min-h-[80px]`}
+                  className={`flex flex-col items-center justify-center gap-2 p-3 rounded-lg transition-all duration-300 hover:scale-105 ${
+                    activeTab === section.id 
+                      ? 'text-primary font-semibold shadow-glow animate-pulse-subtle border border-primary/20 bg-primary/5' 
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                  } min-h-[80px]`}
                 >
                   <Icon className="h-5 w-5" />
                   <span className="text-xs font-medium hidden sm:block">{section.label}</span>

@@ -1,460 +1,441 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { ClickableTile } from "@/components/ui/clickable-tile";
+import { ParentTileModal } from "@/components/ui/parent-tile-modal";
+import { PresentationModal } from "@/components/ui/presentation-modal";
+import { useParentTile } from "@/hooks/useParentTile";
+import { usePresentation } from "@/hooks/usePresentation";
 import { 
+  Building2, 
   Users, 
-  Building, 
   Briefcase, 
-  User,
-  Target,
-  DollarSign,
   TrendingUp,
-  Globe,
-  Mail,
+  Target,
+  MapPin,
+  DollarSign,
   Calendar,
-  Clock,
-  Zap
-} from 'lucide-react';
+  Zap,
+  Shield,
+  Rocket
+} from "lucide-react";
 
-const TargetMarkets = () => {
-  const [selectedSegment, setSelectedSegment] = useState('enterprise');
+// Market Segments Data
+const marketSegments = [
+  {
+    id: 'enterprise',
+    name: 'Enterprise',
+    size: '1000+ employees',
+    marketSize: '$2.1B',
+    icon: Building2,
+    color: 'bg-blue-500 text-white',
+    priority: 'Primary',
+    description: 'Large corporations with complex scheduling needs and multiple departments'
+  },
+  {
+    id: 'smb',
+    name: 'SMB',
+    size: '50-999 employees', 
+    marketSize: '$1.8B',
+    icon: Briefcase,
+    color: 'bg-green-500 text-white',
+    priority: 'Secondary',
+    description: 'Small to medium businesses looking to scale their operations efficiently'
+  },
+  {
+    id: 'startups',
+    name: 'Startups',
+    size: '10-49 employees',
+    marketSize: '$0.6B', 
+    icon: Rocket,
+    color: 'bg-purple-500 text-white',
+    priority: 'Growth',
+    description: 'Fast-growing startups that need agile and cost-effective solutions'
+  }
+];
 
-  const marketSegments = [
+// Customer Personas by Segment
+const customerPersonas = {
+  enterprise: [
     {
-      id: 'enterprise',
-      name: 'Enterprise',
-      size: '1000+ employees',
-      marketSize: '$2.1B',
-      icon: Building,
-      color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300',
-      priority: 'High',
-      description: 'Large organizations with complex scheduling needs and budget for premium solutions'
+      title: "Executive Assistant",
+      role: "C-Suite Support",
+      painPoints: ["Managing complex executive calendars", "Coordinating across time zones", "Handling last-minute changes"],
+      motivations: ["Efficiency improvement", "Reducing manual work", "Professional appearance"],
+      demographics: "25-45 years, experienced administrative professionals"
     },
     {
-      id: 'midmarket',
-      name: 'Mid-Market',
-      size: '100-999 employees',
-      marketSize: '$1.8B',
-      icon: Briefcase,
-      color: 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-300',
-      priority: 'High',
-      description: 'Growing companies looking to scale operations and improve productivity'
-    },
-    {
-      id: 'smb',
-      name: 'Small Business',
-      size: '<100 employees',
-      marketSize: '$600M',
-      icon: Users,
-      color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/20 dark:text-purple-300',
-      priority: 'Medium',
-      description: 'Small teams and startups seeking affordable productivity solutions'
-    },
-    {
-      id: 'individual',
-      name: 'Individual Professionals',
-      size: 'Freelancers/Consultants',
-      marketSize: '$400M',
-      icon: User,
-      color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/20 dark:text-orange-300',
-      priority: 'Low',
-      description: 'Solo professionals who manage multiple client meetings'
+      title: "IT Director", 
+      role: "Technology Decision Maker",
+      painPoints: ["Integration complexity", "Security concerns", "User adoption challenges"],
+      motivations: ["Seamless integrations", "Enterprise security", "Minimal IT overhead"],
+      demographics: "35-55 years, technical background, budget authority"
     }
+  ],
+  smb: [
+    {
+      title: "Operations Manager",
+      role: "Process Optimizer", 
+      painPoints: ["Limited IT resources", "Manual scheduling overhead", "Team coordination challenges"],
+      motivations: ["Cost-effective solutions", "Easy implementation", "Improved team productivity"],
+      demographics: "30-50 years, business operations focus"
+    },
+    {
+      title: "Small Business Owner",
+      role: "Decision Maker",
+      painPoints: ["Time management", "Customer scheduling", "Resource optimization"],
+      motivations: ["Business growth", "Operational efficiency", "Customer satisfaction"],
+      demographics: "35-60 years, entrepreneurial mindset"
+    }
+  ],
+  startups: [
+    {
+      title: "Founder/CEO",
+      role: "Visionary Leader",
+      painPoints: ["Rapid scaling challenges", "Budget constraints", "Time to market pressure"],
+      motivations: ["Fast implementation", "Scalable solutions", "Competitive advantage"],
+      demographics: "25-45 years, tech-savvy, growth-focused"
+    },
+    {
+      title: "Chief of Staff",
+      role: "Operations Lead",
+      painPoints: ["Cross-functional coordination", "Limited tools budget", "Rapid team growth"],
+      motivations: ["Operational excellence", "Team alignment", "Efficient processes"],
+      demographics: "25-40 years, operations background"
+    }
+  ]
+};
+
+// ICP Analysis by Segment
+const icpAnalysis = {
+  enterprise: {
+    firmographics: {
+      "Company Size": "1000+ employees",
+      "Revenue": "$100M+ annually", 
+      "Industry": "Technology, Financial Services, Healthcare",
+      "Geographic": "North America, Europe"
+    },
+    technographics: {
+      "Email Platform": "Microsoft 365, Google Workspace",
+      "Calendar System": "Outlook, Google Calendar",
+      "CRM": "Salesforce, Microsoft Dynamics",
+      "Communication": "Teams, Slack, Zoom"
+    },
+    behavioral: {
+      "Decision Process": "Committee-based, 6-12 month cycles",
+      "Budget Authority": "$50K-$500K annually",
+      "Technology Adoption": "Cautious, thorough evaluation",
+      "Support Needs": "Dedicated customer success"
+    }
+  },
+  smb: {
+    firmographics: {
+      "Company Size": "50-999 employees",
+      "Revenue": "$5M-$100M annually",
+      "Industry": "Professional Services, Manufacturing, Retail",
+      "Geographic": "North America primary"
+    },
+    technographics: {
+      "Email Platform": "Google Workspace, Microsoft 365",
+      "Calendar System": "Google Calendar, Outlook",
+      "CRM": "HubSpot, Salesforce Essentials",
+      "Communication": "Zoom, Teams, Slack"
+    },
+    behavioral: {
+      "Decision Process": "2-4 person team, 3-6 month cycles",
+      "Budget Authority": "$5K-$50K annually", 
+      "Technology Adoption": "Pragmatic, ROI-focused",
+      "Support Needs": "Self-service with expert help"
+    }
+  },
+  startups: {
+    firmographics: {
+      "Company Size": "10-49 employees",
+      "Revenue": "$1M-$10M annually",
+      "Industry": "Technology, SaaS, Digital Services", 
+      "Geographic": "Silicon Valley, Austin, NYC, Remote"
+    },
+    technographics: {
+      "Email Platform": "Google Workspace primarily",
+      "Calendar System": "Google Calendar",
+      "CRM": "HubSpot, Pipedrive, Notion",
+      "Communication": "Slack, Discord, Zoom"
+    },
+    behavioral: {
+      "Decision Process": "Founder-led, 1-3 month cycles",
+      "Budget Authority": "$1K-$10K annually",
+      "Technology Adoption": "Early adopter, innovation-seeking",
+      "Support Needs": "Community-driven, quick resolution"
+    }
+  }
+};
+
+// GTM Priorities
+const gtmPriorities = [
+  {
+    phase: "Phase 1",
+    timeline: "Q1-Q2 2025",
+    rationale: "Enterprise focus for revenue stability and market credibility",
+    allocation: "70% Enterprise, 20% SMB, 10% Startups",
+    targets: "10 Enterprise customers, $1M ARR"
+  },
+  {
+    phase: "Phase 2", 
+    timeline: "Q3-Q4 2025",
+    rationale: "Expand to SMB market with proven enterprise success",
+    allocation: "50% Enterprise, 40% SMB, 10% Startups",
+    targets: "50 total customers, $5M ARR"
+  },
+  {
+    phase: "Phase 3",
+    timeline: "2026",
+    rationale: "Scale across all segments with product-led growth",
+    allocation: "40% Enterprise, 35% SMB, 25% Startups", 
+    targets: "500 total customers, $25M ARR"
+  }
+];
+
+export default function TargetMarkets() {
+  const [currentSegment, setCurrentSegment] = useState('enterprise');
+
+  // Presentation items for modal
+  const presentationItems = [
+    ...marketSegments.map(segment => ({
+      id: `segment-${segment.id}`,
+      title: segment.name,
+      description: segment.description,
+      category: "Market Segments",
+      content: (
+        <div className="space-y-6">
+          <div className="text-center">
+            <segment.icon className="h-16 w-16 text-primary mx-auto mb-4" />
+            <h2 className="text-3xl font-bold mb-4">{segment.name}</h2>
+            <p className="text-lg text-muted-foreground mb-6">{segment.description}</p>
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            <Card className="p-4 text-center">
+              <h4 className="font-semibold mb-2">Market Size</h4>
+              <div className="text-2xl font-bold text-primary">{segment.marketSize}</div>
+            </Card>
+            <Card className="p-4 text-center">
+              <h4 className="font-semibold mb-2">Team Size</h4>
+              <div className="text-2xl font-bold text-primary">{segment.size}</div>
+            </Card>
+            <Card className="p-4 text-center">
+              <h4 className="font-semibold mb-2">Priority</h4>
+              <Badge className="text-lg px-3 py-1">{segment.priority}</Badge>
+            </Card>
+          </div>
+        </div>
+      )
+    }))
   ];
 
-  const customerPersonas = {
-    enterprise: [
-      {
-        title: 'IT Director',
-        role: 'Technology Decision Maker',
-        painPoints: [
-          'Managing enterprise software integrations',
-          'Ensuring security and compliance',  
-          'Scaling productivity tools across organization'
-        ],
-        motivations: [
-          'Reduce IT complexity',
-          'Improve security posture',
-          'Drive organizational efficiency'
-        ],
-        demographics: {
-          experience: '10+ years',
-          teamSize: '50-200 people',
-          budget: '$100K-1M annual'
-        }
-      },
-      {
-        title: 'Executive Assistant',
-        role: 'Primary End User',
-        painPoints: [
-          'Coordinating complex executive calendars',
-          'Managing multiple stakeholder schedules',
-          'Handling last-minute meeting changes'
-        ],
-        motivations: [
-          'Reduce manual scheduling work',
-          'Improve executive productivity',
-          'Minimize scheduling conflicts'
-        ],
-        demographics: {
-          experience: '5+ years',  
-          executives: '3-10 supported',
-          meetings: '50+ per week'
-        }
-      }
-    ],
-    midmarket: [
-      {
-        title: 'Operations Manager',
-        role: 'Process Optimizer',
-        painPoints: [
-          'Improving team productivity',
-          'Managing growing complexity',
-          'Balancing cost and features'
-        ],
-        motivations: [
-          'Streamline operations',
-          'Scale efficiently',
-          'Demonstrate ROI'
-        ],
-        demographics: {
-          experience: '5-10 years',
-          teamSize: '20-100 people',
-          budget: '$10K-100K annual'
-        }
-      },
-      {
-        title: 'Department Head',
-        role: 'Team Leader',
-        painPoints: [
-          'Coordinating team meetings',
-          'Managing client interactions',
-          'Optimizing team schedules'
-        ],
-        motivations: [
-          'Increase team efficiency',
-          'Improve client service',
-          'Reduce administrative burden'
-        ],
-        demographics: {
-          experience: '7-15 years',
-          directReports: '10-50 people',
-          meetings: '20-30 per week'
-        }
-      }
-    ],
-    smb: [
-      {
-        title: 'Small Business Owner',
-        role: 'Decision Maker & User',
-        painPoints: [
-          'Wearing multiple hats',
-          'Limited budget for tools',
-          'Need simple, effective solutions'
-        ],
-        motivations: [
-          'Save time for core business',
-          'Professional client experience',
-          'Cost-effective solutions'
-        ],
-        demographics: {
-          experience: '3-10 years',
-          employees: '5-50 people',
-          budget: '$1K-10K annual'
-        }
-      }
-    ],
-    individual: [
-      {
-        title: 'Independent Consultant',
-        role: 'Solo Professional',
-        painPoints: [
-          'Managing multiple client schedules',
-          'Maintaining professional image',
-          'Time zone coordination'
-        ],
-        motivations: [
-          'Streamline client booking',
-          'Reduce no-shows',
-          'Focus on billable work'
-        ],
-        demographics: {
-          experience: '5+ years',
-          clients: '10-50 active',
-          hourlyRate: '$100-500'
-        }
-      }
-    ]
+  const { isOpen: isPresentationOpen, openPresentation, closePresentation, currentItem, hasNext, hasPrevious, goToNext, goToPrevious } = usePresentation({ items: presentationItems });
+
+  // Parent tile for market segments
+  const segmentsParentTile = {
+    id: 'market-segments',
+    title: 'Market Segments Overview',
+    description: 'Select a segment to view detailed analysis',
+    content: (
+      <div className="grid md:grid-cols-3 gap-4 mb-8">
+        {marketSegments.map((segment) => (
+          <ClickableTile
+            key={segment.id}
+            onClick={() => openPresentation(`segment-${segment.id}`)}
+          >
+            <Button
+              variant={currentSegment === segment.id ? "default" : "outline"}
+              className={`h-auto p-4 flex flex-col gap-2 w-full ${
+                currentSegment === segment.id ? segment.color : ''
+              }`}
+            >
+              <segment.icon className="h-6 w-6" />
+              <div className="text-center">
+                <div className="font-semibold">{segment.name}</div>
+                <div className="text-xs opacity-80">{segment.size}</div>
+              </div>
+            </Button>
+          </ClickableTile>
+        ))}
+      </div>
+    )
   };
 
-  const icpAnalysis = {
-    enterprise: {
-      firmographics: {
-        company_size: '1000+ employees',
-        revenue: '$100M+ annually',
-        industry: 'Technology, Finance, Healthcare',
-        geography: 'North America, Europe'
-      },
-      technographics: {
-        email_platform: 'Microsoft 365, Google Workspace',
-        calendar_tools: 'Outlook, Google Calendar',
-        security_requirements: 'SOC 2, GDPR compliance',
-        integration_needs: 'CRM, HRIS, SSO'
-      },
-      behavioral: {
-        buying_process: 'Committee-based, 6-12 month cycles',
-        budget_authority: 'VP/Director level approval',
-        decision_criteria: 'Security, scalability, ROI',
-        adoption_pattern: 'Pilot → Department → Enterprise'
-      }
-    },
-    midmarket: {
-      firmographics: {
-        company_size: '100-999 employees',
-        revenue: '$10M-100M annually',
-        industry: 'Professional Services, SaaS, Manufacturing',
-        geography: 'North America, Western Europe'
-      },
-      technographics: {
-        email_platform: 'Google Workspace, Microsoft 365',
-        calendar_tools: 'Google Calendar, Outlook',
-        security_requirements: 'Basic compliance, data encryption',
-        integration_needs: 'CRM, project management tools'
-      },
-      behavioral: {
-        buying_process: 'Team-based, 3-6 month cycles',
-        budget_authority: 'Department manager approval',
-        decision_criteria: 'ROI, ease of use, integration',
-        adoption_pattern: 'Team pilot → Department rollout'
-      }
-    }
-  };
-
-  const currentSegment = marketSegments.find(s => s.id === selectedSegment);
-  const personas = customerPersonas[selectedSegment] || [];
-  const icp = icpAnalysis[selectedSegment];
+  const { isParentOpen: isSegmentsOpen, openParentTile: openSegments, closeParentTile: closeSegments } = useParentTile();
 
   return (
     <div className="space-y-8">
-      {/* Market Segment Overview */}
-      <Card className="glass-card">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Target className="h-5 w-5 text-primary" />
-            Target Market Segments
-          </CardTitle>
-          <CardDescription>
-            Prioritized customer segments with market sizing and opportunity assessment
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {marketSegments.map((segment) => {
-              const Icon = segment.icon;
-              const isSelected = selectedSegment === segment.id;
-              return (
-                <Button
-                  key={segment.id}
-                  variant={isSelected ? "default" : "outline"}
-                  className={`p-6 h-auto flex flex-col items-center gap-3 ${
-                    isSelected ? segment.color : ''
-                  }`}
-                  onClick={() => setSelectedSegment(segment.id)}
-                >
-                  <Icon className="h-6 w-6" />
-                  <div className="text-center">
-                    <div className="font-semibold text-sm">{segment.name}</div>
-                    <div className="text-xs opacity-80">{segment.size}</div>
-                    <div className="text-xs opacity-60 mt-1">{segment.marketSize}</div>
-                  </div>
-                  <Badge variant={segment.priority === 'High' ? 'default' : 'secondary'}>
-                    {segment.priority} Priority
-                  </Badge>
-                </Button>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Selected Segment Deep Dive */}
-      {currentSegment && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className={`glass-card ${currentSegment.color} border-l-4 border-l-current`}>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <currentSegment.icon className="h-5 w-5" />
-                {currentSegment.name}
-              </CardTitle>
-              <CardDescription>
-                {currentSegment.size} • {currentSegment.marketSize} market
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm mb-4">{currentSegment.description}</p>
-              <Badge className={currentSegment.color}>
-                {currentSegment.priority} Priority
-              </Badge>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-card lg:col-span-2">
-            <CardHeader>
-              <CardTitle className="text-lg">Market Characteristics</CardTitle>
-              <CardDescription>
-                Key attributes and opportunity metrics for {currentSegment.name}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center">
-                  <DollarSign className="h-5 w-5 mx-auto mb-2 text-green-600" />
-                  <div className="text-lg font-bold">{currentSegment.marketSize}</div>
-                  <div className="text-xs text-muted-foreground">Market Size</div>
-                </div>
-                <div className="text-center">
-                  <TrendingUp className="h-5 w-5 mx-auto mb-2 text-blue-600" />
-                  <div className="text-lg font-bold">
-                    {selectedSegment === 'enterprise' ? '52%' : 
-                     selectedSegment === 'midmarket' ? '48%' : 
-                     selectedSegment === 'smb' ? '35%' : '28%'}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Growth Rate</div>
-                </div>
-                <div className="text-center">
-                  <Users className="h-5 w-5 mx-auto mb-2 text-purple-600" />
-                  <div className="text-lg font-bold">
-                    {selectedSegment === 'enterprise' ? '15K' : 
-                     selectedSegment === 'midmarket' ? '45K' : 
-                     selectedSegment === 'smb' ? '150K' : '500K'}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Target Companies</div>
-                </div>
-                <div className="text-center">
-                  <Target className="h-5 w-5 mx-auto mb-2 text-orange-600" />
-                  <div className="text-lg font-bold">
-                    {selectedSegment === 'enterprise' ? '2%' : 
-                     selectedSegment === 'midmarket' ? '8%' : 
-                     selectedSegment === 'smb' ? '15%' : '25%'}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Market Share Goal</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {/* Customer Personas */}
-      <Card className="glass-card">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5 text-primary" />
-            Customer Personas - {currentSegment?.name}
-          </CardTitle>
-          <CardDescription>
-            Detailed buyer and user personas for targeted marketing and sales
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {personas.map((persona, index) => (
-              <div key={index} className="p-6 rounded-lg border bg-gradient-to-r from-background to-muted/20">
-                <div className="mb-4">
-                  <h3 className="font-semibold text-lg">{persona.title}</h3>
-                  <p className="text-sm text-muted-foreground">{persona.role}</p>
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-medium text-sm mb-2 text-red-600">Pain Points</h4>
-                    <ul className="space-y-1">
-                      {persona.painPoints.map((point, i) => (
-                        <li key={i} className="text-xs flex items-start gap-2">
-                          <div className="w-1 h-1 bg-red-500 rounded-full mt-1.5" />
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium text-sm mb-2 text-green-600">Motivations</h4>
-                    <ul className="space-y-1">
-                      {persona.motivations.map((motivation, i) => (
-                        <li key={i} className="text-xs flex items-start gap-2">
-                          <div className="w-1 h-1 bg-green-500 rounded-full mt-1.5" />
-                          {motivation}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-medium text-sm mb-2 text-blue-600">Demographics</h4>
-                    <div className="grid grid-cols-1 gap-1 text-xs">
-                      {Object.entries(persona.demographics).map(([key, value]) => (
-                        <div key={key} className="flex justify-between">
-                          <span className="capitalize">{key.replace('_', ' ')}:</span>
-                          <span className="font-medium">{String(value)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* ICP Analysis */}
-      {icp && (
-        <Card className="glass-card">
+      {/* Market Segment Selection */}
+      <ClickableTile onClick={() => openSegments(segmentsParentTile)}>
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Building className="h-5 w-5 text-primary" />
-              Ideal Customer Profile - {currentSegment?.name}
+              <Target className="h-5 w-5" />
+              Market Segments Overview
             </CardTitle>
-            <CardDescription>
-              Detailed ICP characteristics for precision targeting
-            </CardDescription>
+            <CardDescription>Select a segment to view detailed analysis</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="space-y-4">
-                <h3 className="font-semibold text-blue-600">Firmographics</h3>
-                <div className="space-y-2">
-                  {Object.entries(icp.firmographics).map(([key, value]) => (
-                    <div key={key} className="text-sm">
-                      <div className="font-medium capitalize">{key.replace('_', ' ')}</div>
-                       <div className="text-muted-foreground">{String(value)}</div>
+            <div className="grid md:grid-cols-3 gap-4 mb-8">
+              {marketSegments.map((segment) => (
+                <Button
+                  key={segment.id}
+                  variant={currentSegment === segment.id ? "default" : "outline"}
+                  className={`h-auto p-4 flex flex-col gap-2 ${
+                    currentSegment === segment.id ? segment.color : ''
+                  }`}
+                  onClick={() => setCurrentSegment(segment.id)}
+                >
+                  <segment.icon className="h-6 w-6" />
+                  <div className="text-center">
+                    <div className="font-semibold">{segment.name}</div>
+                    <div className="text-xs opacity-80">{segment.size}</div>
+                  </div>
+                </Button>
+              ))}
+            </div>
+
+            {/* Segment Overview */}
+            <div className="grid md:grid-cols-4 gap-4">
+              <Card className="p-4 text-center">
+                <div className="text-2xl font-bold text-primary">
+                  {marketSegments.find(s => s.id === currentSegment)?.marketSize}
+                </div>
+                <div className="text-xs text-muted-foreground">Market Size</div>
+              </Card>
+              <Card className="p-4 text-center">
+                <div className="text-2xl font-bold text-green-600">
+                  {currentSegment === 'enterprise' ? '95%' : 
+                   currentSegment === 'smb' ? '78%' : '65%'}
+                </div>
+                <div className="text-xs text-muted-foreground">Email Integration</div>
+              </Card>
+              <Card className="p-4 text-center">
+                <div className="text-2xl font-bold text-blue-600">
+                  {currentSegment === 'enterprise' ? '12 months' :
+                   currentSegment === 'smb' ? '6 months' : '3 months'}
+                </div>
+                <div className="text-xs text-muted-foreground">Sales Cycle</div>
+              </Card>
+              <Card className="p-4 text-center">
+                <div className="text-2xl font-bold text-purple-600">
+                  {currentSegment === 'enterprise' ? '40%' :
+                   currentSegment === 'smb' ? '15%' : '25%'}
+                </div>
+                <div className="text-xs text-muted-foreground">Market Share Goal</div>
+              </Card>
+            </div>
+          </CardContent>
+        </Card>
+      </ClickableTile>
+
+      {/* Detailed Segment Analysis */}
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* Customer Personas */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5" />
+              Customer Personas
+            </CardTitle>
+            <CardDescription>Key decision makers and influencers for {marketSegments.find(s => s.id === currentSegment)?.name}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              {customerPersonas[currentSegment as keyof typeof customerPersonas]?.map((persona, index) => (
+                <Card key={index} className="p-4">
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="font-semibold">{persona.title}</h4>
+                      <p className="text-sm text-muted-foreground">{persona.role}</p>
+                    </div>
+                    <div>
+                      <h5 className="text-sm font-medium text-red-600 mb-1">Pain Points:</h5>
+                      <ul className="text-xs space-y-1">
+                        {persona.painPoints.map((pain, painIndex) => (
+                          <li key={painIndex} className="flex items-start gap-1">
+                            <span className="text-red-500">•</span>
+                            <span>{pain}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h5 className="text-sm font-medium text-green-600 mb-1">Motivations:</h5>
+                      <ul className="text-xs space-y-1">
+                        {persona.motivations.map((motivation, motIndex) => (
+                          <li key={motIndex} className="flex items-start gap-1">
+                            <span className="text-green-500">•</span>
+                            <span>{motivation}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="pt-2 border-t">
+                      <p className="text-xs text-muted-foreground">{persona.demographics}</p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* ICP Analysis */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="h-5 w-5" />
+              Ideal Customer Profile
+            </CardTitle>
+            <CardDescription>Detailed ICP breakdown for {marketSegments.find(s => s.id === currentSegment)?.name}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <Building2 className="h-4 w-4" />
+                  Firmographics
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  {Object.entries(icpAnalysis[currentSegment as keyof typeof icpAnalysis]?.firmographics || {}).map(([key, value]) => (
+                    <div key={key} className="text-xs">
+                      <div className="font-medium">{key}:</div>
+                      <div className="text-muted-foreground">{value}</div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <h3 className="font-semibold text-green-600">Technographics</h3>
-                <div className="space-y-2">
-                  {Object.entries(icp.technographics).map(([key, value]) => (
-                    <div key={key} className="text-sm">
-                      <div className="font-medium capitalize">{key.replace('_', ' ')}</div>
-                       <div className="text-muted-foreground">{String(value)}</div>
+              <div>
+                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <Zap className="h-4 w-4" />
+                  Technographics
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  {Object.entries(icpAnalysis[currentSegment as keyof typeof icpAnalysis]?.technographics || {}).map(([key, value]) => (
+                    <div key={key} className="text-xs">
+                      <div className="font-medium">{key}:</div>
+                      <div className="text-muted-foreground">{value}</div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <h3 className="font-semibold text-purple-600">Behavioral</h3>
+              <div>
+                <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <Users className="h-4 w-4" />
+                  Behavioral
+                </h4>
                 <div className="space-y-2">
-                  {Object.entries(icp.behavioral).map(([key, value]) => (
-                    <div key={key} className="text-sm">
-                      <div className="font-medium capitalize">{key.replace('_', ' ')}</div>
-                      <div className="text-muted-foreground">{String(value)}</div>
+                  {Object.entries(icpAnalysis[currentSegment as keyof typeof icpAnalysis]?.behavioral || {}).map(([key, value]) => (
+                    <div key={key} className="text-xs">
+                      <div className="font-medium">{key}:</div>
+                      <div className="text-muted-foreground">{value}</div>
                     </div>
                   ))}
                 </div>
@@ -462,61 +443,68 @@ const TargetMarkets = () => {
             </div>
           </CardContent>
         </Card>
-      )}
+      </div>
 
       {/* Go-to-Market Priorities */}
-      <Card className="glass-card">
+      <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Zap className="h-5 w-5 text-primary" />
+            <TrendingUp className="h-5 w-5" />
             Go-to-Market Priorities
           </CardTitle>
-          <CardDescription>
-            Recommended market entry sequence and resource allocation
-          </CardDescription>
+          <CardDescription>Phased approach to market entry and expansion</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-6">
-            {[
-              {
-                phase: 'Phase 1: Mid-Market Focus',
-                timeline: 'Q1-Q2 2025',
-                rationale: 'Best balance of deal size, sales cycle, and adoption speed',
-                allocation: '60% of resources',
-                targets: '100-999 employee companies in tech/professional services'
-              },
-              {
-                phase: 'Phase 2: Enterprise Expansion',
-                timeline: 'Q3-Q4 2025',
-                rationale: 'Scale to larger deals with proven product-market fit',
-                allocation: '30% of resources',
-                targets: '1000+ employee companies with complex scheduling needs'
-              },
-              {
-                phase: 'Phase 3: SMB Scale',
-                timeline: '2026',
-                rationale: 'Volume play with streamlined onboarding and self-service',
-                allocation: '10% of resources',
-                targets: 'Small businesses and teams looking for simple solutions'
-              }
-            ].map((priority, index) => (
-              <div key={index} className="p-4 rounded-lg border bg-gradient-to-r from-background to-muted/20">
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <h3 className="font-semibold">{priority.phase}</h3>
-                    <p className="text-sm text-muted-foreground">{priority.timeline}</p>
+          <div className="grid md:grid-cols-3 gap-6">
+            {gtmPriorities.map((priority, index) => (
+              <Card key={index} className="p-4">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <Badge variant="secondary">{priority.phase}</Badge>
+                    <span className="text-sm text-muted-foreground">{priority.timeline}</span>
                   </div>
-                  <Badge variant="outline">{priority.allocation}</Badge>
+                  <div>
+                    <h4 className="font-semibold mb-2">Rationale</h4>
+                    <p className="text-sm text-muted-foreground">{priority.rationale}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">Resource Allocation</h4>
+                    <p className="text-sm">{priority.allocation}</p>
+                  </div>
+                  <div className="pt-2 border-t">
+                    <h4 className="font-semibold mb-1">Targets</h4>
+                    <p className="text-sm text-primary">{priority.targets}</p>
+                  </div>
                 </div>
-                <p className="text-sm mb-2">{priority.rationale}</p>
-                <p className="text-xs text-muted-foreground">{priority.targets}</p>
-              </div>
+              </Card>
             ))}
           </div>
         </CardContent>
       </Card>
+
+      {/* Parent Tile Modal */}
+      <ParentTileModal
+        isOpen={isSegmentsOpen}
+        onClose={closeSegments}
+        title="Market Segments Overview"
+        description="Select a segment to view detailed analysis"
+      >
+        {segmentsParentTile.content}
+      </ParentTileModal>
+
+      {/* Presentation Modal */}
+      <PresentationModal
+        isOpen={isPresentationOpen}
+        onClose={closePresentation}
+        title={currentItem?.title || ""}
+        description={currentItem?.description}
+        hasNext={hasNext}
+        hasPrevious={hasPrevious}
+        onNext={goToNext}
+        onPrevious={goToPrevious}
+      >
+        {currentItem?.content}
+      </PresentationModal>
     </div>
   );
-};
-
-export default TargetMarkets;
+}
