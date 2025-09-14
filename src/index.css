@@ -205,6 +205,63 @@
     @apply border-t border-border/30;
   }
 
+  /* Rich Text Editor Customization */
+  .rich-text-editor .w-md-editor {
+    @apply bg-background border border-border rounded-lg overflow-hidden;
+  }
+
+  .rich-text-editor .w-md-editor-text-pre,
+  .rich-text-editor .w-md-editor-text-input,
+  .rich-text-editor .w-md-editor-text {
+    @apply text-foreground bg-background font-mono text-sm;
+  }
+
+  .rich-text-editor .w-md-editor-toolbar {
+    @apply bg-muted border-b border-border;
+  }
+
+  .rich-text-editor .w-md-editor-toolbar button {
+    @apply text-muted-foreground hover:text-foreground hover:bg-accent transition-colors;
+  }
+
+  .rich-text-editor .wmde-markdown {
+    @apply bg-background text-foreground p-4;
+  }
+
+  .rich-text-editor .wmde-markdown h1,
+  .rich-text-editor .wmde-markdown h2,
+  .rich-text-editor .wmde-markdown h3,
+  .rich-text-editor .wmde-markdown h4,
+  .rich-text-editor .wmde-markdown h5,
+  .rich-text-editor .wmde-markdown h6 {
+    @apply text-foreground font-semibold mb-2;
+  }
+
+  .rich-text-editor .wmde-markdown p {
+    @apply text-foreground mb-3 leading-relaxed;
+  }
+
+  .rich-text-editor .wmde-markdown ul,
+  .rich-text-editor .wmde-markdown ol {
+    @apply text-foreground ml-4 mb-3;
+  }
+
+  .rich-text-editor .wmde-markdown code {
+    @apply bg-muted text-foreground px-1 py-0.5 rounded text-sm;
+  }
+
+  .rich-text-editor .wmde-markdown pre {
+    @apply bg-muted border border-border rounded p-3 text-sm overflow-x-auto;
+  }
+
+  .rich-text-editor .wmde-markdown blockquote {
+    @apply border-l-4 border-primary/30 pl-4 italic text-muted-foreground;
+  }
+
+  .rich-text-editor .wmde-markdown a {
+    @apply text-primary hover:text-primary/80 underline;
+  }
+
   /* Animation keyframes */
   @keyframes pulse-subtle {
     0%, 100% {

@@ -24,6 +24,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useGTMPhases } from "@/hooks/useGTMPhases";
 import { useToast } from "@/hooks/use-toast";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
+import { DatePicker } from "@/components/ui/date-picker";
+import { MultiValueInput } from "@/components/ui/multi-value-input";
 
 const getStatusIcon = (status: string) => {
   switch (status) {
@@ -56,6 +59,16 @@ export const GTMPhasesEditable = () => {
   const [editingActivity, setEditingActivity] = useState<any>(null);
   const [newActivity, setNewActivity] = useState({ title: "", description: "" });
   const [showAddActivity, setShowAddActivity] = useState(false);
+  
+  // Parse goals as arrays
+  const parseGoalsAsArray = (goals: string | undefined): string[] => {
+    if (!goals) return [];
+    return goals.split(',').map(g => g.trim()).filter(g => g.length > 0);
+  };
+  
+  const formatGoalsAsString = (goals: string[]): string => {
+    return goals.join(', ');
+  };
 
   // Standard GTM Phase data aligned with industry framework
   const standardPhases = [
@@ -304,9 +317,15 @@ export const GTMPhasesEditable = () => {
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Calendar className="w-4 h-4" />
                   {isEditMode && editingPhase ? (
-                    <Input
-                      value={editingPhase.timeline}
-                      onChange={(e) => setEditingPhase({ ...editingPhase, timeline: e.target.value })}
+                    <DatePicker
+                      date={editingPhase.timeline ? new Date(editingPhase.timeline) : undefined}
+                      onDateChange={(date) => 
+                        setEditingPhase({ 
+                          ...editingPhase, 
+                          timeline: date ? date.toISOString().split('T')[0] : '' 
+                        })
+                      }
+                      placeholder="Select timeline date"
                       className="text-sm"
                     />
                   ) : (
@@ -315,60 +334,92 @@ export const GTMPhasesEditable = () => {
                 </div>
                 
                 {isEditMode && editingPhase ? (
-                  <Textarea
+                  <RichTextEditor
                     value={editingPhase.description}
-                    onChange={(e) => setEditingPhase({ ...editingPhase, description: e.target.value })}
-                    className="min-h-20"
-                    placeholder="Phase description..."
+                    onChange={(value) => setEditingPhase({ ...editingPhase, description: value || "" })}
+                    height={150}
                   />
                 ) : (
-                  <p className="text-muted-foreground">{currentPhase.description}</p>
+                  <div 
+                    className="text-muted-foreground prose prose-sm max-w-none"
+                    dangerouslySetInnerHTML={{ __html: currentPhase.description }}
+                  />
                 )}
 
                 {/* Goals */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/5">
-                    <DollarSign className="w-5 h-5 text-primary" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">Revenue Goal</p>
+                  <div className="flex items-start gap-3 p-4 rounded-lg bg-primary/5">
+                    <DollarSign className="w-5 h-5 text-primary mt-1" />
+                    <div className="flex-1">
+                      <p className="text-xs text-muted-foreground mb-2">Revenue Goals</p>
                       {isEditMode && editingPhase ? (
-                        <Input
-                          value={editingPhase.revenue_goal || ""}
-                          onChange={(e) => setEditingPhase({ ...editingPhase, revenue_goal: e.target.value })}
-                          className="font-semibold h-6 text-sm"
+                        <MultiValueInput
+                          values={parseGoalsAsArray(editingPhase.revenue_goal)}
+                          onChange={(values) => 
+                            setEditingPhase({ 
+                              ...editingPhase, 
+                              revenue_goal: formatGoalsAsString(values) 
+                            })
+                          }
+                          placeholder="Add revenue goal..."
+                          maxValues={5}
                         />
                       ) : (
-                        <p className="font-semibold text-primary">{currentPhase?.revenue_goal}</p>
+                        <div className="space-y-1">
+                          {parseGoalsAsArray(currentPhase?.revenue_goal).map((goal, index) => (
+                            <p key={index} className="font-medium text-primary text-sm">• {goal}</p>
+                          ))}
+                        </div>
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-accent-info/5">
-                    <Users className="w-5 h-5 text-accent-info" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">Users Goal</p>
+                  <div className="flex items-start gap-3 p-4 rounded-lg bg-accent-info/5">
+                    <Users className="w-5 h-5 text-accent-info mt-1" />
+                    <div className="flex-1">
+                      <p className="text-xs text-muted-foreground mb-2">User Goals</p>
                       {isEditMode && editingPhase ? (
-                        <Input
-                          value={editingPhase.users_goal || ""}
-                          onChange={(e) => setEditingPhase({ ...editingPhase, users_goal: e.target.value })}
-                          className="font-semibold h-6 text-sm"
+                        <MultiValueInput
+                          values={parseGoalsAsArray(editingPhase.users_goal)}
+                          onChange={(values) => 
+                            setEditingPhase({ 
+                              ...editingPhase, 
+                              users_goal: formatGoalsAsString(values) 
+                            })
+                          }
+                          placeholder="Add user goal..."
+                          maxValues={5}
                         />
                       ) : (
-                        <p className="font-semibold text-accent-info">{currentPhase?.users_goal}</p>
+                        <div className="space-y-1">
+                          {parseGoalsAsArray(currentPhase?.users_goal).map((goal, index) => (
+                            <p key={index} className="font-medium text-accent-info text-sm">• {goal}</p>
+                          ))}
+                        </div>
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-accent-success/5">
-                    <Target className="w-5 h-5 text-accent-success" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">Features Goal</p>
+                  <div className="flex items-start gap-3 p-4 rounded-lg bg-accent-success/5">
+                    <Target className="w-5 h-5 text-accent-success mt-1" />
+                    <div className="flex-1">
+                      <p className="text-xs text-muted-foreground mb-2">Feature Goals</p>
                       {isEditMode && editingPhase ? (
-                        <Input
-                          value={editingPhase.features_goal || ""}
-                          onChange={(e) => setEditingPhase({ ...editingPhase, features_goal: e.target.value })}
-                          className="font-semibold h-6 text-sm"
+                        <MultiValueInput
+                          values={parseGoalsAsArray(editingPhase.features_goal)}
+                          onChange={(values) => 
+                            setEditingPhase({ 
+                              ...editingPhase, 
+                              features_goal: formatGoalsAsString(values) 
+                            })
+                          }
+                          placeholder="Add feature goal..."
+                          maxValues={5}
                         />
                       ) : (
-                        <p className="font-semibold text-accent-success">{currentPhase?.features_goal}</p>
+                        <div className="space-y-1">
+                          {parseGoalsAsArray(currentPhase?.features_goal).map((goal, index) => (
+                            <p key={index} className="font-medium text-accent-success text-sm">• {goal}</p>
+                          ))}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -415,17 +466,17 @@ export const GTMPhasesEditable = () => {
                     <CheckCircle className="w-4 h-4 text-accent-success mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       {editingActivity === activity.id ? (
-                        <div className="space-y-2">
+                        <div className="space-y-3">
                           <Input
                             value={activity.title}
                             onChange={(e) => handleUpdateActivity(activity.id, { title: e.target.value })}
                             className="font-medium"
+                            placeholder="Activity title..."
                           />
-                          <Textarea
+                          <RichTextEditor
                             value={activity.description || ""}
-                            onChange={(e) => handleUpdateActivity(activity.id, { description: e.target.value })}
-                            className="text-sm"
-                            placeholder="Activity description..."
+                            onChange={(value) => handleUpdateActivity(activity.id, { description: value || "" })}
+                            height={120}
                           />
                           <div className="flex gap-2">
                             <Button size="sm" onClick={() => setEditingActivity(null)}>
@@ -441,7 +492,10 @@ export const GTMPhasesEditable = () => {
                         <div>
                           <h4 className="font-medium">{activity.title}</h4>
                           {activity.description && (
-                            <p className="text-sm text-muted-foreground mt-1">{activity.description}</p>
+                            <div 
+                              className="text-sm text-muted-foreground mt-1 prose prose-sm max-w-none"
+                              dangerouslySetInnerHTML={{ __html: activity.description }}
+                            />
                           )}
                         </div>
                       )}
@@ -469,16 +523,16 @@ export const GTMPhasesEditable = () => {
 
                 {/* Add Activity Form */}
                 {showAddActivity && (
-                  <div className="p-3 rounded-lg border-2 border-dashed border-primary/30 space-y-2">
+                  <div className="p-4 rounded-lg border-2 border-dashed border-primary/30 space-y-3">
                     <Input
                       placeholder="Activity title..."
                       value={newActivity.title}
                       onChange={(e) => setNewActivity({ ...newActivity, title: e.target.value })}
                     />
-                    <Textarea
-                      placeholder="Activity description (optional)..."
+                    <RichTextEditor
                       value={newActivity.description}
-                      onChange={(e) => setNewActivity({ ...newActivity, description: e.target.value })}
+                      onChange={(value) => setNewActivity({ ...newActivity, description: value || "" })}
+                      height={120}
                     />
                     <div className="flex gap-2">
                       <Button size="sm" onClick={handleAddActivity}>
