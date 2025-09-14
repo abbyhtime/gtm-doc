@@ -3,6 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { PresentationModal } from '@/components/ui/presentation-modal';
+import { ClickableTile } from '@/components/ui/clickable-tile';
+import { usePresentation } from '@/hooks/usePresentation';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -155,6 +158,55 @@ const MetricsKPIs = () => {
     }
   };
 
+  // Presentation items
+  const presentationItems = [
+    ...northStarMetrics.map((metric, index) => ({
+      id: `northstar-${index}`,
+      title: metric.metric,
+      description: `Current: ${metric.current} | 2025 Target: ${metric.target2025}`,
+      content: (
+        <div className="flex flex-col items-center justify-center h-full text-center space-y-8">
+          <div className="space-y-4">
+            <metric.icon className={`h-20 w-20 mx-auto ${metric.color}`} />
+            <div className="text-4xl font-bold">{metric.metric}</div>
+            <Badge className={getStatusColor(metric.status)} variant="outline">
+              {getStatusIcon(metric.status)}
+              <span className="ml-1 capitalize">{metric.status.replace('-', ' ')}</span>
+            </Badge>
+          </div>
+          <div className="max-w-3xl space-y-6">
+            <div className="grid grid-cols-3 gap-8 text-center">
+              <div>
+                <div className="text-3xl font-bold">{metric.current}</div>
+                <div className="text-muted-foreground">Current</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-primary">{metric.target2025}</div>
+                <div className="text-muted-foreground">2025 Target</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-green-600">{metric.target2027}</div>
+                <div className="text-muted-foreground">2027 Target</div>
+              </div>
+            </div>
+            <div className="text-xl text-muted-foreground">{metric.description}</div>
+          </div>
+        </div>
+      )
+    }))
+  ];
+
+  const { 
+    isOpen, 
+    currentItem, 
+    hasNext, 
+    hasPrevious, 
+    openPresentation, 
+    closePresentation, 
+    goToNext, 
+    goToPrevious 
+  } = usePresentation({ items: presentationItems });
+
   return (
     <div className="space-y-8">
       {/* North Star Metrics */}
@@ -170,38 +222,44 @@ const MetricsKPIs = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {northStarMetrics.map((metric) => {
+            {northStarMetrics.map((metric, index) => {
               const Icon = metric.icon;
               return (
-                <div key={metric.metric} className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Icon className={`h-6 w-6 ${metric.color}`} />
-                    <div>
-                      <h3 className="font-semibold text-sm">{metric.metric}</h3>
-                      <p className="text-xs text-muted-foreground">{metric.description}</p>
+                <ClickableTile 
+                  key={metric.metric} 
+                  onClick={() => openPresentation(`northstar-${index}`)}
+                  className="p-4"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <Icon className={`h-6 w-6 ${metric.color}`} />
+                      <div>
+                        <h3 className="font-semibold text-sm">{metric.metric}</h3>
+                        <p className="text-xs text-muted-foreground">{metric.description}</p>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Current</span>
-                      <span className="font-bold">{metric.current}</span>
+                    
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Current</span>
+                        <span className="font-bold">{metric.current}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>2025 Target</span>
+                        <span className="font-bold text-primary">{metric.target2025}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>2027 Target</span>
+                        <span className="font-bold text-green-600">{metric.target2027}</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span>2025 Target</span>
-                      <span className="font-bold text-primary">{metric.target2025}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span>2027 Target</span>
-                      <span className="font-bold text-green-600">{metric.target2027}</span>
-                    </div>
-                  </div>
 
-                  <Badge className={getStatusColor(metric.status)}>
-                    {getStatusIcon(metric.status)}
-                    <span className="ml-1 capitalize">{metric.status.replace('-', ' ')}</span>
-                  </Badge>
-                </div>
+                    <Badge className={getStatusColor(metric.status)}>
+                      {getStatusIcon(metric.status)}
+                      <span className="ml-1 capitalize">{metric.status.replace('-', ' ')}</span>
+                    </Badge>
+                  </div>
+                </ClickableTile>
               );
             })}
           </div>
@@ -376,6 +434,20 @@ const MetricsKPIs = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Presentation Modal */}
+      <PresentationModal
+        isOpen={isOpen}
+        onClose={closePresentation}
+        title={currentItem?.title || ''}
+        description={currentItem?.description}
+        onNext={goToNext}
+        onPrevious={goToPrevious}
+        hasNext={hasNext}
+        hasPrevious={hasPrevious}
+      >
+        {currentItem?.content}
+      </PresentationModal>
     </div>
   );
 };

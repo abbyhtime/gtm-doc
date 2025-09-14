@@ -2,6 +2,9 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { PresentationModal } from '@/components/ui/presentation-modal';
+import { ClickableTile } from '@/components/ui/clickable-tile';
+import { usePresentation } from '@/hooks/usePresentation';
 import { TrendingUp, TrendingDown, DollarSign, Users, Zap, Target, BarChart3, ArrowUpRight } from 'lucide-react';
 
 const ExecutiveDashboard = () => {
@@ -38,6 +41,58 @@ const ExecutiveDashboard = () => {
       color: 'bg-green-50 border-green-200 text-green-800'
     }
   ];
+
+  // Presentation items
+  const presentationItems = [
+    ...marketMetrics.map((metric, index) => ({
+      id: `metric-${index}`,
+      title: metric.label,
+      description: `${metric.value} - ${metric.trend}`,
+      content: (
+        <div className="flex flex-col items-center justify-center h-full text-center space-y-8">
+          <div className="space-y-4">
+            <metric.icon className={`h-20 w-20 mx-auto ${metric.color}`} />
+            <div className="text-6xl font-bold">{metric.value}</div>
+            <div className="text-2xl font-medium text-muted-foreground">{metric.label}</div>
+            <Badge variant="secondary" className="text-lg px-4 py-2">{metric.trend}</Badge>
+          </div>
+          <div className="max-w-2xl text-lg text-muted-foreground">
+            {index === 0 && "The AI-powered scheduling market is currently valued at $400M and represents a significant opportunity for growth and innovation."}
+            {index === 1 && "By 2032, the market is projected to reach $1.6B, driven by increasing remote work and AI adoption, representing a compound annual growth rate of 16%."}
+            {index === 2 && "Over $1 billion has been invested in scheduling and productivity startups, indicating strong investor confidence in this market."}
+            {index === 3 && "Users save an average of 1.5 hours per week using AI scheduling tools, demonstrating clear ROI and productivity gains."}
+          </div>
+        </div>
+      )
+    })),
+    ...keyInsights.map((insight, index) => ({
+      id: `insight-${index}`,
+      title: insight.title,
+      description: `${insight.impact} Impact`,
+      content: (
+        <div className="flex flex-col justify-center h-full space-y-8 max-w-4xl mx-auto">
+          <div className="text-center space-y-4">
+            <Badge variant="outline" className="text-xl px-6 py-3">{insight.impact} Impact</Badge>
+            <h1 className="text-5xl font-bold">{insight.title}</h1>
+          </div>
+          <div className="text-2xl leading-relaxed text-center">
+            {insight.insight}
+          </div>
+        </div>
+      )
+    }))
+  ];
+
+  const { 
+    isOpen, 
+    currentItem, 
+    hasNext, 
+    hasPrevious, 
+    openPresentation, 
+    closePresentation, 
+    goToNext, 
+    goToPrevious 
+  } = usePresentation({ items: presentationItems });
 
   return (
     <div className="space-y-6">
@@ -109,7 +164,10 @@ const ExecutiveDashboard = () => {
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {marketMetrics.map((metric, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow">
+          <ClickableTile 
+            key={index} 
+            onClick={() => openPresentation(`metric-${index}`)}
+          >
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <metric.icon className={`h-5 w-5 ${metric.color}`} />
@@ -124,7 +182,7 @@ const ExecutiveDashboard = () => {
                 <p className="text-sm text-muted-foreground">{metric.label}</p>
               </div>
             </CardContent>
-          </Card>
+          </ClickableTile>
         ))}
       </div>
 
@@ -182,7 +240,11 @@ const ExecutiveDashboard = () => {
         <CardContent>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {keyInsights.map((insight, index) => (
-              <Card key={index} className={`${insight.color} border`}>
+              <ClickableTile 
+                key={index} 
+                className={`${insight.color} border`}
+                onClick={() => openPresentation(`insight-${index}`)}
+              >
                 <CardContent className="pt-4">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
@@ -194,11 +256,25 @@ const ExecutiveDashboard = () => {
                     <p className="text-sm">{insight.insight}</p>
                   </div>
                 </CardContent>
-              </Card>
+              </ClickableTile>
             ))}
           </div>
         </CardContent>
       </Card>
+
+      {/* Presentation Modal */}
+      <PresentationModal
+        isOpen={isOpen}
+        onClose={closePresentation}
+        title={currentItem?.title || ''}
+        description={currentItem?.description}
+        onNext={goToNext}
+        onPrevious={goToPrevious}
+        hasNext={hasNext}
+        hasPrevious={hasPrevious}
+      >
+        {currentItem?.content}
+      </PresentationModal>
     </div>
   );
 };

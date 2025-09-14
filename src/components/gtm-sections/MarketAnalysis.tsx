@@ -4,6 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { PresentationModal } from '@/components/ui/presentation-modal';
+import { ClickableTile } from '@/components/ui/clickable-tile';
+import { usePresentation } from '@/hooks/usePresentation';
 import { 
   TrendingUp, 
   Target, 
@@ -117,6 +120,69 @@ const MarketAnalysis = () => {
     }
   ];
 
+  // Presentation items
+  const presentationItems = [
+    ...marketSegments.map((segment, index) => ({
+      id: `segment-${index}`,
+      title: segment.name,
+      description: `${segment.share} market share - ${segment.growth} growth`,
+      content: (
+        <div className="flex flex-col items-center justify-center h-full text-center space-y-8">
+          <div className="space-y-4">
+            <div className={`inline-flex items-center justify-center w-24 h-24 rounded-lg ${segment.color}`}>
+              <segment.icon className="h-12 w-12" />
+            </div>
+            <div className="text-5xl font-bold">{segment.name}</div>
+            <div className="flex items-center gap-4">
+              <Badge variant="secondary" className="text-lg px-4 py-2">{segment.share} market share</Badge>
+              <Badge variant="outline" className="text-lg px-4 py-2 text-green-600">{segment.growth}</Badge>
+            </div>
+          </div>
+          <div className="max-w-3xl space-y-4">
+            <div className="text-2xl font-semibold">Market Size: {segment.size}</div>
+            <div className="text-xl text-muted-foreground">{segment.description}</div>
+          </div>
+        </div>
+      )
+    })),
+    ...marketTrends.map((trend, index) => ({
+      id: `trend-${index}`,
+      title: trend.trend,
+      description: `${trend.impact} Impact - ${trend.percentage}% adoption`,
+      content: (
+        <div className="flex flex-col items-center justify-center h-full text-center space-y-8">
+          <div className="space-y-4">
+            <div className="text-5xl font-bold">{trend.trend}</div>
+            <Badge variant={trend.impact === 'High' ? 'default' : 'secondary'} className="text-xl px-6 py-3">
+              {trend.impact} Impact
+            </Badge>
+          </div>
+          <div className="max-w-3xl space-y-6">
+            <div className="text-2xl text-muted-foreground">{trend.description}</div>
+            <div className="space-y-3">
+              <div className="text-xl">Market Adoption: {trend.percentage}%</div>
+              <div className="w-full max-w-lg mx-auto">
+                <Progress value={trend.percentage} className="h-4" />
+              </div>
+            </div>
+            <div className="text-lg text-muted-foreground">Timeline: {trend.timeline}</div>
+          </div>
+        </div>
+      )
+    }))
+  ];
+
+  const { 
+    isOpen, 
+    currentItem, 
+    hasNext, 
+    hasPrevious, 
+    openPresentation, 
+    closePresentation, 
+    goToNext, 
+    goToPrevious 
+  } = usePresentation({ items: presentationItems });
+
   if (showCompetitiveIntel) {
     return (
       <div className="space-y-6">
@@ -181,10 +247,14 @@ const MarketAnalysis = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            {marketSegments.map((segment) => {
+            {marketSegments.map((segment, index) => {
               const Icon = segment.icon;
               return (
-                <div key={segment.name} className="flex items-center gap-4 p-4 rounded-lg border bg-gradient-to-r from-background to-muted/20">
+                <ClickableTile 
+                  key={segment.name} 
+                  onClick={() => openPresentation(`segment-${index}`)}
+                  className="flex items-center gap-4 p-4 bg-gradient-to-r from-background to-muted/20"
+                >
                   <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${segment.color}`}>
                     <Icon className="h-6 w-6" />
                   </div>
@@ -199,7 +269,7 @@ const MarketAnalysis = () => {
                     <p className="text-sm text-muted-foreground mb-2">{segment.description}</p>
                     <div className="text-lg font-bold text-primary">{segment.size}</div>
                   </div>
-                </div>
+                </ClickableTile>
               );
             })}
           </div>
@@ -219,28 +289,34 @@ const MarketAnalysis = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            {marketTrends.map((trend) => (
-              <div key={trend.trend} className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-semibold">{trend.trend}</h3>
-                    <p className="text-sm text-muted-foreground">{trend.description}</p>
+            {marketTrends.map((trend, index) => (
+              <ClickableTile 
+                key={trend.trend} 
+                onClick={() => openPresentation(`trend-${index}`)}
+                className="p-4"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-semibold">{trend.trend}</h3>
+                      <p className="text-sm text-muted-foreground">{trend.description}</p>
+                    </div>
+                    <div className="text-right space-y-1">
+                      <Badge variant={trend.impact === 'High' ? 'default' : 'secondary'}>
+                        {trend.impact} Impact
+                      </Badge>
+                      <div className="text-xs text-muted-foreground">{trend.timeline}</div>
+                    </div>
                   </div>
-                  <div className="text-right space-y-1">
-                    <Badge variant={trend.impact === 'High' ? 'default' : 'secondary'}>
-                      {trend.impact} Impact
-                    </Badge>
-                    <div className="text-xs text-muted-foreground">{trend.timeline}</div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Market Adoption</span>
+                      <span>{trend.percentage}%</span>
+                    </div>
+                    <Progress value={trend.percentage} className="h-2" />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Market Adoption</span>
-                    <span>{trend.percentage}%</span>
-                  </div>
-                  <Progress value={trend.percentage} className="h-2" />
-                </div>
-              </div>
+              </ClickableTile>
             ))}
           </div>
         </CardContent>
@@ -301,6 +377,20 @@ const MarketAnalysis = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Presentation Modal */}
+      <PresentationModal
+        isOpen={isOpen}
+        onClose={closePresentation}
+        title={currentItem?.title || ''}
+        description={currentItem?.description}
+        onNext={goToNext}
+        onPrevious={goToPrevious}
+        hasNext={hasNext}
+        hasPrevious={hasPrevious}
+      >
+        {currentItem?.content}
+      </PresentationModal>
     </div>
   );
 };

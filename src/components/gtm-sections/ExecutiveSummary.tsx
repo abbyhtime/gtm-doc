@@ -5,6 +5,9 @@ import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { PresentationModal } from '@/components/ui/presentation-modal';
+import { ClickableTile } from '@/components/ui/clickable-tile';
+import { usePresentation } from '@/hooks/usePresentation';
 import { useGTMContent } from '@/hooks/useGTMContent';
 import { 
   Target, 
@@ -203,6 +206,74 @@ const ExecutiveSummary = () => {
     setIsMissionEdit(false);
   };
 
+  // Presentation items
+  const presentationItems = [
+    ...keyMetrics.map((metric, index) => ({
+      id: `metric-${index}`,
+      title: metric.label,
+      description: `${metric.value} - ${metric.description}`,
+      content: (
+        <div className="flex flex-col items-center justify-center h-full text-center space-y-8">
+          <div className="space-y-4">
+            <metric.icon className={`h-20 w-20 mx-auto ${metric.color}`} />
+            <div className="text-6xl font-bold">{metric.value}</div>
+            <div className="text-2xl font-medium text-muted-foreground">{metric.label}</div>
+            <Badge variant="secondary" className="text-lg px-4 py-2">{metric.trend}</Badge>
+          </div>
+          <div className="max-w-2xl text-lg text-muted-foreground">
+            {metric.description}
+          </div>
+        </div>
+      )
+    })),
+    ...marketStats.map((stat, index) => ({
+      id: `stat-${index}`,
+      title: stat.label,
+      description: `${stat.value}% - ${stat.description}`,
+      content: (
+        <div className="flex flex-col items-center justify-center h-full text-center space-y-8">
+          <div className="space-y-4">
+            <stat.icon className={`h-20 w-20 mx-auto ${stat.color}`} />
+            <div className="text-6xl font-bold">{stat.value}%</div>
+            <div className="text-2xl font-medium text-muted-foreground">{stat.label}</div>
+          </div>
+          <div className="max-w-2xl text-lg text-muted-foreground">
+            {stat.description}
+          </div>
+        </div>
+      )
+    })),
+    ...editedPillars.map((pillar, index) => ({
+      id: `pillar-${index}`,
+      title: pillar.title,
+      description: pillar.description,
+      content: (
+        <div className="flex flex-col items-center justify-center h-full text-center space-y-8">
+          <div className="space-y-4">
+            <div className={`inline-flex items-center justify-center w-24 h-24 rounded-lg ${pillar.color}`}>
+              <pillar.icon className="h-12 w-12" />
+            </div>
+            <div className="text-5xl font-bold">{pillar.title}</div>
+          </div>
+          <div className="max-w-3xl text-2xl leading-relaxed text-muted-foreground">
+            {pillar.description}
+          </div>
+        </div>
+      )
+    }))
+  ];
+
+  const { 
+    isOpen, 
+    currentItem, 
+    hasNext, 
+    hasPrevious, 
+    openPresentation, 
+    closePresentation, 
+    goToNext, 
+    goToPrevious 
+  } = usePresentation({ items: presentationItems });
+
   return (
     <div className="space-y-8">
       {/* Vision & Mission */}
@@ -315,26 +386,32 @@ const ExecutiveSummary = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {keyMetrics.map((metric) => {
+            {keyMetrics.map((metric, index) => {
               const Icon = metric.icon;
               return (
-                <div key={metric.label} className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <Icon className={`h-5 w-5 ${metric.color}`} />
-                    <Badge variant="secondary" className="text-xs">
-                      {metric.trend}
-                    </Badge>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold">{metric.value}</div>
-                    <div className="text-sm font-medium text-muted-foreground">
-                      {metric.label}
+                <ClickableTile 
+                  key={metric.label} 
+                  onClick={() => openPresentation(`metric-${index}`)}
+                  className="p-4"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Icon className={`h-5 w-5 ${metric.color}`} />
+                      <Badge variant="secondary" className="text-xs">
+                        {metric.trend}
+                      </Badge>
                     </div>
-                    <div className="text-xs text-muted-foreground">
-                      {metric.description}
+                    <div>
+                      <div className="text-2xl font-bold">{metric.value}</div>
+                      <div className="text-sm font-medium text-muted-foreground">
+                        {metric.label}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {metric.description}
+                      </div>
                     </div>
                   </div>
-                </div>
+                </ClickableTile>
               );
             })}
           </div>
@@ -358,20 +435,26 @@ const ExecutiveSummary = () => {
             <div className="space-y-6">
               <h4 className="font-semibold text-lg">The Scheduling Crisis</h4>
               <div className="space-y-4">
-                {marketStats.map((stat) => {
+                {marketStats.map((stat, index) => {
                   const Icon = stat.icon;
                   return (
-                    <div key={stat.label} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Icon className={`h-4 w-4 ${stat.color}`} />
-                          <span className="text-sm font-medium">{stat.label}</span>
+                    <ClickableTile 
+                      key={stat.label} 
+                      onClick={() => openPresentation(`stat-${index}`)}
+                      className="p-3"
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Icon className={`h-4 w-4 ${stat.color}`} />
+                            <span className="text-sm font-medium">{stat.label}</span>
+                          </div>
+                          <span className="text-sm font-bold text-orange-600 dark:text-orange-500">{stat.value}%</span>
                         </div>
-                        <span className="text-sm font-bold text-orange-600 dark:text-orange-500">{stat.value}%</span>
+                        <Progress value={stat.value} className="h-2" />
+                        <p className="text-xs text-muted-foreground">{stat.description}</p>
                       </div>
-                      <Progress value={stat.value} className="h-2" />
-                      <p className="text-xs text-muted-foreground">{stat.description}</p>
-                    </div>
+                    </ClickableTile>
                   );
                 })}
               </div>
@@ -431,8 +514,8 @@ const ExecutiveSummary = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {editedPillars.map((pillar, index) => {
               const Icon = pillar.icon;
-              return (
-                <div key={index} className="space-y-4">
+              const content = (
+                <div className="space-y-4">
                   <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${pillar.color}`}>
                     <Icon className="h-6 w-6" />
                   </div>
@@ -469,10 +552,38 @@ const ExecutiveSummary = () => {
                   </div>
                 </div>
               );
+
+              return isEditMode ? (
+                <div key={index}>
+                  {content}
+                </div>
+              ) : (
+                <ClickableTile 
+                  key={index} 
+                  onClick={() => openPresentation(`pillar-${index}`)}
+                  className="p-4"
+                >
+                  {content}
+                </ClickableTile>
+              );
             })}
           </div>
         </CardContent>
       </Card>
+
+      {/* Presentation Modal */}
+      <PresentationModal
+        isOpen={isOpen}
+        onClose={closePresentation}
+        title={currentItem?.title || ''}
+        description={currentItem?.description}
+        onNext={goToNext}
+        onPrevious={goToPrevious}
+        hasNext={hasNext}
+        hasPrevious={hasPrevious}
+      >
+        {currentItem?.content}
+      </PresentationModal>
     </div>
   );
 };
