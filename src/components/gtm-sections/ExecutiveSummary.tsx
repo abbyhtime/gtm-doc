@@ -416,13 +416,13 @@ const ExecutiveSummary = () => {
     )
   };
 
-  // Parent tile for Executive Metrics section
-  const parentTileItems = [
-    visionMissionParentTile,
-    {
-      id: 'executive-metrics',
-      title: 'Executive Metrics',
-      description: 'Key performance indicators driving our go-to-market strategy',
+    // Parent tile for Executive Metrics section
+    const parentTileItems = [
+      visionMissionParentTile,
+      {
+        id: 'exec-summary-executive-metrics',
+        title: 'Executive Metrics',
+        description: 'Key performance indicators driving our go-to-market strategy',
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -462,10 +462,10 @@ const ExecutiveSummary = () => {
         </div>
       )
     },
-    {
-      id: 'market-opportunity',
-      title: 'Market Opportunity',
-      description: 'The scheduling burden represents a massive opportunity for disruption',
+      {
+        id: 'exec-summary-market-opportunity',
+        title: 'Market Opportunity',
+        description: 'The scheduling burden represents a massive opportunity for disruption',
       content: (
         <div className="space-y-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -513,10 +513,10 @@ const ExecutiveSummary = () => {
         </div>
       )
     },
-    {
-      id: 'strategic-pillars',
-      title: 'Strategic Pillars',
-      description: 'Core principles driving our product and market strategy',
+      {
+        id: 'exec-summary-strategic-pillars',
+        title: 'Strategic Pillars',
+        description: 'Core principles driving our product and market strategy',
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

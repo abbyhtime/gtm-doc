@@ -23,7 +23,7 @@ import ProductStrategy from '@/components/gtm-sections/ProductStrategy';
 import { GTMPhasesEditable } from '@/components/gtm-sections/GTMPhasesEditable';
 import BusinessModel from '@/components/gtm-sections/BusinessModel';
 import TargetMarkets from '@/components/gtm-sections/TargetMarkets';
-import MetricsKPIs from '@/components/gtm-sections/MetricsKPIs';
+import MetricsKPIs from '@/components/gtm-sections/MetricsKPIsNew';
 import { DataVerificationManager } from '@/components/DataVerificationManager';
 
 const GTMReport = () => {

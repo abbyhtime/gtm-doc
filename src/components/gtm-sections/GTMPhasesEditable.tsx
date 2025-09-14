@@ -314,24 +314,24 @@ export const GTMPhasesEditable = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Calendar className="w-4 h-4" />
-                  {isEditMode && editingPhase ? (
-                    <DatePicker
-                      date={editingPhase.timeline ? new Date(editingPhase.timeline) : undefined}
-                      onDateChange={(date) => 
-                        setEditingPhase({ 
-                          ...editingPhase, 
-                          timeline: date ? date.toISOString().split('T')[0] : '' 
-                        })
-                      }
-                      placeholder="Select timeline date"
-                      className="text-sm"
-                    />
-                  ) : (
-                    <span>{currentPhase.timeline}</span>
-                  )}
-                </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Calendar className="w-4 h-4" />
+                    {isEditMode && editingPhase ? (
+                      <Input
+                        value={editingPhase.timeline || ''}
+                        onChange={(e) => 
+                          setEditingPhase({ 
+                            ...editingPhase, 
+                            timeline: e.target.value 
+                          })
+                        }
+                        placeholder="e.g., Q1 2025 (3 months)"
+                        className="text-sm"
+                      />
+                    ) : (
+                      <span>{currentPhase.timeline}</span>
+                    )}
+                  </div>
                 
                 {isEditMode && editingPhase ? (
                   <RichTextEditor
