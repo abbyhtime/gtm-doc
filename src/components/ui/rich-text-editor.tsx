@@ -24,7 +24,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         preview="edit"
         hideToolbar={false}
         visibleDragbar={false}
-        className="bg-background border-border"
+        className="bg-background border-border [&_.w-md-editor-text]:text-foreground [&_.w-md-editor-text-input]:text-foreground [&_.w-md-editor-text-container]:text-foreground [&_.w-md-editor-text-area]:text-foreground"
       />
     </div>
   );

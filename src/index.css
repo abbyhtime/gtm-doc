@@ -298,6 +298,25 @@
     box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
   }
 
+  /* Rich text editor text visibility fixes */
+  .rich-text-editor .w-md-editor-text-area {
+    color: hsl(var(--foreground)) !important;
+    background: hsl(var(--background)) !important;
+  }
+
+  .rich-text-editor .w-md-editor-text-input {
+    color: hsl(var(--foreground)) !important;
+    background: hsl(var(--background)) !important;
+  }
+
+  .rich-text-editor .w-md-editor-text {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .rich-text-editor .w-md-editor-text-container {
+    color: hsl(var(--foreground)) !important;
+  }
+
   /* Fix rich text editor split-screen issue */
   .rich-text-editor .w-md-editor-preview {
     display: none !important;
