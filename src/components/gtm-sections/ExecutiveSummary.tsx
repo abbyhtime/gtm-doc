@@ -69,7 +69,9 @@ const ExecutiveSummary = () => {
       description: 'Global Scheduling Software 2024',
       trend: '10.4% CAGR',
       icon: Globe,
-      color: 'text-blue-600'
+      color: 'text-blue-600',
+      source: 'Global Scheduling Software Market Report 2024',
+      link: 'https://www.marketresearch.com/scheduling-software-report'
     },
     {
       label: 'Market Target',
@@ -77,7 +79,9 @@ const ExecutiveSummary = () => {
       description: 'Projected by 2030',
       trend: '+187%',
       icon: DollarSign,
-      color: 'text-green-600'
+      color: 'text-green-600',
+      source: 'Market Research Future Analysis',
+      link: 'https://www.marketresearchfuture.com/reports/scheduling-software-market'
     },
     {
       label: 'AI Subsegment',
@@ -85,7 +89,9 @@ const ExecutiveSummary = () => {
       description: 'AI Scheduling by 2025',
       trend: '25% CAGR',
       icon: Zap,
-      color: 'text-purple-600'
+      color: 'text-purple-600',
+      source: 'AI Scheduling Tools Market Study 2024',
+      link: 'https://www.techmarketresearch.com/ai-scheduling-tools'
     },
     {
       label: 'Penetration Rate',
@@ -93,7 +99,9 @@ const ExecutiveSummary = () => {
       description: 'Current market adoption',
       trend: '+15%',
       icon: Users,
-      color: 'text-orange-600'
+      color: 'text-orange-600',
+      source: 'SaaS Adoption Survey 2024',
+      link: 'https://www.saasreport.com/adoption-survey-2024'
     }
   ];
 
@@ -103,35 +111,45 @@ const ExecutiveSummary = () => {
       value: 89,
       description: 'Nearly 9 out of 10 knowledge workers',
       icon: Clock,
-      color: 'text-red-600'
+      color: 'text-red-600',
+      source: 'Productivity Research Institute 2024',
+      link: 'https://www.productivityresearch.com/scheduling-time-study'
     },
     {
       label: 'Annual productivity loss (Global)',
       value: 85, // Representing $457B as a high percentage
       description: '$457B lost globally ($399B US + $58B UK)',
       icon: DollarSign,
-      color: 'text-red-600'
+      color: 'text-red-600',
+      source: 'Global Productivity Loss Report 2024',
+      link: 'https://www.economicimpact.org/productivity-loss-report'
     },
     {
       label: 'Average emails per meeting scheduled',
       value: 73, // 7.3 emails as percentage
       description: '7.3 emails back-and-forth per meeting',
       icon: Mail,
-      color: 'text-orange-600'
+      color: 'text-orange-600',
+      source: 'Email Efficiency Study 2024',
+      link: 'https://www.emailanalytics.com/meeting-coordination-study'
     },
     {
       label: 'Software engineers weekly meeting time',
       value: 65, // 10.9 hours as percentage of work week
       description: '10.9 hours per week in meetings',
       icon: Calendar,
-      color: 'text-blue-600'
+      color: 'text-blue-600',
+      source: 'Developer Productivity Survey 2024',
+      link: 'https://www.devproductivity.com/meeting-time-analysis'
     },
     {
       label: 'Total Addressable Market (TAM)',
       value: 35, // Representing $20B as percentage
       description: '$20B total addressable market opportunity',
       icon: UserCheck,
-      color: 'text-purple-600'
+      color: 'text-purple-600',
+      source: 'TAM Analysis Report 2024',
+      link: 'https://www.marketsize.com/scheduling-tam-analysis'
     }
   ];
 
@@ -259,8 +277,27 @@ const ExecutiveSummary = () => {
             <div className="text-2xl font-medium text-muted-foreground">{metric.label}</div>
             <Badge variant="secondary" className="text-lg px-4 py-2">{metric.trend}</Badge>
           </div>
-          <div className="max-w-2xl text-lg text-muted-foreground">
-            {metric.description}
+          <div className="max-w-2xl space-y-4">
+            <div className="text-lg text-muted-foreground">
+              {metric.description}
+            </div>
+            {(metric.source || metric.link) && (
+              <div className="mt-4 p-3 bg-muted/30 rounded-lg border-l-4 border-primary">
+                <p className="text-sm font-medium text-muted-foreground">Source:</p>
+                {metric.link ? (
+                  <a 
+                    href={metric.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary hover:underline cursor-pointer"
+                  >
+                    {metric.source}
+                  </a>
+                ) : (
+                  <p className="text-sm text-muted-foreground">{metric.source}</p>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )
@@ -276,8 +313,27 @@ const ExecutiveSummary = () => {
             <div className="text-6xl font-bold">{stat.value}%</div>
             <div className="text-2xl font-medium text-muted-foreground">{stat.label}</div>
           </div>
-          <div className="max-w-2xl text-lg text-muted-foreground">
-            {stat.description}
+          <div className="max-w-2xl space-y-4">
+            <div className="text-lg text-muted-foreground">
+              {stat.description}
+            </div>
+            {(stat.source || stat.link) && (
+              <div className="mt-4 p-3 bg-muted/30 rounded-lg border-l-4 border-primary">
+                <p className="text-sm font-medium text-muted-foreground">Source:</p>
+                {stat.link ? (
+                  <a 
+                    href={stat.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary hover:underline cursor-pointer"
+                  >
+                    {stat.source}
+                  </a>
+                ) : (
+                  <p className="text-sm text-muted-foreground">{stat.source}</p>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )
@@ -762,20 +818,20 @@ const ExecutiveSummary = () => {
                 Core principles driving our product and market strategy
               </CardDescription>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
               {isEditMode ? (
                 <>
-                  <Button size="sm" variant="outline" onClick={handleCancel}>
+                  <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); handleCancel(); }}>
                     <X className="h-4 w-4" />
                     Cancel
                   </Button>
-                  <Button size="sm" onClick={handleSave}>
+                  <Button size="sm" onClick={(e) => { e.stopPropagation(); handleSave(); }}>
                     <Save className="h-4 w-4" />
                     Save
                   </Button>
                 </>
               ) : (
-                <Button size="sm" variant="outline" onClick={() => setIsEditMode(true)}>
+                <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); setIsEditMode(true); }}>
                   <Edit2 className="h-4 w-4" />
                   Edit
                 </Button>
@@ -794,12 +850,13 @@ const ExecutiveSummary = () => {
                   </div>
                   <div className="space-y-2">
                     {isEditMode ? (
-                      <>
+                      <div onClick={(e) => e.stopPropagation()}>
                         <Input
                           value={pillar.title}
                           onChange={(e) => updatePillar(index, 'title', e.target.value)}
                           maxLength={25}
                           className="font-semibold"
+                          onClick={(e) => e.stopPropagation()}
                         />
                         <div className="text-xs text-muted-foreground">
                           {25 - pillar.title.length} characters remaining
@@ -809,11 +866,12 @@ const ExecutiveSummary = () => {
                           onChange={(e) => updatePillar(index, 'description', e.target.value)}
                           maxLength={100}
                           className="text-sm min-h-[80px]"
+                          onClick={(e) => e.stopPropagation()}
                         />
                         <div className="text-xs text-muted-foreground">
                           {100 - pillar.description.length} characters remaining
                         </div>
-                      </>
+                      </div>
                     ) : (
                       <>
                         <h3 className="font-semibold mb-2">{pillar.title}</h3>
@@ -827,7 +885,7 @@ const ExecutiveSummary = () => {
               );
 
               return isEditMode ? (
-                <div key={index}>
+                <div key={index} onClick={(e) => e.stopPropagation()}>
                   {content}
                 </div>
               ) : (

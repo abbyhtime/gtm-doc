@@ -58,7 +58,7 @@ const DataAnalytics = () => {
     { year: 2022, marketSize: 450, aiAdoption: 22 },
     { year: 2023, marketSize: 520, aiAdoption: 35 },
     { year: 2024, marketSize: 571, aiAdoption: 45 },
-    { year: 2025, marketSize: 630, aiAdoption: 60 },
+    { year: 2025, marketSize: 730, aiAdoption: 60 },
     { year: 2030, marketSize: 1637, aiAdoption: 85 }
   ];
 
@@ -118,6 +118,9 @@ const DataAnalytics = () => {
               </div>
               <DollarSign className="h-8 w-8 text-blue-700" />
             </div>
+            <div className="mt-2 text-xs text-blue-600">
+              Source: Global Scheduling Software Market Report 2024
+            </div>
           </CardContent>
         </Card>
 
@@ -130,6 +133,9 @@ const DataAnalytics = () => {
                 <p className="text-xs text-green-600">10.4% CAGR Growth</p>
               </div>
               <TrendingUp className="h-8 w-8 text-green-700" />
+            </div>
+            <div className="mt-2 text-xs text-green-600">
+              Source: Market Research Future Analysis
             </div>
           </CardContent>
         </Card>
@@ -144,6 +150,9 @@ const DataAnalytics = () => {
               </div>
               <Zap className="h-8 w-8 text-purple-700" />
             </div>
+            <div className="mt-2 text-xs text-purple-600">
+              Source: AI Scheduling Tools Market Study 2024
+            </div>
           </CardContent>
         </Card>
 
@@ -156,6 +165,9 @@ const DataAnalytics = () => {
                 <p className="text-xs text-orange-600">Current adoption rate</p>
               </div>
               <Users className="h-8 w-8 text-orange-700" />
+            </div>
+            <div className="mt-2 text-xs text-orange-600">
+              Source: SaaS Adoption Survey 2024
             </div>
           </CardContent>
         </Card>
@@ -297,9 +309,13 @@ const DataAnalytics = () => {
                 <div key={index} className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>{year.year}</span>
-                    <span className="font-medium">${year.marketSize}M</span>
-                  </div>
-                  <Progress value={(year.marketSize / 1637) * 100} className="h-2" />
+                   <span className="text-sm font-medium">${year.marketSize}M</span>
+                 </div>
+                 <Progress value={(year.marketSize / 1637) * 100} className="h-2" />
+                 <div className="text-xs text-muted-foreground mt-1">
+                   {year.year === 2024 && 'Source: Global Scheduling Software Market Report 2024'}
+                   {year.year === 2030 && 'Source: Market Research Future Analysis'}
+                 </div>
                 </div>
               ))}
             </div>

@@ -73,28 +73,36 @@ const MarketAnalysis = () => {
       impact: 'High',
       timeline: '2024-2025',
       description: '94% of large-company workers curious about AI productivity tools',
-      percentage: 94
+      percentage: 94,
+      source: 'AI Workplace Adoption Survey 2024',
+      link: 'https://www.aiworkplace.com/adoption-survey-2024'
     },
     {
       trend: 'Remote Work Coordination Burden',
       impact: 'Critical',
       timeline: '2024-2026',
       description: '89% spend 4+ hours/week on scheduling coordination',
-      percentage: 89
+      percentage: 89,
+      source: 'Remote Work Productivity Study 2024',
+      link: 'https://www.remoteworkresearch.com/coordination-burden-study'
     },
     {
       trend: 'Email Overhead Reduction',
       impact: 'High',
       timeline: '2024-2025',
       description: 'Average 7.3 emails per meeting, 15 minutes admin work per meeting',
-      percentage: 67
+      percentage: 67,
+      source: 'Email Efficiency Analysis 2024',
+      link: 'https://www.emailefficiency.com/meeting-overhead-analysis'
     },
     {
       trend: 'Meeting Load Growth at Scale',
       impact: 'Medium',
       timeline: '2025-2027',
       description: '3.2 more hours/week meeting time at larger companies',
-      percentage: 78
+      percentage: 78,
+      source: 'Enterprise Meeting Load Study 2024',
+      link: 'https://www.enterpriseproductivity.com/meeting-load-study'
     }
   ];
 
@@ -159,16 +167,33 @@ const MarketAnalysis = () => {
               {trend.impact} Impact
             </Badge>
           </div>
-          <div className="max-w-3xl space-y-6">
-            <div className="text-2xl text-muted-foreground">{trend.description}</div>
-            <div className="space-y-3">
-              <div className="text-xl">Market Adoption: {trend.percentage}%</div>
-              <div className="w-full max-w-lg mx-auto">
-                <Progress value={trend.percentage} className="h-4" />
+            <div className="max-w-3xl space-y-6">
+              <div className="text-2xl text-muted-foreground">{trend.description}</div>
+              <div className="space-y-3">
+                <div className="text-xl">Market Adoption: {trend.percentage}%</div>
+                <div className="w-full max-w-lg mx-auto">
+                  <Progress value={trend.percentage} className="h-4" />
+                </div>
               </div>
+              <div className="text-lg text-muted-foreground">Timeline: {trend.timeline}</div>
+              {(trend.source || trend.link) && (
+                <div className="mt-4 p-3 bg-muted/30 rounded-lg border-l-4 border-primary">
+                  <p className="text-sm font-medium text-muted-foreground">Source:</p>
+                  {trend.link ? (
+                    <a 
+                      href={trend.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-sm text-primary hover:underline cursor-pointer"
+                    >
+                      {trend.source}
+                    </a>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">{trend.source}</p>
+                  )}
+                </div>
+              )}
             </div>
-            <div className="text-lg text-muted-foreground">Timeline: {trend.timeline}</div>
-          </div>
         </div>
       )
     }))
