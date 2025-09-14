@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Lock, FileText } from "lucide-react";
+import { Loader2, Lock, FileText, Moon, Sun } from "lucide-react";
 
 interface AccessCodeLoginProps {
   onSuccess: () => void;
@@ -24,6 +24,22 @@ export const AccessCodeLogin = ({ onSuccess }: AccessCodeLoginProps) => {
   const [code, setCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+
+  useEffect(() => {
+    // Set dark theme by default but allow override from localStorage
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const finalTheme = savedTheme || 'dark';
+    setTheme(finalTheme);
+    document.documentElement.classList.toggle('dark', finalTheme === 'dark');
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+  };
 
   const validateCode = async (inputCode: string) => {
     const codeHash = simpleHash(inputCode);
@@ -76,6 +92,22 @@ export const AccessCodeLogin = ({ onSuccess }: AccessCodeLoginProps) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
+      {/* Theme Toggle */}
+      <div className="absolute top-4 right-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleTheme}
+          className="h-10 w-10 rounded-lg glass-card hover:shadow-elevated border-0 transition-all duration-300"
+        >
+          {theme === 'light' ? (
+            <Moon className="h-5 w-5 text-foreground" />
+          ) : (
+            <Sun className="h-5 w-5 text-foreground" />
+          )}
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </div>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center space-y-4">
           <div className="flex justify-center">
