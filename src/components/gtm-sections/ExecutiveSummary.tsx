@@ -7,7 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { PresentationModal } from '@/components/ui/presentation-modal';
 import { ClickableTile } from '@/components/ui/clickable-tile';
+import { ParentTileModal } from '@/components/ui/parent-tile-modal';
 import { usePresentation } from '@/hooks/usePresentation';
+import { useParentTile } from '@/hooks/useParentTile';
 import { useGTMContent } from '@/hooks/useGTMContent';
 import { 
   Target, 
@@ -274,6 +276,59 @@ const ExecutiveSummary = () => {
     goToPrevious 
   } = usePresentation({ items: presentationItems });
 
+  // Parent tile for Executive Metrics section
+  const parentTileItem = {
+    id: 'executive-metrics',
+    title: 'Executive Metrics',
+    description: 'Key performance indicators driving our go-to-market strategy',
+    content: (
+      <div className="space-y-6">
+        {/* Keep the original grid layout but make tiles still clickable */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {keyMetrics.map((metric, index) => {
+            const Icon = metric.icon;
+            return (
+              <ClickableTile 
+                key={metric.label} 
+                onClick={() => openPresentation(`metric-${index}`)}
+                className="p-4"
+                hoverScale={false} // Reduce hover effect when in parent modal
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Icon className={`h-5 w-5 ${metric.color}`} />
+                    <Badge variant="secondary" className="text-xs">
+                      {metric.trend}
+                    </Badge>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold">{metric.value}</div>
+                    <div className="text-sm font-medium text-muted-foreground">
+                      {metric.label}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {metric.description}
+                    </div>
+                  </div>
+                </div>
+              </ClickableTile>
+            );
+          })}
+        </div>
+        <div className="text-center text-muted-foreground">
+          Click on any metric tile to view detailed presentation
+        </div>
+      </div>
+    )
+  };
+
+  const { 
+    isParentOpen, 
+    parentItem, 
+    openParentTile, 
+    closeParentTile 
+  } = useParentTile({ item: parentTileItem });
+
   return (
     <div className="space-y-8">
       {/* Vision & Mission */}
@@ -374,8 +429,14 @@ const ExecutiveSummary = () => {
       </Card>
 
       {/* Key Metrics */}
-      <Card className="glass-card">
-        <CardHeader>
+      <ClickableTile 
+        onClick={() => openParentTile()}
+        className="glass-card cursor-pointer"
+      >
+        <CardHeader onClick={(e) => {
+          e.stopPropagation();
+          openParentTile();
+        }}>
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
             Executive Metrics
@@ -416,7 +477,7 @@ const ExecutiveSummary = () => {
             })}
           </div>
         </CardContent>
-      </Card>
+      </ClickableTile>
 
       {/* Market Opportunity */}
       <Card className="glass-card">
@@ -570,6 +631,16 @@ const ExecutiveSummary = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Parent Tile Modal */}
+      <ParentTileModal
+        isOpen={isParentOpen}
+        onClose={closeParentTile}
+        title={parentItem?.title || ''}
+        description={parentItem?.description}
+      >
+        {parentItem?.content}
+      </ParentTileModal>
 
       {/* Presentation Modal */}
       <PresentationModal

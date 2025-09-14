@@ -2,9 +2,23 @@ import GTMReport from "@/components/GTMReport";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const { logout } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Logged out",
+      description: "You have been logged out successfully",
+    });
+    // Force navigation to root which will show login screen
+    window.location.href = "/";
+  };
 
   return (
     <div className="min-h-screen">
@@ -14,8 +28,8 @@ const Index = () => {
           <Button 
             variant="ghost" 
             size="sm" 
-            onClick={logout}
-            className="gap-2"
+            onClick={handleLogout}
+            className="text-muted-foreground hover:text-foreground gap-2"
           >
             <LogOut className="h-4 w-4" />
             Logout

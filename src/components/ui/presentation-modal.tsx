@@ -67,9 +67,9 @@ export const PresentationModal: React.FC<PresentationModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop with blur */}
+      {/* Backdrop with strong blur for child modal */}
       <div 
-        className="absolute inset-0 bg-background/80 backdrop-blur-md animate-fade-in"
+        className="absolute inset-0 bg-background/90 backdrop-blur-md animate-fade-in"
         onClick={onClose}
       />
       

@@ -163,4 +163,18 @@
   .metric-card-dark {
     @apply bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 p-6 rounded-xl hover:shadow-elevated transition-all duration-300 hover:-translate-y-1 hover:border-primary/30;
   }
+
+  /* Layered Modal Effects */
+  .parent-tile-elevated {
+    @apply transform translate-y-1 scale-[1.01] shadow-xl transition-all duration-300;
+  }
+
+  .child-tile-elevated {
+    @apply transform translate-y-0 scale-100 shadow-2xl transition-all duration-300;
+  }
+
+  /* Enhanced clickable tiles for presentation mode */
+  .clickable-tile-parent {
+    @apply cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:scale-[1.02] active:scale-[0.98];
+  }
 }
