@@ -418,9 +418,8 @@ const ExecutiveSummary = () => {
 
     // Parent tile for Executive Metrics section
     const parentTileItems = [
-      visionMissionParentTile,
       {
-        id: 'exec-summary-executive-metrics',
+        id: 'exec-summary-executive-metrics', 
         title: 'Executive Metrics',
         description: 'Key performance indicators driving our go-to-market strategy',
       content: (

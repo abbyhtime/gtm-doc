@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -27,6 +27,9 @@ import { useToast } from "@/hooks/use-toast";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { DatePicker } from "@/components/ui/date-picker";
 import { MultiValueInput } from "@/components/ui/multi-value-input";
+import { ClickableTile } from "@/components/ui/clickable-tile";
+import { ParentTileModal } from "@/components/ui/parent-tile-modal";
+import { useParentTile } from "@/hooks/useParentTile";
 
 const getStatusIcon = (status: string) => {
   switch (status) {
@@ -51,7 +54,24 @@ const getStatusColor = (status: string) => {
 };
 
 export const GTMPhasesEditable = () => {
-  const { phases, activities, criteria, metrics, loading, error, updatePhase, addActivity, updateActivity, deleteActivity } = useGTMPhases();
+  const { 
+    phases, 
+    activities, 
+    criteria, 
+    metrics, 
+    loading, 
+    error, 
+    updatePhase, 
+    addActivity, 
+    updateActivity, 
+    deleteActivity,
+    addCriterion,
+    updateCriterion,
+    deleteCriterion,
+    addMetric,
+    updateMetric,
+    deleteMetric
+  } = useGTMPhases();
   const { toast } = useToast();
   const [selectedPhase, setSelectedPhase] = useState(1);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -59,6 +79,24 @@ export const GTMPhasesEditable = () => {
   const [editingActivity, setEditingActivity] = useState<any>(null);
   const [newActivity, setNewActivity] = useState({ title: "", description: "" });
   const [showAddActivity, setShowAddActivity] = useState(false);
+  
+  // Criteria and Metrics state
+  const [editingCriterion, setEditingCriterion] = useState<any>(null);
+  const [newCriterion, setNewCriterion] = useState({ criterion: "", status: "upcoming" });
+  const [showAddCriterion, setShowAddCriterion] = useState(false);
+  
+  const [editingMetric, setEditingMetric] = useState<any>(null);
+  const [newMetric, setNewMetric] = useState({ metric_name: "", target_value: "", unit: "" });
+  const [showAddMetric, setShowAddMetric] = useState(false);
+  
+  // Parent tile functionality
+  const [currentParentIndex, setCurrentParentIndex] = useState(0);
+  const { 
+    isParentOpen, 
+    parentItem, 
+    openParentTile, 
+    closeParentTile 
+  } = useParentTile();
   
   // Parse goals as arrays
   const parseGoalsAsArray = (goals: string | undefined): string[] => {
@@ -551,55 +589,347 @@ export const GTMPhasesEditable = () => {
 
           {/* Phase Progress & Metrics */}
           <div className="space-y-6">
-            {/* Exit Criteria */}
-            <Card>
+            {/* Exit Criteria - Clickable Parent Tile */}
+            <ClickableTile 
+              onClick={() => {
+                setCurrentParentIndex(0);
+                openParentTile({
+                  id: `gtm-phases-exit-criteria-${selectedPhase}`,
+                  title: `Exit Criteria - ${currentPhase?.name}`,
+                  description: 'Conditions that must be met before advancing to the next phase',
+                  content: (
+                    <div className="space-y-6">
+                      {phaseCriteria.length > 0 ? (
+                        <div className="space-y-4">
+                          {phaseCriteria.map((criterion) => (
+                            <ClickableTile 
+                              key={criterion.id}
+                              className="p-4"
+                              hoverScale={false}
+                            >
+                              <div className="flex items-start gap-3">
+                                {editingCriterion === criterion.id ? (
+                                  <div className="flex-1 space-y-3">
+                                    <RichTextEditor
+                                      value={criterion.criterion}
+                                      onChange={(value) => updateCriterion(criterion.id, { criterion: value || "" })}
+                                      height={120}
+                                    />
+                                    <div className="flex gap-2">
+                                      <Button size="sm" onClick={() => setEditingCriterion(null)}>
+                                        <Save className="w-4 h-4 mr-1" />
+                                        Save
+                                      </Button>
+                                      <Button variant="outline" size="sm" onClick={() => setEditingCriterion(null)}>
+                                        Cancel
+                                      </Button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <>
+                                    <CheckCircle className="w-4 h-4 text-accent-success mt-0.5 flex-shrink-0" />
+                                    <div className="flex-1">
+                                      <div 
+                                        className="text-sm prose prose-sm max-w-none"
+                                        dangerouslySetInnerHTML={{ __html: criterion.criterion }}
+                                      />
+                                    </div>
+                                    {isEditMode && (
+                                      <div className="flex gap-1">
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          onClick={() => setEditingCriterion(criterion.id)}
+                                        >
+                                          <Edit className="w-4 h-4" />
+                                        </Button>
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          onClick={() => deleteCriterion(criterion.id)}
+                                        >
+                                          <Trash2 className="w-4 h-4 text-accent-danger" />
+                                        </Button>
+                                      </div>
+                                    )}
+                                  </>
+                                )}
+                              </div>
+                            </ClickableTile>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-center text-muted-foreground py-8">No exit criteria defined for this phase</p>
+                      )}
+                      
+                      {/* Add Criterion Form */}
+                      {showAddCriterion && (
+                        <div className="p-4 rounded-lg border-2 border-dashed border-primary/30 space-y-3">
+                          <RichTextEditor
+                            value={newCriterion.criterion}
+                            onChange={(value) => setNewCriterion({ ...newCriterion, criterion: value || "" })}
+                            height={120}
+                          />
+                          <div className="flex gap-2">
+                            <Button size="sm" onClick={async () => {
+                              if (currentPhase && newCriterion.criterion.trim()) {
+                                await addCriterion(currentPhase.id, {
+                                  criterion: newCriterion.criterion,
+                                  status: newCriterion.status,
+                                  order_index: phaseCriteria.length
+                                });
+                                setNewCriterion({ criterion: "", status: "upcoming" });
+                                setShowAddCriterion(false);
+                              }
+                            }}>
+                              <Plus className="w-4 h-4 mr-1" />
+                              Add
+                            </Button>
+                            <Button variant="outline" size="sm" onClick={() => setShowAddCriterion(false)}>
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {isEditMode && (
+                        <div className="text-center">
+                          <Button
+                            variant="outline"
+                            onClick={() => setShowAddCriterion(true)}
+                          >
+                            <Plus className="w-4 h-4 mr-1" />
+                            Add Exit Criterion
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  )
+                });
+              }}
+              className="glass-card"
+            >
               <CardHeader>
                 <CardTitle className="text-lg">Exit Criteria</CardTitle>
+                <CardDescription>Click to view and edit exit criteria for this phase</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 {phaseCriteria.length > 0 ? (
-                  phaseCriteria.map((criterion) => (
-                    <div key={criterion.id} className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-accent-success mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">{criterion.criterion}</span>
-                    </div>
-                  ))
+                  <div className="space-y-2">
+                    {phaseCriteria.slice(0, 3).map((criterion) => (
+                      <div key={criterion.id} className="flex items-start gap-2">
+                        <CheckCircle className="w-4 h-4 text-accent-success mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">{criterion.criterion.substring(0, 60)}...</span>
+                      </div>
+                    ))}
+                    {phaseCriteria.length > 3 && (
+                      <div className="text-xs text-muted-foreground">
+                        +{phaseCriteria.length - 3} more criteria
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <p className="text-sm text-muted-foreground">No exit criteria defined</p>
                 )}
               </CardContent>
-            </Card>
+            </ClickableTile>
 
-            {/* Metrics */}
-            <Card>
+            {/* Key Metrics - Clickable Parent Tile */}
+            <ClickableTile 
+              onClick={() => {
+                setCurrentParentIndex(1);
+                openParentTile({
+                  id: `gtm-phases-key-metrics-${selectedPhase}`,
+                  title: `Key Metrics - ${currentPhase?.name}`,
+                  description: 'Performance indicators to track for this phase',
+                  content: (
+                    <div className="space-y-6">
+                      {phaseMetrics.length > 0 ? (
+                        <div className="space-y-4">
+                          {phaseMetrics.map((metric) => (
+                            <ClickableTile 
+                              key={metric.id}
+                              className="p-4"
+                              hoverScale={false}
+                            >
+                              <div className="space-y-3">
+                                {editingMetric === metric.id ? (
+                                  <div className="space-y-3">
+                                    <Input
+                                      value={metric.metric_name}
+                                      onChange={(e) => updateMetric(metric.id, { metric_name: e.target.value })}
+                                      placeholder="Metric name..."
+                                    />
+                                    <div className="grid grid-cols-3 gap-2">
+                                      <Input
+                                        value={metric.target_value}
+                                        onChange={(e) => updateMetric(metric.id, { target_value: e.target.value })}
+                                        placeholder="Target value..."
+                                      />
+                                      <Input
+                                        value={metric.current_value || ""}
+                                        onChange={(e) => updateMetric(metric.id, { current_value: e.target.value })}
+                                        placeholder="Current value..."
+                                      />
+                                      <Input
+                                        value={metric.unit || ""}
+                                        onChange={(e) => updateMetric(metric.id, { unit: e.target.value })}
+                                        placeholder="Unit (e.g., %, $, users)..."
+                                      />
+                                    </div>
+                                    <div className="flex gap-2">
+                                      <Button size="sm" onClick={() => setEditingMetric(null)}>
+                                        <Save className="w-4 h-4 mr-1" />
+                                        Save
+                                      </Button>
+                                      <Button variant="outline" size="sm" onClick={() => setEditingMetric(null)}>
+                                        Cancel
+                                      </Button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <>
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-sm font-medium">{metric.metric_name}</span>
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-sm text-primary">
+                                          {metric.current_value || "0"} / {metric.target_value} {metric.unit}
+                                        </span>
+                                        {isEditMode && (
+                                          <div className="flex gap-1">
+                                            <Button
+                                              variant="ghost"
+                                              size="sm"
+                                              onClick={() => setEditingMetric(metric.id)}
+                                            >
+                                              <Edit className="w-4 h-4" />
+                                            </Button>
+                                            <Button
+                                              variant="ghost"
+                                              size="sm"
+                                              onClick={() => deleteMetric(metric.id)}
+                                            >
+                                              <Trash2 className="w-4 h-4 text-accent-danger" />
+                                            </Button>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                    <Progress 
+                                      value={
+                                        metric.current_value 
+                                          ? (parseInt(metric.current_value) / parseInt(metric.target_value)) * 100
+                                          : 0
+                                      } 
+                                      className="h-2" 
+                                    />
+                                  </>
+                                )}
+                              </div>
+                            </ClickableTile>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-center text-muted-foreground py-8">No metrics defined for this phase</p>
+                      )}
+                      
+                      {/* Add Metric Form */}
+                      {showAddMetric && (
+                        <div className="p-4 rounded-lg border-2 border-dashed border-primary/30 space-y-3">
+                          <Input
+                            placeholder="Metric name..."
+                            value={newMetric.metric_name}
+                            onChange={(e) => setNewMetric({ ...newMetric, metric_name: e.target.value })}
+                          />
+                          <div className="grid grid-cols-2 gap-2">
+                            <Input
+                              placeholder="Target value..."
+                              value={newMetric.target_value}
+                              onChange={(e) => setNewMetric({ ...newMetric, target_value: e.target.value })}
+                            />
+                            <Input
+                              placeholder="Unit (e.g., %, $, users)..."
+                              value={newMetric.unit}
+                              onChange={(e) => setNewMetric({ ...newMetric, unit: e.target.value })}
+                            />
+                          </div>
+                          <div className="flex gap-2">
+                            <Button size="sm" onClick={async () => {
+                              if (currentPhase && newMetric.metric_name.trim() && newMetric.target_value.trim()) {
+                                await addMetric(currentPhase.id, {
+                                  metric_name: newMetric.metric_name,
+                                  target_value: newMetric.target_value,
+                                  unit: newMetric.unit,
+                                  current_value: "0",
+                                  order_index: phaseMetrics.length
+                                });
+                                setNewMetric({ metric_name: "", target_value: "", unit: "" });
+                                setShowAddMetric(false);
+                              }
+                            }}>
+                              <Plus className="w-4 h-4 mr-1" />
+                              Add
+                            </Button>
+                            <Button variant="outline" size="sm" onClick={() => setShowAddMetric(false)}>
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {isEditMode && (
+                        <div className="text-center">
+                          <Button
+                            variant="outline"
+                            onClick={() => setShowAddMetric(true)}
+                          >
+                            <Plus className="w-4 h-4 mr-1" />
+                            Add Key Metric
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  )
+                });
+              }}
+              className="glass-card"
+            >
               <CardHeader>
                 <CardTitle className="text-lg">Key Metrics</CardTitle>
+                <CardDescription>Click to view and edit key metrics for this phase</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {phaseMetrics.length > 0 ? (
-                  phaseMetrics.map((metric) => (
-                    <div key={metric.id} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">{metric.metric_name}</span>
-                        <span className="text-sm text-primary">
-                          {metric.current_value || "0"} / {metric.target_value} {metric.unit}
-                        </span>
+                  <div className="space-y-3">
+                    {phaseMetrics.slice(0, 3).map((metric) => (
+                      <div key={metric.id} className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium">{metric.metric_name}</span>
+                          <span className="text-sm text-primary">
+                            {metric.current_value || "0"} / {metric.target_value} {metric.unit}
+                          </span>
+                        </div>
+                        <Progress 
+                          value={
+                            metric.current_value 
+                              ? (parseInt(metric.current_value) / parseInt(metric.target_value)) * 100
+                              : 0
+                          } 
+                          className="h-2" 
+                        />
                       </div>
-                      <Progress 
-                        value={
-                          metric.current_value 
-                            ? (parseInt(metric.current_value) / parseInt(metric.target_value)) * 100
-                            : 0
-                        } 
-                        className="h-2" 
-                      />
-                    </div>
-                  ))
+                    ))}
+                    {phaseMetrics.length > 3 && (
+                      <div className="text-xs text-muted-foreground">
+                        +{phaseMetrics.length - 3} more metrics
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <p className="text-sm text-muted-foreground">No metrics defined</p>
                 )}
               </CardContent>
-            </Card>
+            </ClickableTile>
 
             {/* Phase Timeline */}
             <Card>
@@ -632,6 +962,16 @@ export const GTMPhasesEditable = () => {
           </div>
         </div>
       )}
+
+      {/* Parent Tile Modal for Exit Criteria and Key Metrics */}
+      <ParentTileModal
+        isOpen={isParentOpen}
+        onClose={closeParentTile}
+        title={parentItem?.title || ""}
+        description={parentItem?.description}
+      >
+        {parentItem?.content}
+      </ParentTileModal>
     </div>
   );
 };

@@ -533,16 +533,67 @@ const MetricsKPIs = () => {
           </div>
         </div>
       )
-    }
-  ];
+    },
+    {
+      id: 'metrics-kpi-financial',
+        title: 'Financial Metrics',
+        description: 'Revenue, costs, and financial health indicators',
+        content: (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {financialMetrics.map((metric) => (
+                <ClickableTile 
+                  key={metric.id}
+                  onClick={() => openPresentation(`metrics-kpi-${metric.id}`)}
+                  className="p-4"
+                  hoverScale={false}
+                >
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-semibold text-base">{metric.name}</h3>
+                      <p className="text-xs text-muted-foreground">{metric.definition}</p>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <div className="text-xl font-bold">{metric.current}{metric.unit}</div>
+                        <div className="text-xs text-muted-foreground">Current</div>
+                      </div>
+                      <div>
+                        <div className="text-xl font-bold text-primary">{metric.target}{metric.unit}</div>
+                        <div className="text-xs text-muted-foreground">Target</div>
+                      </div>
+                    </div>
 
-  const [currentParentIndex, setCurrentParentIndex] = useState(0);
-  const { 
-    isParentOpen, 
-    parentItem, 
-    openParentTile, 
-    closeParentTile 
-  } = useParentTile({ item: parentTiles[currentParentIndex] });
+                    <Badge className={getStatusColor(metric.status)} variant="outline">
+                      {getStatusIcon(metric.status)}
+                      <span className="ml-1 text-xs capitalize">{metric.status.replace('-', ' ')}</span>
+                    </Badge>
+                    
+                    {metric.source && (
+                      <div className="text-xs text-muted-foreground border-t pt-2">
+                        <strong>Source:</strong> {metric.source}
+                      </div>
+                    )}
+                  </div>
+                </ClickableTile>
+              ))}
+            </div>
+            <div className="text-center text-muted-foreground">
+              Click on any metric to view detailed presentation
+            </div>
+          </div>
+        )
+      }
+    ];
+
+    const [currentParentIndex, setCurrentParentIndex] = useState(0);
+    const { 
+      isParentOpen, 
+      parentItem, 
+      openParentTile, 
+      closeParentTile 
+    } = useParentTile({ item: parentTiles[currentParentIndex] });
 
   return (
     <div className="space-y-8">

@@ -136,6 +136,96 @@ export const useGTMPhases = () => {
     }
   };
 
+  // Criteria CRUD operations
+  const addCriterion = async (phaseId: string, criterion: Omit<GTMPhaseCriteria, "id" | "phase_id">) => {
+    try {
+      setError(null);
+      const { error } = await supabase
+        .from("gtm_phase_criteria")
+        .insert({ ...criterion, phase_id: phaseId });
+
+      if (error) throw error;
+      await fetchData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to add criterion");
+    }
+  };
+
+  const updateCriterion = async (criterionId: string, updates: Partial<GTMPhaseCriteria>) => {
+    try {
+      setError(null);
+      const { error } = await supabase
+        .from("gtm_phase_criteria")
+        .update(updates)
+        .eq("id", criterionId);
+
+      if (error) throw error;
+      await fetchData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update criterion");
+    }
+  };
+
+  const deleteCriterion = async (criterionId: string) => {
+    try {
+      setError(null);
+      const { error } = await supabase
+        .from("gtm_phase_criteria")
+        .delete()
+        .eq("id", criterionId);
+
+      if (error) throw error;
+      await fetchData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete criterion");
+    }
+  };
+
+  // Metrics CRUD operations
+  const addMetric = async (phaseId: string, metric: Omit<GTMPhaseMetric, "id" | "phase_id">) => {
+    try {
+      setError(null);
+      const { error } = await supabase
+        .from("gtm_phase_metrics")
+        .insert({ ...metric, phase_id: phaseId });
+
+      if (error) throw error;
+      await fetchData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to add metric");
+    }
+  };
+
+  const updateMetric = async (metricId: string, updates: Partial<GTMPhaseMetric>) => {
+    try {
+      setError(null);
+      const { error } = await supabase
+        .from("gtm_phase_metrics")
+        .update(updates)
+        .eq("id", metricId);
+
+      if (error) throw error;
+      await fetchData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update metric");
+    }
+  };
+
+  const deleteMetric = async (metricId: string) => {
+    try {
+      setError(null);
+      const { error } = await supabase
+        .from("gtm_phase_metrics")
+        .delete()
+        .eq("id", metricId);
+
+      if (error) throw error;
+      await fetchData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete metric");
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -151,6 +241,12 @@ export const useGTMPhases = () => {
     addActivity,
     updateActivity,
     deleteActivity,
+    addCriterion,
+    updateCriterion,
+    deleteCriterion,
+    addMetric,
+    updateMetric,
+    deleteMetric,
     refetch: fetchData,
   };
 };

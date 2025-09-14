@@ -214,6 +214,24 @@
   .rich-text-editor .w-md-editor-text-input,
   .rich-text-editor .w-md-editor-text {
     @apply text-foreground bg-background font-mono text-sm;
+    min-height: inherit !important;
+  }
+
+  .rich-text-editor .w-md-editor-text-pre .token.title {
+    @apply text-foreground;
+  }
+
+  .rich-text-editor .w-md-editor-preview {
+    @apply bg-background;
+  }
+
+  /* Fix duplicate content issue */
+  .rich-text-editor .w-md-editor-focus {
+    box-shadow: none !important;
+  }
+
+  .rich-text-editor .wmde-markdown hr {
+    display: none !important;
   }
 
   .rich-text-editor .w-md-editor-toolbar {
