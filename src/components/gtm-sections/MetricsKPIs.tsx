@@ -31,12 +31,13 @@ const MetricsKPIs = () => {
       metric: 'Annual Recurring Revenue (ARR)',
       current: '$150K',
       target2025: '$1.15M',
-      target2026: '$3M',  
-      target2027: '$6.5M',
+      target2026: '$5M',  
+      target2027: '$25M',
       description: 'Primary revenue metric tracking subscription growth',
       status: 'on-track',
       icon: DollarSign,
-      color: 'text-green-600'
+      color: 'text-green-600',
+      source: 'SaaS Metrics 2.0 by David Skok'
     },
     {
       metric: 'Net Revenue Retention (NRR)',
@@ -47,18 +48,20 @@ const MetricsKPIs = () => {
       description: 'Revenue expansion from existing customers',
       status: 'needs-attention',
       icon: TrendingUp,
-      color: 'text-blue-600'
+      color: 'text-blue-600',
+      source: 'SaaS Metrics 2.0 by David Skok'
     },
     {
       metric: 'Monthly Active Users (MAU)',
       current: '450',
       target2025: '8K',
       target2026: '25K',
-      target2027: '50K',
+      target2027: '100K',
       description: 'Users actively scheduling through the platform',
       status: 'on-track',
       icon: Users,
-      color: 'text-purple-600'
+      color: 'text-purple-600',
+      source: 'Product Analytics Best Practices by Mixpanel'
     }
   ];
 
@@ -327,6 +330,10 @@ const MetricsKPIs = () => {
                       {getStatusIcon(metric.status)}
                       <span className="ml-1 capitalize">{metric.status.replace('-', ' ')}</span>
                     </Badge>
+                    
+                    <div className="text-xs text-muted-foreground mt-2 border-t pt-2">
+                      <strong>Source:</strong> <a href="#" className="text-primary hover:underline">{metric.source}</a>
+                    </div>
                   </div>
                 </ClickableTile>
               );

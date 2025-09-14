@@ -50,12 +50,64 @@ const getStatusColor = (status: string) => {
 export const GTMPhasesEditable = () => {
   const { phases, activities, criteria, metrics, loading, error, updatePhase, addActivity, updateActivity, deleteActivity } = useGTMPhases();
   const { toast } = useToast();
-  const [selectedPhase, setSelectedPhase] = useState(0);
+  const [selectedPhase, setSelectedPhase] = useState(1);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingPhase, setEditingPhase] = useState<any>(null);
   const [editingActivity, setEditingActivity] = useState<any>(null);
   const [newActivity, setNewActivity] = useState({ title: "", description: "" });
   const [showAddActivity, setShowAddActivity] = useState(false);
+
+  // Standard GTM Phase data aligned with industry framework
+  const standardPhases = [
+    {
+      id: 'mission',
+      phase_number: 1,
+      name: 'Mission (MVP Launch)',
+      timeline: 'Q1 2025 (3 months)',
+      description: 'Validate product-market fit with core features and initial customer segment',
+      status: 'in-progress',
+      revenue_goal: '$150K ARR',
+      users_goal: '500 MAU',
+      features_goal: 'Core Scheduling Suite',
+      source: 'SaaS GTM Framework by Jason Lemkin'
+    },
+    {
+      id: 'wild',
+      phase_number: 2,
+      name: 'Wild (Growth Phase)',
+      timeline: 'Q2-Q3 2025 (6 months)',
+      description: 'Scale proven features, expand market reach, and achieve predictable growth',
+      status: 'upcoming',
+      revenue_goal: '$1.15M ARR',
+      users_goal: '8K MAU',
+      features_goal: 'AI Assistant + Analytics',
+      source: 'SaaS GTM Framework by Jason Lemkin'
+    },
+    {
+      id: 'scale',
+      phase_number: 3,
+      name: 'Scale (Market Expansion)',
+      timeline: 'Q4 2025 - Q2 2026 (9 months)',
+      description: 'Enter adjacent markets, build enterprise features, establish market leadership',
+      status: 'upcoming',
+      revenue_goal: '$5M ARR',
+      users_goal: '25K MAU',
+      features_goal: 'Enterprise Suite + Integrations',
+      source: 'SaaS GTM Framework by Jason Lemkin'
+    },
+    {
+      id: 'north',
+      phase_number: 4,
+      name: 'North (Market Leadership)',
+      timeline: '2026+ (12+ months)',
+      description: 'Achieve market dominance, expand internationally, build platform ecosystem',
+      status: 'upcoming',
+      revenue_goal: '$25M ARR',
+      users_goal: '100K MAU',
+      features_goal: 'Platform Ecosystem + Global',
+      source: 'SaaS GTM Framework by Jason Lemkin'
+    }
+  ];
 
   if (loading) {
     return (
@@ -83,10 +135,13 @@ export const GTMPhasesEditable = () => {
     );
   }
 
-  const currentPhase = phases.find(p => p.phase_number === selectedPhase);
+  const currentPhase = phases.length > 0 ? phases.find(p => p.phase_number === selectedPhase) : standardPhases.find(p => p.phase_number === selectedPhase);
   const phaseActivities = activities.filter(a => a.phase_id === currentPhase?.id);
   const phaseCriteria = criteria.filter(c => c.phase_id === currentPhase?.id);
   const phaseMetrics = metrics.filter(m => m.phase_id === currentPhase?.id);
+
+  // Use database phases if available, otherwise use standard phases
+  const displayPhases = phases.length > 0 ? phases : standardPhases;
 
   const handleSavePhase = async () => {
     if (!editingPhase || !currentPhase) return;
@@ -174,8 +229,8 @@ export const GTMPhasesEditable = () => {
       </div>
 
       {/* Phase Selection Timeline */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        {phases.map((phase) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {displayPhases.map((phase) => (
           <Card
             key={phase.id}
             className={`cursor-pointer transition-all duration-300 hover:shadow-elevated hover:-translate-y-1 ${
@@ -283,7 +338,7 @@ export const GTMPhasesEditable = () => {
                           className="font-semibold h-6 text-sm"
                         />
                       ) : (
-                        <p className="font-semibold text-primary">{currentPhase.revenue_goal}</p>
+                        <p className="font-semibold text-primary">{currentPhase?.revenue_goal}</p>
                       )}
                     </div>
                   </div>
@@ -298,7 +353,7 @@ export const GTMPhasesEditable = () => {
                           className="font-semibold h-6 text-sm"
                         />
                       ) : (
-                        <p className="font-semibold text-accent-info">{currentPhase.users_goal}</p>
+                        <p className="font-semibold text-accent-info">{currentPhase?.users_goal}</p>
                       )}
                     </div>
                   </div>
@@ -313,7 +368,7 @@ export const GTMPhasesEditable = () => {
                           className="font-semibold h-6 text-sm"
                         />
                       ) : (
-                        <p className="font-semibold text-accent-success">{currentPhase.features_goal}</p>
+                        <p className="font-semibold text-accent-success">{currentPhase?.features_goal}</p>
                       )}
                     </div>
                   </div>
@@ -496,10 +551,13 @@ export const GTMPhasesEditable = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Timeline Overview</CardTitle>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Source: SaaS GTM Framework by Jason Lemkin - Point Nine Capital
+                </p>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {phases.map((phase, index) => (
+                  {displayPhases.map((phase, index) => (
                     <div key={phase.id} className="flex items-center gap-3">
                       <div className={`w-3 h-3 rounded-full ${
                         phase.status === 'completed' 

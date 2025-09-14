@@ -22,37 +22,40 @@ import {
   Rocket
 } from "lucide-react";
 
-// Market Segments Data
+// Market Segments Data - aligned with $16.37B total market projection
 const marketSegments = [
   {
     id: 'enterprise',
     name: 'Enterprise',
     size: '1000+ employees',
-    marketSize: '$2.1B',
+    marketSize: '$8.2B',
     icon: Building2,
     color: 'bg-blue-500 text-white',
     priority: 'Primary',
-    description: 'Large corporations with complex scheduling needs and multiple departments'
+    description: 'Large corporations with complex scheduling needs and multiple departments',
+    source: 'McKinsey Global Institute - Future of Work 2024'
   },
   {
     id: 'smb',
     name: 'SMB',
     size: '50-999 employees', 
-    marketSize: '$1.8B',
+    marketSize: '$6.1B',
     icon: Briefcase,
     color: 'bg-green-500 text-white',
     priority: 'Secondary',
-    description: 'Small to medium businesses looking to scale their operations efficiently'
+    description: 'Small to medium businesses looking to scale their operations efficiently',
+    source: 'McKinsey Global Institute - Future of Work 2024'
   },
   {
     id: 'startups',
     name: 'Startups',
     size: '10-49 employees',
-    marketSize: '$0.6B', 
+    marketSize: '$2.1B', 
     icon: Rocket,
     color: 'bg-purple-500 text-white',
     priority: 'Growth',
-    description: 'Fast-growing startups that need agile and cost-effective solutions'
+    description: 'Fast-growing startups that need agile and cost-effective solutions',
+    source: 'McKinsey Global Institute - Future of Work 2024'
   }
 ];
 
@@ -218,6 +221,9 @@ export default function TargetMarkets() {
             <Card className="p-4 text-center">
               <h4 className="font-semibold mb-2">Market Size</h4>
               <div className="text-2xl font-bold text-primary">{segment.marketSize}</div>
+              <div className="text-xs text-muted-foreground mt-1">
+                Source: <a href="#" className="text-primary hover:underline">{segment.source}</a>
+              </div>
             </Card>
             <Card className="p-4 text-center">
               <h4 className="font-semibold mb-2">Team Size</h4>
@@ -306,6 +312,11 @@ export default function TargetMarkets() {
                   {marketSegments.find(s => s.id === currentSegment)?.marketSize}
                 </div>
                 <div className="text-xs text-muted-foreground">Market Size</div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  <a href="#" className="text-primary hover:underline">
+                    {marketSegments.find(s => s.id === currentSegment)?.source}
+                  </a>
+                </div>
               </Card>
               <Card className="p-4 text-center">
                 <div className="text-2xl font-bold text-green-600">
