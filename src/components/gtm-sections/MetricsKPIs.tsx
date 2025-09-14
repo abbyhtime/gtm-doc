@@ -5,7 +5,9 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PresentationModal } from '@/components/ui/presentation-modal';
 import { ClickableTile } from '@/components/ui/clickable-tile';
+import { ParentTileModal } from '@/components/ui/parent-tile-modal';
 import { usePresentation } from '@/hooks/usePresentation';
+import { useParentTile } from '@/hooks/useParentTile';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -207,10 +209,77 @@ const MetricsKPIs = () => {
     goToPrevious 
   } = usePresentation({ items: presentationItems });
 
+  // Parent tile for North Star Metrics
+  const northStarParentTile = {
+    id: 'north-star-metrics',
+    title: 'North Star Metrics',
+    description: 'Primary success indicators driving business growth and value',
+    content: (
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {northStarMetrics.map((metric, index) => {
+            const Icon = metric.icon;
+            return (
+              <ClickableTile 
+                key={metric.metric} 
+                onClick={() => openPresentation(`northstar-${index}`)}
+                className="p-4"
+                hoverScale={false}
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <Icon className={`h-6 w-6 ${metric.color}`} />
+                    <div>
+                      <h3 className="font-semibold text-sm">{metric.metric}</h3>
+                      <p className="text-xs text-muted-foreground">{metric.description}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Current</span>
+                      <span className="font-bold">{metric.current}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>2025 Target</span>
+                      <span className="font-bold text-primary">{metric.target2025}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>2027 Target</span>
+                      <span className="font-bold text-green-600">{metric.target2027}</span>
+                    </div>
+                  </div>
+
+                  <Badge className={getStatusColor(metric.status)}>
+                    {getStatusIcon(metric.status)}
+                    <span className="ml-1 capitalize">{metric.status.replace('-', ' ')}</span>
+                  </Badge>
+                </div>
+              </ClickableTile>
+            );
+          })}
+        </div>
+        <div className="text-center text-muted-foreground">
+          Click on any metric to view detailed presentation
+        </div>
+      </div>
+    )
+  };
+
+  const { 
+    isParentOpen, 
+    parentItem, 
+    openParentTile, 
+    closeParentTile 
+  } = useParentTile({ item: northStarParentTile });
+
   return (
     <div className="space-y-8">
       {/* North Star Metrics */}
-      <Card className="glass-card">
+      <ClickableTile 
+        onClick={() => openParentTile()}
+        className="glass-card"
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Target className="h-5 w-5 text-primary" />
@@ -264,7 +333,7 @@ const MetricsKPIs = () => {
             })}
           </div>
         </CardContent>
-      </Card>
+      </ClickableTile>
 
       {/* Growth Metrics by Category */}
       <Card className="glass-card">
@@ -434,6 +503,16 @@ const MetricsKPIs = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Parent Tile Modal */}
+      <ParentTileModal
+        isOpen={isParentOpen}
+        onClose={closeParentTile}
+        title={parentItem?.title || ''}
+        description={parentItem?.description}
+      >
+        {parentItem?.content}
+      </ParentTileModal>
 
       {/* Presentation Modal */}
       <PresentationModal

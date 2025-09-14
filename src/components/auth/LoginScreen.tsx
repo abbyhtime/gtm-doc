@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Shield } from 'lucide-react';
+import { Loader2, Shield, Moon, Sun } from 'lucide-react';
 import { verifyAccessCode, setAuthSession } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
 
@@ -15,7 +15,23 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
   const [accessCode, setAccessCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const { toast } = useToast();
+
+  useEffect(() => {
+    // Set dark theme by default but allow override from localStorage
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const finalTheme = savedTheme || 'dark';
+    setTheme(finalTheme);
+    document.documentElement.classList.toggle('dark', finalTheme === 'dark');
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +68,24 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+      {/* Theme Toggle */}
+      <div className="absolute top-4 right-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleTheme}
+          className="h-10 w-10 rounded-lg glass-card hover:shadow-elevated border-0 transition-all duration-300"
+        >
+          {theme === 'light' ? (
+            <Moon className="h-5 w-5 text-foreground" />
+          ) : (
+            <Sun className="h-5 w-5 text-foreground" />
+          )}
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </div>
+      
+      <Card className="w-full max-w-md glass-card">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
             <Shield className="h-12 w-12 text-primary" />

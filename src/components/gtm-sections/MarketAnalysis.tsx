@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { PresentationModal } from '@/components/ui/presentation-modal';
 import { ClickableTile } from '@/components/ui/clickable-tile';
+import { ParentTileModal } from '@/components/ui/parent-tile-modal';
 import { usePresentation } from '@/hooks/usePresentation';
+import { useParentTile } from '@/hooks/useParentTile';
 import { 
   TrendingUp, 
   Target, 
@@ -183,6 +185,124 @@ const MarketAnalysis = () => {
     goToPrevious 
   } = usePresentation({ items: presentationItems });
 
+  // Parent tile items for each section
+  const parentTileItems = [
+    {
+      id: 'market-size',
+      title: 'Market Size & Growth',
+      description: 'AI-powered scheduling market dynamics and projections',
+      content: (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <ClickableTile className="text-center space-y-2 p-6" hoverScale={false}>
+              <div className="text-3xl font-bold text-primary">$457B</div>
+              <div className="text-sm font-medium">Annual Global Loss</div>
+              <div className="text-xs text-muted-foreground">$399B US + $58B UK</div>
+            </ClickableTile>
+            <ClickableTile className="text-center space-y-2 p-6" hoverScale={false}>
+              <div className="text-3xl font-bold text-green-600">$600B+</div>
+              <div className="text-sm font-medium">Market Opportunity</div>
+              <div className="text-xs text-muted-foreground">Projected growth</div>
+            </ClickableTile>
+            <ClickableTile className="text-center space-y-2 p-6" hoverScale={false}>
+              <div className="text-3xl font-bold text-orange-600">31 hrs/mo</div>
+              <div className="text-sm font-medium">Time Wasted</div>
+              <div className="text-xs text-muted-foreground">Per professional</div>
+            </ClickableTile>
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'market-segments',
+      title: 'Market Segments',
+      description: 'Breakdown of addressable market by professional segments',
+      content: (
+        <div className="space-y-6">
+          {marketSegments.map((segment, index) => {
+            const Icon = segment.icon;
+            return (
+              <ClickableTile 
+                key={segment.name} 
+                onClick={() => openPresentation(`segment-${index}`)}
+                className="flex items-center gap-4 p-4 bg-gradient-to-r from-background to-muted/20"
+                hoverScale={false}
+              >
+                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${segment.color}`}>
+                  <Icon className="h-6 w-6" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-semibold">{segment.name}</h3>
+                    <div className="flex items-center gap-3">
+                      <Badge variant="secondary">{segment.share} market share</Badge>
+                      <Badge variant="outline" className="text-green-600">{segment.growth}</Badge>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-2">{segment.description}</p>
+                  <div className="text-lg font-bold text-primary">{segment.size}</div>
+                </div>
+              </ClickableTile>
+            );
+          })}
+          <div className="text-center text-muted-foreground">
+            Click on any segment to view detailed presentation
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'market-trends',
+      title: 'Key Market Trends',
+      description: 'Critical trends shaping the scheduling software landscape',
+      content: (
+        <div className="space-y-6">
+          {marketTrends.map((trend, index) => (
+            <ClickableTile 
+              key={trend.trend} 
+              onClick={() => openPresentation(`trend-${index}`)}
+              className="p-4"
+              hoverScale={false}
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold">{trend.trend}</h3>
+                    <p className="text-sm text-muted-foreground">{trend.description}</p>
+                  </div>
+                  <div className="text-right space-y-1">
+                    <Badge variant={trend.impact === 'High' ? 'default' : 'secondary'}>
+                      {trend.impact} Impact
+                    </Badge>
+                    <div className="text-xs text-muted-foreground">{trend.timeline}</div>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Market Adoption</span>
+                    <span>{trend.percentage}%</span>
+                  </div>
+                  <Progress value={trend.percentage} className="h-2" />
+                </div>
+              </div>
+            </ClickableTile>
+          ))}
+          <div className="text-center text-muted-foreground">
+            Click on any trend to view detailed presentation
+          </div>
+        </div>
+      )
+    }
+  ];
+
+  const [currentParentIndex, setCurrentParentIndex] = useState(0);
+  const { 
+    isParentOpen, 
+    parentItem, 
+    openParentTile, 
+    closeParentTile 
+  } = useParentTile({ item: parentTileItems[currentParentIndex] });
+
   if (showCompetitiveIntel) {
     return (
       <div className="space-y-6">
@@ -203,7 +323,13 @@ const MarketAnalysis = () => {
   return (
     <div className="space-y-8">
       {/* Market Size & Growth */}
-      <Card className="glass-card">
+      <ClickableTile 
+        onClick={() => {
+          setCurrentParentIndex(0);
+          openParentTile(parentTileItems[0]);
+        }}
+        className="glass-card"
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-primary" />
@@ -232,10 +358,16 @@ const MarketAnalysis = () => {
             </div>
           </div>
         </CardContent>
-      </Card>
+      </ClickableTile>
 
       {/* Market Segments */}
-      <Card className="glass-card">
+      <ClickableTile 
+        onClick={() => {
+          setCurrentParentIndex(1);
+          openParentTile(parentTileItems[1]);
+        }}
+        className="glass-card"
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Target className="h-5 w-5 text-primary" />
@@ -274,10 +406,16 @@ const MarketAnalysis = () => {
             })}
           </div>
         </CardContent>
-      </Card>
+      </ClickableTile>
 
       {/* Market Trends */}
-      <Card className="glass-card">
+      <ClickableTile 
+        onClick={() => {
+          setCurrentParentIndex(2);
+          openParentTile(parentTileItems[2]);
+        }}
+        className="glass-card"
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
@@ -320,7 +458,7 @@ const MarketAnalysis = () => {
             ))}
           </div>
         </CardContent>
-      </Card>
+      </ClickableTile>
 
       {/* Competitive Landscape Overview */}
       <Card className="glass-card">
@@ -377,6 +515,16 @@ const MarketAnalysis = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Parent Tile Modal */}
+      <ParentTileModal
+        isOpen={isParentOpen}
+        onClose={closeParentTile}
+        title={parentItem?.title || ''}
+        description={parentItem?.description}
+      >
+        {parentItem?.content}
+      </ParentTileModal>
 
       {/* Presentation Modal */}
       <PresentationModal

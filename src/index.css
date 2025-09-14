@@ -6,87 +6,87 @@
 
 @layer base {
   :root {
-    /* hTime-inspired green color palette */
+    /* Executive-inspired light theme with softer contrasts */
     --background: 0 0% 100%;
-    --foreground: 158 40% 15%;
+    --foreground: 158 25% 20%;
     
-    /* Green-based primary colors inspired by hTime */
-    --primary: 158 64% 52%;
-    --primary-light: 158 40% 85%;
-    --primary-glow: 158 76% 65%;
+    /* Refined green-based primary colors */
+    --primary: 158 55% 48%;
+    --primary-light: 158 30% 92%;
+    --primary-glow: 158 65% 60%;
     --primary-foreground: 0 0% 98%;
     
     /* Sophisticated accent colors */
-    --accent-success: 142 76% 36%;
-    --accent-warning: 38 92% 50%;
-    --accent-danger: 0 84% 60%;
-    --accent-info: 199 89% 48%;
-    --accent-emerald: 160 84% 39%;
+    --accent-success: 142 65% 42%;
+    --accent-warning: 38 85% 55%;
+    --accent-danger: 0 75% 65%;
+    --accent-info: 199 80% 52%;
+    --accent-emerald: 160 75% 45%;
     
     /* hTime GTM Phase Colors */
-    --phase-mission: 221 83% 53%;      /* Mission Possible - Blue */
-    --phase-wild: 158 64% 52%;         /* Into the Wild - Green */
-    --phase-scale: 271 81% 56%;        /* Ready to Scale - Purple */
-    --phase-north: 14 91% 43%;         /* True North - Orange */
+    --phase-mission: 221 75% 58%;      /* Mission Possible - Blue */
+    --phase-wild: 158 55% 48%;         /* Into the Wild - Green */
+    --phase-scale: 271 70% 60%;        /* Ready to Scale - Purple */
+    --phase-north: 14 85% 48%;         /* True North - Orange */
     
     /* Data verification colors */
-    --verified: 142 76% 36%;           /* Verified data - Green */
-    --unverified: 24 95% 53%;          /* Unverified data - Orange */
+    --verified: 142 65% 42%;           /* Verified data - Green */
+    --unverified: 24 90% 58%;          /* Unverified data - Orange */
     
     /* GTM Section Colors */
-    --gtm-executive: 158 64% 52%;      /* Executive Summary - Primary Green */
-    --gtm-market: 199 89% 48%;         /* Market Analysis - Blue */
-    --gtm-product: 271 81% 56%;        /* Product Strategy - Purple */
-    --gtm-phases: 38 92% 50%;          /* GTM Phases - Orange */
-    --gtm-business: 142 76% 36%;       /* Business Model - Emerald */
-    --gtm-targets: 221 83% 53%;        /* Target Markets - Blue */
-    --gtm-metrics: 0 84% 60%;          /* Metrics & KPIs - Red */
+    --gtm-executive: 158 55% 48%;      /* Executive Summary - Primary Green */
+    --gtm-market: 199 80% 52%;         /* Market Analysis - Blue */
+    --gtm-product: 271 70% 60%;        /* Product Strategy - Purple */
+    --gtm-phases: 38 85% 55%;          /* GTM Phases - Orange */
+    --gtm-business: 142 65% 42%;       /* Business Model - Emerald */
+    --gtm-targets: 221 75% 58%;        /* Target Markets - Blue */
+    --gtm-metrics: 0 75% 65%;          /* Metrics & KPIs - Red */
     
-    /* Modern green gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(158 64% 52%), hsl(158 76% 65%));
-    --gradient-secondary: linear-gradient(135deg, hsl(158 40% 98%), hsl(158 20% 95%));
-    --gradient-surface: linear-gradient(180deg, hsl(0 0% 100%), hsl(158 10% 98%));
-    --gradient-glass: linear-gradient(135deg, hsla(0 0% 100% / 0.95), hsla(158 40% 98% / 0.8));
+    /* Soft, executive gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(158 55% 48%), hsl(158 65% 60%));
+    --gradient-secondary: linear-gradient(135deg, hsl(158 25% 98%), hsl(158 15% 96%));
+    --gradient-surface: linear-gradient(180deg, hsl(0 0% 100%), hsl(158 8% 98%));
+    --gradient-glass: linear-gradient(135deg, hsla(0 0% 100% / 0.7), hsla(158 30% 98% / 0.9));
     --gradient-glass-dark: linear-gradient(135deg, hsla(158 20% 12% / 0.95), hsla(158 30% 8% / 0.8));
     
-    /* Clean shadows */
-    --shadow-card: 0 4px 6px -1px hsla(158 40% 15% / 0.08), 0 2px 4px -1px hsla(158 40% 15% / 0.04);
-    --shadow-elevated: 0 10px 15px -3px hsla(158 40% 15% / 0.1), 0 4px 6px -2px hsla(158 40% 15% / 0.05);
-    --shadow-glow: 0 0 0 1px hsla(158 64% 52% / 0.15), 0 8px 25px -8px hsla(158 64% 52% / 0.25);
-    --shadow-glass: 0 8px 32px 0 hsla(158 40% 15% / 0.08);
+    /* Subtle, professional shadows */
+    --shadow-card: 0 2px 8px -2px hsla(158 25% 20% / 0.08), 0 1px 4px -1px hsla(158 25% 20% / 0.04);
+    --shadow-elevated: 0 8px 24px -4px hsla(158 25% 20% / 0.12), 0 4px 8px -2px hsla(158 25% 20% / 0.06);
+    --shadow-glow: 0 0 0 1px hsla(158 55% 48% / 0.12), 0 6px 20px -6px hsla(158 55% 48% / 0.2);
+    --shadow-glass: 0 4px 24px -2px hsla(158 25% 20% / 0.06);
     
     /* Interactive states */
-    --hover-lift: translateY(-2px);
+    --hover-lift: translateY(-1px);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-glass: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
-    /* Clean theme variables */
+    /* Executive theme variables with soft contrasts */
     --card: 0 0% 100%;
-    --card-foreground: 158 40% 15%;
+    --card-foreground: 158 25% 20%;
     --popover: 0 0% 100%;
-    --popover-foreground: 158 40% 15%;
-    --secondary: 158 30% 96%;
-    --secondary-foreground: 158 40% 15%;
-    --muted: 158 20% 95%;
-    --muted-foreground: 158 25% 45%;
-    --accent: 158 30% 96%;
-    --accent-foreground: 158 40% 15%;
-    --destructive: 0 84% 60%;
+    --popover-foreground: 158 25% 20%;
+    --secondary: 158 15% 96%;
+    --secondary-foreground: 158 25% 20%;
+    --muted: 158 12% 97%;
+    --muted-foreground: 158 20% 50%;
+    --accent: 158 15% 96%;
+    --accent-foreground: 158 25% 20%;
+    --destructive: 0 75% 65%;
     --destructive-foreground: 0 0% 98%;
-    --border: 158 20% 88%;
-    --input: 158 20% 88%;
-    --ring: 158 64% 52%;
+    --border: 158 15% 90%;
+    --input: 158 15% 94%;
+    --ring: 158 55% 48%;
     --radius: 0.75rem;
     
     /* Sidebar variables */
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 0 0% 99%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent: 240 4.8% 96%;
     --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 142 76% 36%;
+    --sidebar-border: 158 12% 93%;
+    --sidebar-ring: 142 65% 42%;
   }
 
   .dark {
@@ -149,7 +149,9 @@
 
 @layer components {
   .glass-card {
-    @apply backdrop-blur-xl bg-gradient-glass border border-primary/10 shadow-glass rounded-xl;
+    @apply backdrop-blur-md bg-gradient-to-br from-background/80 via-background/90 to-background/95 
+           border border-border/40 shadow-card rounded-xl 
+           transition-all duration-300 hover:shadow-elevated hover:border-primary/20;
   }
   
   .glass-card-dark {
@@ -157,7 +159,10 @@
   }
   
   .metric-card {
-    @apply bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/15 p-6 rounded-xl hover:shadow-elevated transition-all duration-300 hover:-translate-y-1 hover:border-primary/25;
+    @apply bg-gradient-to-br from-primary/3 via-primary/5 to-primary/8 
+           border border-primary/10 p-6 rounded-xl 
+           hover:shadow-elevated transition-all duration-300 
+           hover:-translate-y-0.5 hover:border-primary/20 hover:bg-gradient-to-br hover:from-primary/5 hover:to-primary/10;
   }
   
   .metric-card-dark {
@@ -175,6 +180,22 @@
 
   /* Enhanced clickable tiles for presentation mode */
   .clickable-tile-parent {
-    @apply cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:scale-[1.02] active:scale-[0.98];
+    @apply cursor-pointer transition-all duration-300 
+           hover:shadow-elevated hover:shadow-primary/5 
+           hover:scale-[1.01] hover:border-primary/15 
+           active:scale-[0.99];
+  }
+
+  /* Executive-style cards for light mode */
+  .executive-card {
+    @apply bg-gradient-to-br from-background via-background/98 to-muted/30
+           border border-border/30 rounded-xl shadow-card
+           transition-all duration-300 
+           hover:shadow-elevated hover:border-primary/15 hover:-translate-y-0.5;
+  }
+
+  /* Subtle dividers */
+  .executive-divider {
+    @apply border-t border-border/30;
   }
 }

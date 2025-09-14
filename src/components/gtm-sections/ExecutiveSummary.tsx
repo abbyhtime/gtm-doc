@@ -277,57 +277,147 @@ const ExecutiveSummary = () => {
   } = usePresentation({ items: presentationItems });
 
   // Parent tile for Executive Metrics section
-  const parentTileItem = {
-    id: 'executive-metrics',
-    title: 'Executive Metrics',
-    description: 'Key performance indicators driving our go-to-market strategy',
-    content: (
-      <div className="space-y-6">
-        {/* Keep the original grid layout but make tiles still clickable */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {keyMetrics.map((metric, index) => {
-            const Icon = metric.icon;
-            return (
-              <ClickableTile 
-                key={metric.label} 
-                onClick={() => openPresentation(`metric-${index}`)}
-                className="p-4"
-                hoverScale={false} // Reduce hover effect when in parent modal
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <Icon className={`h-5 w-5 ${metric.color}`} />
-                    <Badge variant="secondary" className="text-xs">
-                      {metric.trend}
-                    </Badge>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold">{metric.value}</div>
-                    <div className="text-sm font-medium text-muted-foreground">
-                      {metric.label}
+  const parentTileItems = [
+    {
+      id: 'executive-metrics',
+      title: 'Executive Metrics',
+      description: 'Key performance indicators driving our go-to-market strategy',
+      content: (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {keyMetrics.map((metric, index) => {
+              const Icon = metric.icon;
+              return (
+                <ClickableTile 
+                  key={metric.label} 
+                  onClick={() => openPresentation(`metric-${index}`)}
+                  className="p-4"
+                  hoverScale={false}
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Icon className={`h-5 w-5 ${metric.color}`} />
+                      <Badge variant="secondary" className="text-xs">
+                        {metric.trend}
+                      </Badge>
                     </div>
-                    <div className="text-xs text-muted-foreground">
-                      {metric.description}
+                    <div>
+                      <div className="text-2xl font-bold">{metric.value}</div>
+                      <div className="text-sm font-medium text-muted-foreground">
+                        {metric.label}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {metric.description}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </ClickableTile>
-            );
-          })}
+                </ClickableTile>
+              );
+            })}
+          </div>
+          <div className="text-center text-muted-foreground">
+            Click on any metric tile to view detailed presentation
+          </div>
         </div>
-        <div className="text-center text-muted-foreground">
-          Click on any metric tile to view detailed presentation
+      )
+    },
+    {
+      id: 'market-opportunity',
+      title: 'Market Opportunity',
+      description: 'The scheduling burden represents a massive opportunity for disruption',
+      content: (
+        <div className="space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <h4 className="font-semibold text-lg">The Scheduling Crisis</h4>
+              <div className="space-y-4">
+                {marketStats.map((stat, index) => {
+                  const Icon = stat.icon;
+                  return (
+                    <ClickableTile 
+                      key={stat.label} 
+                      onClick={() => openPresentation(`stat-${index}`)}
+                      className="p-3"
+                      hoverScale={false}
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Icon className={`h-4 w-4 ${stat.color}`} />
+                            <span className="text-sm font-medium">{stat.label}</span>
+                          </div>
+                          <span className="text-sm font-bold text-orange-600">{stat.value}%</span>
+                        </div>
+                        <Progress value={stat.value} className="h-2" />
+                        <p className="text-xs text-muted-foreground">{stat.description}</p>
+                      </div>
+                    </ClickableTile>
+                  );
+                })}
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              <h4 className="font-semibold text-lg">Market Facts</h4>
+              <div className="space-y-3">
+                {marketFacts.map((fact) => (
+                  <ClickableTile key={fact.label} className="flex justify-between items-center p-3" hoverScale={false}>
+                    <span className="text-sm font-medium">{fact.label}</span>
+                    <Badge variant="secondary" className="text-orange-600">{fact.value}</Badge>
+                  </ClickableTile>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    )
-  };
+      )
+    },
+    {
+      id: 'strategic-pillars',
+      title: 'Strategic Pillars',
+      description: 'Core principles driving our product and market strategy',
+      content: (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {editedPillars.map((pillar, index) => {
+              const Icon = pillar.icon;
+              return (
+                <ClickableTile 
+                  key={index} 
+                  onClick={() => openPresentation(`pillar-${index}`)}
+                  className="p-4"
+                  hoverScale={false}
+                >
+                  <div className="space-y-4">
+                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${pillar.color}`}>
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="font-semibold mb-2">{pillar.title}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {pillar.description}
+                      </p>
+                    </div>
+                  </div>
+                </ClickableTile>
+              );
+            })}
+          </div>
+          <div className="text-center text-muted-foreground">
+            Click on any pillar to view detailed presentation
+          </div>
+        </div>
+      )
+    }
+  ];
 
+  const [currentParentIndex, setCurrentParentIndex] = useState(0);
   const { 
     isParentOpen, 
     parentItem, 
     openParentTile, 
     closeParentTile 
-  } = useParentTile({ item: parentTileItem });
+  } = useParentTile({ item: parentTileItems[currentParentIndex] });
 
   return (
     <div className="space-y-8">
@@ -430,7 +520,10 @@ const ExecutiveSummary = () => {
 
       {/* Key Metrics */}
       <ClickableTile 
-        onClick={() => openParentTile()}
+        onClick={() => {
+          setCurrentParentIndex(0);
+          openParentTile(parentTileItems[0]);
+        }}
         className="glass-card cursor-pointer"
       >
         <CardHeader onClick={(e) => {
@@ -480,7 +573,13 @@ const ExecutiveSummary = () => {
       </ClickableTile>
 
       {/* Market Opportunity */}
-      <Card className="glass-card">
+      <ClickableTile 
+        onClick={() => {
+          setCurrentParentIndex(1);
+          openParentTile(parentTileItems[1]);
+        }}
+        className="glass-card"
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-primary" />
@@ -535,10 +634,16 @@ const ExecutiveSummary = () => {
             </div>
           </div>
         </CardContent>
-      </Card>
+      </ClickableTile>
 
       {/* Strategic Pillars */}
-      <Card className="glass-card">
+      <ClickableTile 
+        onClick={() => {
+          setCurrentParentIndex(2);
+          openParentTile(parentTileItems[2]);
+        }}
+        className="glass-card"
+      >
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -630,7 +735,7 @@ const ExecutiveSummary = () => {
             })}
           </div>
         </CardContent>
-      </Card>
+      </ClickableTile>
 
       {/* Parent Tile Modal */}
       <ParentTileModal
