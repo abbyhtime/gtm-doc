@@ -21,6 +21,9 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         value={value || ""}
         onChange={onChange}
         height={height}
+        preview="edit"
+        hideToolbar={false}
+        visibleDragbar={false}
         className="bg-background border-border"
       />
     </div>

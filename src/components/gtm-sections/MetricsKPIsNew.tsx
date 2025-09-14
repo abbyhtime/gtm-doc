@@ -278,7 +278,10 @@ const MetricsKPIs = () => {
             </div>
           </div>
           <div className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            <strong>Definition:</strong> {metric.definition}
+            <strong>Definition:</strong> <div 
+              className="inline prose prose-sm max-w-none dark:prose-invert"
+              dangerouslySetInnerHTML={{ __html: metric.definition }}
+            />
           </div>
           <div className="text-lg text-muted-foreground max-w-2xl mx-auto">
             <strong>Why It Matters:</strong> {metric.why}
@@ -628,7 +631,10 @@ const MetricsKPIs = () => {
             </div>
             <Progress value={(parseInt(northStarMetric.current) / parseInt(northStarMetric.target)) * 100} className="h-3" />
             <div className="text-sm text-muted-foreground">
-              <strong>Definition:</strong> {northStarMetric.definition}
+              <strong>Definition:</strong> <div 
+                className="inline prose prose-sm max-w-none dark:prose-invert"
+                dangerouslySetInnerHTML={{ __html: northStarMetric.definition }}
+              />
             </div>
           </div>
         </CardContent>
