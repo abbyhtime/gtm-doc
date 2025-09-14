@@ -31,9 +31,6 @@ import {
 } from 'lucide-react';
 
 const MetricsKPIs = () => {
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [editingMetrics, setEditingMetrics] = useState<any>(null);
-
   // North Star Metric based on PDF document
   const northStarMetric = {
     id: 'waan',
@@ -213,6 +210,17 @@ const MetricsKPIs = () => {
     }
   ];
 
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editingMetrics, setEditingMetrics] = useState<any>(null);
+  const [currentParentIndex, setCurrentParentIndex] = useState(0);
+  const [allMetricsState, setAllMetricsState] = useState({
+    northStar: northStarMetric,
+    criticalInputs,
+    engagement: engagementMetrics,
+    retention: retentionMetrics,
+    financial: financialMetrics
+  });
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'good':
@@ -242,8 +250,31 @@ const MetricsKPIs = () => {
     }
   };
 
-  // All metrics for presentation
-  const allMetrics = [northStarMetric, ...criticalInputs, ...engagementMetrics, ...retentionMetrics, ...financialMetrics];
+  // All metrics for presentation - use state version
+  const allMetrics = [
+    allMetricsState.northStar, 
+    ...allMetricsState.criticalInputs, 
+    ...allMetricsState.engagement, 
+    ...allMetricsState.retention, 
+    ...allMetricsState.financial
+  ];
+
+  // Update metric function
+  const updateMetric = (category: string, metricId: string, updates: any) => {
+    setAllMetricsState(prev => {
+      const newState = { ...prev };
+      if (category === 'northStar') {
+        newState.northStar = { ...newState.northStar, ...updates };
+      } else if (category in newState) {
+        const categoryData = newState[category as keyof typeof newState] as any[];
+        const metricIndex = categoryData.findIndex(m => m.id === metricId);
+        if (metricIndex !== -1) {
+          categoryData[metricIndex] = { ...categoryData[metricIndex], ...updates };
+        }
+      }
+      return newState;
+    });
+  };
 
   // Presentation items
   const presentationItems = allMetrics.map((metric, index) => ({
@@ -278,13 +309,79 @@ const MetricsKPIs = () => {
             </div>
           </div>
           <div className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            <strong>Definition:</strong> <div 
-              className="inline prose prose-sm max-w-none dark:prose-invert"
-              dangerouslySetInnerHTML={{ __html: metric.definition }}
-            />
+            <strong>Definition:</strong> 
+            {isEditMode && editingMetrics?.id === metric.id ? (
+              <div className="mt-2">
+                <RichTextEditor
+                  value={editingMetrics.definition}
+                  onChange={(value) => setEditingMetrics(prev => ({ ...prev, definition: value || '' }))}
+                  height={100}
+                />
+                <div className="flex gap-2 mt-2">
+                  <Button size="sm" onClick={() => {
+                    updateMetric(
+                      metric.id === 'waan' ? 'northStar' : 
+                      allMetricsState.criticalInputs.find(m => m.id === metric.id) ? 'criticalInputs' :
+                      allMetricsState.engagement.find(m => m.id === metric.id) ? 'engagement' :
+                      allMetricsState.retention.find(m => m.id === metric.id) ? 'retention' : 'financial',
+                      metric.id,
+                      { definition: editingMetrics.definition, why: editingMetrics.why }
+                    );
+                    setEditingMetrics(null);
+                    setIsEditMode(false);
+                  }}>
+                    <Save className="h-4 w-4 mr-1" />
+                    Save
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => {
+                    setEditingMetrics(null);
+                    setIsEditMode(false);
+                  }}>
+                    <X className="h-4 w-4 mr-1" />
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div 
+                className="inline prose prose-sm max-w-none dark:prose-invert"
+                dangerouslySetInnerHTML={{ __html: metric.definition }}
+              />
+            )}
           </div>
           <div className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            <strong>Why It Matters:</strong> {metric.why}
+            <strong>Why It Matters:</strong> 
+            {isEditMode && editingMetrics?.id === metric.id ? (
+              <div className="mt-2">
+                <RichTextEditor
+                  value={editingMetrics.why}
+                  onChange={(value) => setEditingMetrics(prev => ({ ...prev, why: value || '' }))}
+                  height={100}
+                />
+              </div>
+            ) : (
+              <span 
+                className="prose prose-sm max-w-none dark:prose-invert"
+                dangerouslySetInnerHTML={{ __html: metric.why }}
+              />
+            )}
+            {!isEditMode && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="ml-2" 
+                onClick={() => {
+                  setEditingMetrics({
+                    id: metric.id,
+                    definition: metric.definition,
+                    why: metric.why
+                  });
+                  setIsEditMode(true);
+                }}
+              >
+                <Edit2 className="h-4 w-4" />
+              </Button>
+            )}
           </div>
           {metric.source && (
             <div className="mt-4 p-3 bg-muted/30 rounded-lg border-l-4 border-primary max-w-2xl mx-auto">
@@ -308,7 +405,7 @@ const MetricsKPIs = () => {
     goToPrevious 
   } = usePresentation({ items: presentationItems });
 
-  // Parent tiles for each section
+  // Parent tiles for each section - using state data
   const parentTiles = [
     {
       id: 'metrics-kpi-north-star',
@@ -317,7 +414,7 @@ const MetricsKPIs = () => {
       content: (
         <div className="space-y-6">
           <ClickableTile 
-            onClick={() => openPresentation(`metrics-kpi-${northStarMetric.id}`)}
+            onClick={() => openPresentation(`metrics-kpi-${allMetricsState.northStar.id}`)}
             className="p-6"
             hoverScale={false}
           >
@@ -325,34 +422,37 @@ const MetricsKPIs = () => {
               <div className="flex items-center gap-3">
                 <Network className="h-8 w-8 text-primary" />
                 <div>
-                  <h3 className="font-bold text-lg">{northStarMetric.name}</h3>
-                  <p className="text-sm text-muted-foreground">{northStarMetric.definition}</p>
+                  <h3 className="font-bold text-lg">{allMetricsState.northStar.name}</h3>
+                  <div 
+                    className="text-sm text-muted-foreground prose prose-sm max-w-none dark:prose-invert"
+                    dangerouslySetInnerHTML={{ __html: allMetricsState.northStar.definition }}
+                  />
                 </div>
               </div>
               
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center p-4 rounded-lg bg-muted/30">
-                  <div className="text-3xl font-bold text-muted-foreground">{northStarMetric.current}</div>
+                  <div className="text-3xl font-bold text-muted-foreground">{allMetricsState.northStar.current}</div>
                   <div className="text-sm text-muted-foreground">Current</div>
                 </div>
                 <div className="text-center p-4 rounded-lg bg-primary/10">
-                  <div className="text-3xl font-bold text-primary">{northStarMetric.target}</div>
+                  <div className="text-3xl font-bold text-primary">{allMetricsState.northStar.target}</div>
                   <div className="text-sm text-muted-foreground">Target</div>
                 </div>
               </div>
 
-              <Badge className={getStatusColor(northStarMetric.status)} variant="outline">
-                {getStatusIcon(northStarMetric.status)}
-                <span className="ml-1 capitalize">{northStarMetric.status.replace('-', ' ')}</span>
+              <Badge className={getStatusColor(allMetricsState.northStar.status)} variant="outline">
+                {getStatusIcon(allMetricsState.northStar.status)}
+                <span className="ml-1 capitalize">{allMetricsState.northStar.status.replace('-', ' ')}</span>
               </Badge>
               
               <div className="text-sm text-muted-foreground border-t pt-4">
-                <strong>Source:</strong> {northStarMetric.source}
+                <strong>Source:</strong> {allMetricsState.northStar.source}
               </div>
             </div>
           </ClickableTile>
           <div className="text-center text-muted-foreground">
-            Click to view detailed presentation
+            Click to view detailed presentation and edit
           </div>
         </div>
       )
@@ -364,7 +464,7 @@ const MetricsKPIs = () => {
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {criticalInputs.map((metric) => (
+            {allMetricsState.criticalInputs.map((metric) => (
               <ClickableTile 
                 key={metric.id}
                 onClick={() => openPresentation(`metrics-kpi-${metric.id}`)}
@@ -374,7 +474,10 @@ const MetricsKPIs = () => {
                 <div className="space-y-4">
                   <div>
                     <h3 className="font-semibold text-base">{metric.name}</h3>
-                    <p className="text-xs text-muted-foreground">{metric.definition}</p>
+                    <div 
+                      className="text-xs text-muted-foreground prose prose-sm max-w-none dark:prose-invert"
+                      dangerouslySetInnerHTML={{ __html: metric.definition }}
+                    />
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
@@ -397,7 +500,7 @@ const MetricsKPIs = () => {
             ))}
           </div>
           <div className="text-center text-muted-foreground">
-            Click on any metric to view detailed presentation
+            Click on any metric to view detailed presentation and edit
           </div>
         </div>
       )
@@ -409,7 +512,7 @@ const MetricsKPIs = () => {
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {engagementMetrics.map((metric) => (
+            {allMetricsState.engagement.map((metric) => (
               <ClickableTile 
                 key={metric.id}
                 onClick={() => openPresentation(`metrics-kpi-${metric.id}`)}
@@ -419,7 +522,10 @@ const MetricsKPIs = () => {
                 <div className="space-y-4">
                   <div>
                     <h3 className="font-semibold text-base">{metric.name}</h3>
-                    <p className="text-xs text-muted-foreground">{metric.definition}</p>
+                    <div 
+                      className="text-xs text-muted-foreground prose prose-sm max-w-none dark:prose-invert"
+                      dangerouslySetInnerHTML={{ __html: metric.definition }}
+                    />
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
@@ -442,7 +548,7 @@ const MetricsKPIs = () => {
             ))}
           </div>
           <div className="text-center text-muted-foreground">
-            Click on any metric to view detailed presentation
+            Click on any metric to view detailed presentation and edit
           </div>
         </div>
       )
@@ -454,7 +560,7 @@ const MetricsKPIs = () => {
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {retentionMetrics.map((metric) => (
+            {allMetricsState.retention.map((metric) => (
               <ClickableTile 
                 key={metric.id}
                 onClick={() => openPresentation(`metrics-kpi-${metric.id}`)}
@@ -464,7 +570,10 @@ const MetricsKPIs = () => {
                 <div className="space-y-4">
                   <div>
                     <h3 className="font-semibold text-base">{metric.name}</h3>
-                    <p className="text-xs text-muted-foreground">{metric.definition}</p>
+                    <div 
+                      className="text-xs text-muted-foreground prose prose-sm max-w-none dark:prose-invert"
+                      dangerouslySetInnerHTML={{ __html: metric.definition }}
+                    />
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
@@ -487,7 +596,7 @@ const MetricsKPIs = () => {
             ))}
           </div>
           <div className="text-center text-muted-foreground">
-            Click on any metric to view detailed presentation
+            Click on any metric to view detailed presentation and edit
           </div>
         </div>
       )
@@ -499,7 +608,7 @@ const MetricsKPIs = () => {
       content: (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {financialMetrics.map((metric) => (
+            {allMetricsState.financial.map((metric) => (
               <ClickableTile 
                 key={metric.id}
                 onClick={() => openPresentation(`metrics-kpi-${metric.id}`)}
@@ -509,7 +618,10 @@ const MetricsKPIs = () => {
                 <div className="space-y-4">
                   <div>
                     <h3 className="font-semibold text-base">{metric.name}</h3>
-                    <p className="text-xs text-muted-foreground">{metric.definition}</p>
+                    <div 
+                      className="text-xs text-muted-foreground prose prose-sm max-w-none dark:prose-invert"
+                      dangerouslySetInnerHTML={{ __html: metric.definition }}
+                    />
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
@@ -527,76 +639,31 @@ const MetricsKPIs = () => {
                     {getStatusIcon(metric.status)}
                     <span className="ml-1 text-xs capitalize">{metric.status.replace('-', ' ')}</span>
                   </Badge>
+                  
+                  {metric.source && (
+                    <div className="text-xs text-muted-foreground border-t pt-2">
+                      <strong>Source:</strong> {metric.source}
+                    </div>
+                  )}
                 </div>
               </ClickableTile>
             ))}
           </div>
           <div className="text-center text-muted-foreground">
-            Click on any metric to view detailed presentation
+            Click on any metric to view detailed presentation and edit
           </div>
         </div>
       )
-    },
-    {
-      id: 'metrics-kpi-financial',
-        title: 'Financial Metrics',
-        description: 'Revenue, costs, and financial health indicators',
-        content: (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {financialMetrics.map((metric) => (
-                <ClickableTile 
-                  key={metric.id}
-                  onClick={() => openPresentation(`metrics-kpi-${metric.id}`)}
-                  className="p-4"
-                  hoverScale={false}
-                >
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="font-semibold text-base">{metric.name}</h3>
-                      <p className="text-xs text-muted-foreground">{metric.definition}</p>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <div className="text-xl font-bold">{metric.current}{metric.unit}</div>
-                        <div className="text-xs text-muted-foreground">Current</div>
-                      </div>
-                      <div>
-                        <div className="text-xl font-bold text-primary">{metric.target}{metric.unit}</div>
-                        <div className="text-xs text-muted-foreground">Target</div>
-                      </div>
-                    </div>
+    }
+  ];
 
-                    <Badge className={getStatusColor(metric.status)} variant="outline">
-                      {getStatusIcon(metric.status)}
-                      <span className="ml-1 text-xs capitalize">{metric.status.replace('-', ' ')}</span>
-                    </Badge>
-                    
-                    {metric.source && (
-                      <div className="text-xs text-muted-foreground border-t pt-2">
-                        <strong>Source:</strong> {metric.source}
-                      </div>
-                    )}
-                  </div>
-                </ClickableTile>
-              ))}
-            </div>
-            <div className="text-center text-muted-foreground">
-              Click on any metric to view detailed presentation
-            </div>
-          </div>
-        )
-      }
-    ];
-
-    const [currentParentIndex, setCurrentParentIndex] = useState(0);
-    const { 
-      isParentOpen, 
-      parentItem, 
-      openParentTile, 
-      closeParentTile 
-    } = useParentTile({ item: parentTiles[currentParentIndex] });
+  // Parent tile hook
+  const { 
+    isParentOpen, 
+    parentItem, 
+    openParentTile, 
+    closeParentTile 
+  } = useParentTile({ item: parentTiles[currentParentIndex] });
 
   return (
     <div className="space-y-8">
@@ -621,19 +688,19 @@ const MetricsKPIs = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold">{northStarMetric.current} WAAN/week</div>
+              <div className="text-2xl font-bold">{allMetricsState.northStar.current} WAAN/week</div>
                 <div className="text-sm text-muted-foreground">Current Performance</div>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-primary">{northStarMetric.target} WAAN/week</div>
+                <div className="text-2xl font-bold text-primary">{allMetricsState.northStar.target} WAAN/week</div>
                 <div className="text-sm text-muted-foreground">Q1 2025 Target</div>
               </div>
             </div>
-            <Progress value={(parseInt(northStarMetric.current) / parseInt(northStarMetric.target)) * 100} className="h-3" />
+            <Progress value={(parseInt(allMetricsState.northStar.current) / parseInt(allMetricsState.northStar.target)) * 100} className="h-3" />
             <div className="text-sm text-muted-foreground">
               <strong>Definition:</strong> <div 
                 className="inline prose prose-sm max-w-none dark:prose-invert"
-                dangerouslySetInnerHTML={{ __html: northStarMetric.definition }}
+                dangerouslySetInnerHTML={{ __html: allMetricsState.northStar.definition }}
               />
             </div>
           </div>
@@ -659,7 +726,7 @@ const MetricsKPIs = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {criticalInputs.map((metric) => (
+            {allMetricsState.criticalInputs.map((metric) => (
               <div key={metric.id} className="p-4 rounded-lg border bg-gradient-to-r from-background to-muted/20">
                 <div className="space-y-3">
                   <div>
@@ -704,7 +771,7 @@ const MetricsKPIs = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {engagementMetrics.map((metric) => (
+            {allMetricsState.engagement.map((metric) => (
               <div key={metric.id} className="p-4 rounded-lg border bg-gradient-to-r from-background to-muted/20">
                 <div className="space-y-3">
                   <div>
@@ -749,7 +816,7 @@ const MetricsKPIs = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {retentionMetrics.map((metric) => (
+              {allMetricsState.retention.map((metric) => (
                 <div key={metric.id} className="flex justify-between items-center p-3 rounded-lg border">
                   <div>
                     <div className="font-medium text-sm">{metric.name}</div>
@@ -782,7 +849,7 @@ const MetricsKPIs = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {financialMetrics.map((metric) => (
+              {allMetricsState.financial.map((metric) => (
                 <div key={metric.id} className="flex justify-between items-center p-3 rounded-lg border">
                   <div>
                     <div className="font-medium text-sm">{metric.name}</div>

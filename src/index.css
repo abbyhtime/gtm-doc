@@ -299,6 +299,11 @@
   }
 
   /* Rich text editor text visibility fixes */
+  .rich-text-editor .w-md-editor {
+    color: hsl(var(--foreground)) !important;
+    background: hsl(var(--background)) !important;
+  }
+  
   .rich-text-editor .w-md-editor-text-area {
     color: hsl(var(--foreground)) !important;
     background: hsl(var(--background)) !important;
