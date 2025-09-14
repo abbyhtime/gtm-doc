@@ -57,7 +57,10 @@
     
     /* Interactive states */
     --hover-lift: translateY(-1px);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Animation keyframes */
+  --pulse-subtle: pulse-subtle 3s ease-in-out infinite;
     --transition-glass: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     /* Animation utilities */

@@ -208,8 +208,45 @@ const ExecutiveSummary = () => {
     setIsMissionEdit(false);
   };
 
+  // Vision and Mission presentation items
+  const visionMissionItems = [
+    {
+      id: 'vision',
+      title: 'Our Vision',
+      description: 'Revolutionizing team collaboration and time management',
+      content: (
+        <div className="flex flex-col items-center justify-center h-full text-center space-y-8">
+          <div className="space-y-4">
+            <Globe className="h-20 w-20 mx-auto text-blue-500" />
+            <div className="text-5xl font-bold">Our Vision</div>
+          </div>
+          <div className="max-w-4xl text-2xl leading-relaxed text-muted-foreground">
+            {vision || "To revolutionize how teams collaborate and manage time by creating the world's most intelligent, intuitive scheduling platform."}
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 'mission',
+      title: 'Our Mission',
+      description: 'Empowering professionals with AI-driven scheduling solutions',
+      content: (
+        <div className="flex flex-col items-center justify-center h-full text-center space-y-8">
+          <div className="space-y-4">
+            <Target className="h-20 w-20 mx-auto text-green-500" />
+            <div className="text-5xl font-bold">Our Mission</div>
+          </div>
+          <div className="max-w-4xl text-2xl leading-relaxed text-muted-foreground">
+            {mission || "To empower professionals and organizations with AI-driven scheduling solutions that eliminate coordination friction and unlock human potential."}
+          </div>
+        </div>
+      )
+    }
+  ];
+
   // Presentation items
   const presentationItems = [
+    ...visionMissionItems,
     ...keyMetrics.map((metric, index) => ({
       id: `metric-${index}`,
       title: metric.label,
@@ -276,8 +313,56 @@ const ExecutiveSummary = () => {
     goToPrevious 
   } = usePresentation({ items: presentationItems });
 
+  // Vision and Mission parent tile
+  const visionMissionParentTile = {
+    id: 'vision-mission',
+    title: 'Vision & Mission',
+    description: 'Our core purpose and strategic direction',
+    content: (
+      <div className="space-y-6">
+        <div className="grid md:grid-cols-2 gap-6">
+          <ClickableTile onClick={() => openPresentation('vision')} hoverScale={false}>
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Globe className="h-5 w-5 text-blue-500" />
+                  Our Vision
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  {visionLoading ? "Loading..." : vision || "To revolutionize how teams collaborate and manage time by creating the world's most intelligent, intuitive scheduling platform."}
+                </p>
+              </CardContent>
+            </Card>
+          </ClickableTile>
+          
+          <ClickableTile onClick={() => openPresentation('mission')} hoverScale={false}>
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="h-5 w-5 text-green-500" />
+                  Our Mission
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground leading-relaxed">
+                  {missionLoading ? "Loading..." : mission || "To empower professionals and organizations with AI-driven scheduling solutions that eliminate coordination friction and unlock human potential."}
+                </p>
+              </CardContent>
+            </Card>
+          </ClickableTile>
+        </div>
+        <div className="text-center text-muted-foreground">
+          Click on either vision or mission tile to view detailed presentation
+        </div>
+      </div>
+    )
+  };
+
   // Parent tile for Executive Metrics section
   const parentTileItems = [
+    visionMissionParentTile,
     {
       id: 'executive-metrics',
       title: 'Executive Metrics',
