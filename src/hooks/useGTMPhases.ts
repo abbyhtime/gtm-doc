@@ -245,6 +245,29 @@ export const useGTMPhases = () => {
     }
   };
 
+  // Phase delete operation
+  const deletePhase = async (phaseId: string) => {
+    try {
+      setError(null);
+      
+      // Delete related data first (cascade delete)
+      await supabase.from("gtm_phase_activities").delete().eq("phase_id", phaseId);
+      await supabase.from("gtm_phase_criteria").delete().eq("phase_id", phaseId);
+      await supabase.from("gtm_phase_metrics").delete().eq("phase_id", phaseId);
+      
+      // Delete the phase
+      const { error } = await supabase
+        .from("gtm_phases")
+        .delete()
+        .eq("id", phaseId);
+
+      if (error) throw error;
+      await fetchData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete phase");
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -258,6 +281,7 @@ export const useGTMPhases = () => {
     error,
     addPhase,
     updatePhase,
+    deletePhase,
     addActivity,
     updateActivity,
     deleteActivity,

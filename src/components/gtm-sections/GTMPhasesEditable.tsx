@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useGTMPhases } from "@/hooks/useGTMPhases";
 import { useToast } from "@/hooks/use-toast";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
@@ -32,6 +33,7 @@ import { ParentTileModal } from "@/components/ui/parent-tile-modal";
 import { Timeline } from "@/components/ui/timeline";
 import { ActivityModal } from "@/components/ui/activity-modal";
 import { useParentTile } from "@/hooks/useParentTile";
+import { HtmlContent } from "@/components/ui/html-content";
 import { cn } from "@/lib/utils";
 
 const getStatusIcon = (status: string) => {
@@ -57,24 +59,26 @@ const getStatusColor = (status: string) => {
 };
 
 export const GTMPhasesEditable = () => {
-  const { 
-    phases, 
-    activities, 
-    criteria, 
-    metrics, 
-    loading, 
+  const {
+    phases,
+    activities,
+    criteria,
+    metrics,
+    loading,
     error,
     addPhase,
-    updatePhase, 
-    addActivity, 
-    updateActivity, 
+    updatePhase,
+    deletePhase,
+    addActivity,
+    updateActivity,
     deleteActivity,
     addCriterion,
     updateCriterion,
     deleteCriterion,
     addMetric,
     updateMetric,
-    deleteMetric
+    deleteMetric,
+    refetch
   } = useGTMPhases();
   const { toast } = useToast();
   const [selectedPhase, setSelectedPhase] = useState(1);
@@ -262,6 +266,41 @@ export const GTMPhasesEditable = () => {
     }
   };
 
+  const handleDeletePhase = async () => {
+    if (!currentPhase || displayPhases.length <= 1) {
+      toast({
+        title: "Error",
+        description: "Cannot delete the last remaining phase",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      await deletePhase(currentPhase.id);
+      
+      // Switch to the first available phase after deletion
+      const remainingPhases = displayPhases.filter(p => p.id !== currentPhase.id);
+      if (remainingPhases.length > 0) {
+        setSelectedPhase(remainingPhases[0].phase_number);
+      }
+      
+      setIsEditMode(false);
+      setEditingPhase(null);
+      
+      toast({
+        title: "Success",
+        description: "Phase deleted successfully",
+      });
+    } catch (err) {
+      toast({
+        title: "Error", 
+        description: "Failed to delete phase",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="space-y-8">
       {/* Header with Edit Mode Toggle */}
@@ -352,40 +391,135 @@ export const GTMPhasesEditable = () => {
           {/* Phase Details */}
           <div className="lg:col-span-2 space-y-6">
             {/* Summary Card */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  {getStatusIcon(currentPhase.status)}
-                  {isEditMode && editingPhase ? (
-                    <Input
-                      value={editingPhase.name}
-                      onChange={(e) => setEditingPhase({ ...editingPhase, name: e.target.value })}
-                      className="font-semibold"
-                    />
-                  ) : (
-                    <span>{currentPhase.name}</span>
-                  )}
-                  <Badge className={getStatusColor(currentPhase.status)}>
+            <ClickableTile
+              onClick={() => openParentTile({
+                id: currentPhase.id,
+                title: currentPhase.name,
+                description: "Edit phase details",
+                content: (
+                  <div className="space-y-4 p-4">
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium">Phase Name</label>
+                        <Input
+                          value={editingPhase?.name || currentPhase.name}
+                          onChange={(e) => setEditingPhase({ 
+                            ...(editingPhase || currentPhase), 
+                            name: e.target.value 
+                          })}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium">Status</label>
+                        <Select
+                          value={editingPhase?.status || currentPhase.status}
+                          onValueChange={(value) => setEditingPhase({ 
+                            ...(editingPhase || currentPhase), 
+                            status: value 
+                          })}
+                        >
+                          <SelectTrigger className="mt-1">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="upcoming">Upcoming</SelectItem>
+                            <SelectItem value="in-progress">In Progress</SelectItem>
+                            <SelectItem value="completed">Completed</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium">Timeline</label>
+                        <Input
+                          value={editingPhase?.timeline || currentPhase.timeline}
+                          onChange={(e) => setEditingPhase({ 
+                            ...(editingPhase || currentPhase), 
+                            timeline: e.target.value 
+                          })}
+                          placeholder="e.g., Q1 2025 (3 months)"
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium">Description</label>
+                        <RichTextEditor
+                          value={editingPhase?.description || currentPhase.description}
+                          onChange={(value) => setEditingPhase({ 
+                            ...(editingPhase || currentPhase), 
+                            description: value || "" 
+                          })}
+                          height={200}
+                        />
+                      </div>
+                      <div className="flex gap-2 pt-4">
+                        <Button onClick={handleSavePhase} size="sm">
+                          <Save className="w-4 h-4 mr-2" />
+                          Save Phase
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="destructive" size="sm" disabled={displayPhases.length <= 1}>
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Delete Phase
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete the phase and all its associated activities, criteria, and metrics.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction onClick={handleDeletePhase} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+              className="cursor-pointer"
+            >
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    {getStatusIcon(currentPhase.status)}
                     {isEditMode && editingPhase ? (
-                      <Select
-                        value={editingPhase.status}
-                        onValueChange={(value) => setEditingPhase({ ...editingPhase, status: value })}
-                      >
-                        <SelectTrigger className="w-32 h-6 text-xs">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="upcoming">Upcoming</SelectItem>
-                          <SelectItem value="in-progress">In Progress</SelectItem>
-                          <SelectItem value="completed">Completed</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Input
+                        value={editingPhase.name}
+                        onChange={(e) => setEditingPhase({ ...editingPhase, name: e.target.value })}
+                        className="font-semibold"
+                      />
                     ) : (
-                      currentPhase.status
+                      <span>{currentPhase.name}</span>
                     )}
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
+                    <Badge className={getStatusColor(currentPhase.status)}>
+                      {isEditMode && editingPhase ? (
+                        <Select
+                          value={editingPhase.status}
+                          onValueChange={(value) => setEditingPhase({ ...editingPhase, status: value })}
+                        >
+                          <SelectTrigger className="w-32 h-6 text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="upcoming">Upcoming</SelectItem>
+                            <SelectItem value="in-progress">In Progress</SelectItem>
+                            <SelectItem value="completed">Completed</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        currentPhase.status
+                      )}
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
               <CardContent className="space-y-4">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Calendar className="w-4 h-4" />
@@ -413,9 +547,9 @@ export const GTMPhasesEditable = () => {
                     height={150}
                   />
                 ) : (
-                  <div 
-                    className="text-muted-foreground prose prose-sm max-w-none"
-                    dangerouslySetInnerHTML={{ __html: currentPhase.description }}
+                  <HtmlContent 
+                    content={currentPhase.description}
+                    className="text-muted-foreground"
                   />
                 )}
 
@@ -505,10 +639,33 @@ export const GTMPhasesEditable = () => {
                       <Save className="w-4 h-4 mr-2" />
                       Save Phase
                     </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="destructive" size="sm" disabled={displayPhases.length <= 1}>
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Delete Phase
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete the phase and all its associated activities, criteria, and metrics.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction onClick={handleDeletePhase} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </ClickableTile>
 
             {/* Timeline */}
             <Timeline 
