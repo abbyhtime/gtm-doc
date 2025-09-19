@@ -15,6 +15,8 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
   className,
   height = 200,
 }) => {
+  const isDark = document.documentElement.classList.contains('dark');
+  
   return (
     <div className={cn("rich-text-editor", className)}>
       <MDEditor
@@ -24,9 +26,46 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
         preview="edit"
         hideToolbar={false}
         visibleDragbar={false}
-        className="bg-background border-border [&_.w-md-editor]:!bg-background [&_.w-md-editor-text]:!text-foreground [&_.w-md-editor-text-input]:!text-foreground [&_.w-md-editor-text-container]:!text-foreground [&_.w-md-editor-text-area]:!text-foreground [&_.w-md-editor-text-pre>code]:!text-foreground [&_.w-md-editor-text-pre]:!text-foreground [&_.w-md-editor-text>div]:!text-foreground"
-        data-color-mode="light"
+        className="bg-background border-border"
+        data-color-mode={isDark ? "dark" : "light"}
+        style={{
+          backgroundColor: 'hsl(var(--background))',
+        }}
+        textareaProps={{
+          style: {
+            color: 'hsl(var(--foreground))',
+            backgroundColor: 'hsl(var(--background))',
+          }
+        }}
       />
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .w-md-editor {
+            background-color: hsl(var(--background)) !important;
+            color: hsl(var(--foreground)) !important;
+          }
+          .w-md-editor-text-pre,
+          .w-md-editor-text-input,
+          .w-md-editor-text-container,
+          .w-md-editor-text-area,
+          .w-md-editor-text > div {
+            color: hsl(var(--foreground)) !important;
+            background-color: hsl(var(--background)) !important;
+          }
+          .w-md-editor-text-pre > code {
+            color: hsl(var(--foreground)) !important;
+          }
+          .w-md-editor-text ul,
+          .w-md-editor-text ol {
+            padding-left: 1.5rem !important;
+            margin: 0.5rem 0 !important;
+          }
+          .w-md-editor-text li {
+            margin: 0.25rem 0 !important;
+            list-style: inherit !important;
+          }
+        `
+      }} />
     </div>
   );
 };

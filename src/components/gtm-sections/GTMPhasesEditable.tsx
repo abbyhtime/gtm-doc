@@ -279,6 +279,9 @@ export const GTMPhasesEditable = () => {
     try {
       await deletePhase(currentPhase.id);
       
+      // Close the parent tile modal immediately
+      closeParentTile();
+      
       // Switch to the first available phase after deletion
       const remainingPhases = displayPhases.filter(p => p.id !== currentPhase.id);
       if (remainingPhases.length > 0) {
@@ -288,10 +291,13 @@ export const GTMPhasesEditable = () => {
       setIsEditMode(false);
       setEditingPhase(null);
       
-      toast({
-        title: "Success",
-        description: "Phase deleted successfully",
-      });
+      // Show success toast after a small delay to ensure modal closes first
+      setTimeout(() => {
+        toast({
+          title: "Success",
+          description: "Phase deleted successfully",
+        });
+      }, 100);
     } catch (err) {
       toast({
         title: "Error", 
