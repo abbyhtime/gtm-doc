@@ -193,14 +193,22 @@ export const GTMPhasesEditable = () => {
   const displayPhases = phases.length > 0 ? phases : standardPhases;
 
   const handleSavePhase = async () => {
-    if (!editingPhase || !currentPhase) return;
+    console.log("handleSavePhase called", { editingPhase, currentPhase });
+    if (!editingPhase || !currentPhase) {
+      console.log("Missing data:", { editingPhase, currentPhase });
+      toast({ title: "Error", description: "Missing phase data", variant: "destructive" });
+      return;
+    }
     
     try {
+      console.log("Calling updatePhase with:", currentPhase.id, editingPhase);
       await updatePhase(currentPhase.id, editingPhase);
       setIsEditMode(false);
       setEditingPhase(null);
       toast({ title: "Success", description: "Phase updated successfully" });
+      console.log("Phase saved successfully");
     } catch (err) {
+      console.error("Save failed:", err);
       toast({ title: "Error", description: "Failed to update phase", variant: "destructive" });
     }
   };

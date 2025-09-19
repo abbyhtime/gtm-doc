@@ -99,15 +99,23 @@ export const useGTMPhases = () => {
   const updatePhase = async (phaseId: string, updates: Partial<GTMPhase>) => {
     try {
       setError(null);
-      const { error } = await supabase
+      console.log("updatePhase called with:", { phaseId, updates });
+      
+      const { data, error } = await supabase
         .from("gtm_phases")
         .update(updates)
-        .eq("id", phaseId);
+        .eq("id", phaseId)
+        .select();
 
+      console.log("Supabase response:", { data, error });
+      
       if (error) throw error;
       await fetchData();
+      console.log("updatePhase completed successfully");
     } catch (err) {
+      console.error("updatePhase error:", err);
       setError(err instanceof Error ? err.message : "Failed to update phase");
+      throw err; // Re-throw to let the calling function handle it
     }
   };
 
