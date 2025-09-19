@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ClickableTile } from "@/components/ui/clickable-tile";
 import { ParentTileModal } from "@/components/ui/parent-tile-modal";
-import { PhaseTimeline, ActivityTimeline } from "@/components/ui/timeline";
 import { ActivityDetailModal } from "@/components/ui/activity-detail-modal";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -540,13 +539,7 @@ export default function GTMPhasesEditable() {
 
   return (
     <div className="space-y-8">
-      {/* Phase Timeline */}
-      <PhaseTimeline 
-        phases={allPhases}
-        onPhaseClick={(phase) => setSelectedPhaseId(phase.id)}
-      />
-
-      {/* Phase Selection */}
+      {/* Phase Selection - Horizontal Cards */}
       <div className="flex items-center gap-4 overflow-x-auto pb-4">
         {allPhases.map((phase) => {
           const StatusIcon = getStatusIcon(phase.status);
@@ -676,11 +669,79 @@ export default function GTMPhasesEditable() {
             </CardContent>
           </Card>
 
-          {/* Activity Timeline */}
-          <ActivityTimeline 
-            activities={phaseActivities}
-            onActivityClick={handleActivityClick}
-          />
+          {/* Activity Timeline Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Calendar className="h-5 w-5" />
+                Activity Timeline
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {phaseActivities.length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  No activities scheduled
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {phaseActivities
+                    .sort((a, b) => {
+                      if (!a.due_date && !b.due_date) return 0;
+                      if (!a.due_date) return 1;
+                      if (!b.due_date) return -1;
+                      return new Date(a.due_date).getTime() - new Date(b.due_date).getTime();
+                    })
+                    .map((activity) => (
+                      <ClickableTile
+                        key={activity.id}
+                        onClick={() => handleActivityClick(activity)}
+                        className="transition-all duration-200 hover:shadow-md"
+                      >
+                        <div className="flex items-center justify-between p-4">
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-2">
+                              <h5 className="font-medium">{activity.title}</h5>
+                              <div className="flex items-center gap-2">
+                                <Badge className={getPriorityColor(activity.priority)}>
+                                  {activity.priority}
+                                </Badge>
+                                <Badge className={getStatusColor(activity.status)}>
+                                  {activity.status}
+                                </Badge>
+                              </div>
+                            </div>
+                            
+                            {activity.description && (
+                              <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
+                                {activity.description.length > 100 
+                                  ? activity.description.substring(0, 100) + '...' 
+                                  : activity.description}
+                              </p>
+                            )}
+                            
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                              {activity.due_date && (
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="h-3 w-3" />
+                                  {new Date(activity.due_date).toLocaleDateString()}
+                                </div>
+                              )}
+                              {activity.owner && (
+                                <div className="flex items-center gap-1">
+                                  <User className="h-3 w-3" />
+                                  {activity.owner}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                      </ClickableTile>
+                    ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
           {/* Goals Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
