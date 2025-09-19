@@ -21,6 +21,11 @@ export interface GTMPhaseActivity {
   title: string;
   description: string | null;
   order_index: number;
+  due_date: string | null;
+  owner: string | null;
+  status: string;
+  priority: string;
+  notes: string | null;
 }
 
 export interface GTMPhaseCriteria {
@@ -74,6 +79,20 @@ export const useGTMPhases = () => {
       setError(err instanceof Error ? err.message : "Failed to fetch GTM phases data");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const addPhase = async (phase: Omit<GTMPhase, "id" | "created_at" | "updated_at">) => {
+    try {
+      setError(null);
+      const { error } = await supabase
+        .from("gtm_phases")
+        .insert(phase);
+
+      if (error) throw error;
+      await fetchData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to add phase");
     }
   };
 
@@ -237,6 +256,7 @@ export const useGTMPhases = () => {
     metrics,
     loading,
     error,
+    addPhase,
     updatePhase,
     addActivity,
     updateActivity,
