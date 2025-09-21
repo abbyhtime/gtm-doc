@@ -18,11 +18,16 @@ import {
   Building,
   Globe,
   Briefcase,
-  ChevronRight
+  ChevronRight,
+  Mail,
+  Clock
 } from 'lucide-react';
 
 // Import the existing competitive intelligence component
 import CompetitiveIntelligence from '@/components/CompetitiveIntelligence';
+
+// Import EBB data
+import { ebbData } from '@/data/competitiveIntelligence';
 
 const MarketAnalysis = () => {
   const [showCompetitiveIntel, setShowCompetitiveIntel] = useState(false);
@@ -317,6 +322,114 @@ const MarketAnalysis = () => {
           </div>
         </div>
       )
+    },
+    {
+      id: 'email-back-forth-burden',
+      title: 'Email Back-and-Forth Burden (EBB)',
+      description: 'Email ping-pong slows time-to-meet and kills conversion & CSAT',
+      content: (
+        <div className="space-y-6">
+          {/* Primary KPI */}
+          <div className="text-center space-y-4 p-6 bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg border border-primary/20">
+            <div className="text-4xl font-bold text-primary">{ebbData.avgEmailsPerMeeting}</div>
+            <div className="text-lg font-medium">Avg emails per meeting</div>
+            <div className="text-sm text-muted-foreground">
+              Source: {ebbData.sources.calendly_2023}
+            </div>
+            <div className="flex items-center justify-center gap-4 mt-4">
+              <div className="flex items-center gap-2 text-sm">
+                <Clock className="h-4 w-4 text-orange-600" />
+                <span>{ebbData.adminTimePerMeeting} min admin work per meeting</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <Target className="h-4 w-4 text-green-600" />
+                <span>Target: ≤{ebbData.targetEmailsPerMeeting} emails</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Industry Segments */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Industry Impact Breakdown</h3>
+            {ebbData.segments.map((segment) => (
+              <div key={segment.name} className="p-4 bg-muted/30 rounded-lg border">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-semibold">{segment.name}</h4>
+                  <Badge variant={segment.impact === 'Critical' ? 'destructive' : segment.impact === 'High' ? 'default' : 'secondary'}>
+                    {segment.impact} Impact
+                  </Badge>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">{segment.note}</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                  {segment.timeSpentPct && (
+                    <div className="text-center p-2 bg-background rounded border">
+                      <div className="font-bold text-lg">{segment.timeSpentPct}%</div>
+                      <div className="text-xs text-muted-foreground">Time on scheduling</div>
+                    </div>
+                  )}
+                  {segment.hoursPerWeek && (
+                    <div className="text-center p-2 bg-background rounded border">
+                      <div className="font-bold text-lg">{segment.hoursPerWeek}h</div>
+                      <div className="text-xs text-muted-foreground">Meetings/week</div>
+                    </div>
+                  )}
+                  {segment.annualLossWeeks && (
+                    <div className="text-center p-2 bg-background rounded border">
+                      <div className="font-bold text-lg">{segment.annualLossWeeks} wks</div>
+                      <div className="text-xs text-muted-foreground">Lost annually</div>
+                    </div>
+                  )}
+                  {segment.multiToolUsagePct && (
+                    <div className="text-center p-2 bg-background rounded border">
+                      <div className="font-bold text-lg">{segment.multiToolUsagePct}%</div>
+                      <div className="text-xs text-muted-foreground">Use 3+ tools</div>
+                    </div>
+                  )}
+                  {segment.preferencesPct && (
+                    <div className="text-center p-2 bg-background rounded border">
+                      <div className="font-bold text-lg">{segment.preferencesPct}%</div>
+                      <div className="text-xs text-muted-foreground">Want online booking</div>
+                    </div>
+                  )}
+                  {segment.wouldSelfSchedulePct && (
+                    <div className="text-center p-2 bg-background rounded border">
+                      <div className="font-bold text-lg">{segment.wouldSelfSchedulePct}%</div>
+                      <div className="text-xs text-muted-foreground">Would self-schedule</div>
+                    </div>
+                  )}
+                  {segment.largeOrgPenaltyHours && (
+                    <div className="text-center p-2 bg-background rounded border">
+                      <div className="font-bold text-lg">+{segment.largeOrgPenaltyHours}h</div>
+                      <div className="text-xs text-muted-foreground">Large org penalty</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Mini Visualization - Progress to Target */}
+          <div className="space-y-4 p-4 bg-muted/20 rounded-lg border">
+            <h4 className="font-semibold flex items-center gap-2">
+              <Target className="h-4 w-4 text-green-600" />
+              Email Reduction Opportunity
+            </h4>
+            <div className="space-y-3">
+              <div className="flex justify-between text-sm">
+                <span>Current: {ebbData.avgEmailsPerMeeting} emails per meeting</span>
+                <span>Target: ≤{ebbData.targetEmailsPerMeeting} emails per meeting</span>
+              </div>
+              <div className="relative">
+                <Progress value={100} className="h-3 bg-red-100" />
+                <Progress value={(ebbData.targetEmailsPerMeeting / ebbData.avgEmailsPerMeeting) * 100} className="h-3 absolute top-0 left-0" />
+              </div>
+              <div className="text-sm text-center text-muted-foreground">
+                <strong>{Math.round((1 - (ebbData.targetEmailsPerMeeting / ebbData.avgEmailsPerMeeting)) * 100)}% reduction potential</strong> in email overhead
+              </div>
+            </div>
+          </div>
+        </div>
+      )
     }
   ];
 
@@ -481,6 +594,50 @@ const MarketAnalysis = () => {
                 </div>
               </ClickableTile>
             ))}
+          </div>
+        </CardContent>
+      </ClickableTile>
+
+      {/* Email Back-and-Forth Burden (EBB) */}
+      <ClickableTile
+        onClick={() => {
+          setCurrentParentIndex(3);
+          openParentTile(parentTileItems[3]);
+        }}
+        className="glass-card"
+      >
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Mail className="h-5 w-5 text-primary" />
+            Email Back-and-Forth Burden (EBB)
+          </CardTitle>
+          <CardDescription>
+            Email ping-pong slows time-to-meet and kills conversion & CSAT
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between mb-4">
+            <div className="text-center space-y-1">
+              <div className="text-3xl font-bold text-primary">{ebbData.avgEmailsPerMeeting}</div>
+              <div className="text-sm font-medium">Avg emails per meeting</div>
+              <div className="text-xs text-muted-foreground">Source: Calendly 2023</div>
+            </div>
+            <div className="text-center space-y-1">
+              <div className="text-3xl font-bold text-orange-600">{ebbData.adminTimePerMeeting} min</div> 
+              <div className="text-sm font-medium">Admin work per meeting</div>
+              <div className="text-xs text-muted-foreground">Coordination overhead</div>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+              <div className="font-semibold text-red-700 dark:text-red-300">Recruiting/HR</div>
+              <div className="text-red-600 dark:text-red-400">35% time on scheduling</div>
+            </div>
+            <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+              <div className="font-semibold text-blue-700 dark:text-blue-300">Tech/Engineering</div>
+              <div className="text-blue-600 dark:text-blue-400">10.9 hrs/week meetings</div>
+            </div>
           </div>
         </CardContent>
       </ClickableTile>

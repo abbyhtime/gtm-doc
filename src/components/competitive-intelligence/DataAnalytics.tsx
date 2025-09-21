@@ -14,8 +14,12 @@ import {
   Zap,
   AlertTriangle,
   CheckCircle,
-  Lightbulb
+  Lightbulb,
+  Mail
 } from 'lucide-react';
+
+// Import EBB data
+import { ebbData } from '@/data/competitiveIntelligence';
 
 const DataAnalytics = () => {
   // User base data (logarithmic scale)
@@ -160,18 +164,163 @@ const DataAnalytics = () => {
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-orange-600 font-medium">Market Penetration</p>
-                <p className="text-2xl font-bold text-orange-900">51.68%</p>
-                <p className="text-xs text-orange-600">Current adoption rate</p>
+                <p className="text-sm text-orange-600 font-medium">Email Burden</p>
+                <p className="text-2xl font-bold text-orange-900">{ebbData.avgEmailsPerMeeting}</p>
+                <p className="text-xs text-orange-600">Avg emails per meeting</p>
               </div>
-              <Users className="h-8 w-8 text-orange-700" />
+              <Mail className="h-8 w-8 text-orange-700" />
             </div>
             <div className="mt-2 text-xs text-orange-600">
-              Source: SaaS Adoption Survey 2024
+              Source: {ebbData.sources.calendly_2023}
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Email Back-and-Forth Burden Analysis */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Mail className="h-5 w-5 text-primary" />
+            Email Back-and-Forth Burden (EBB) Analysis
+          </CardTitle>
+          <CardDescription>
+            Industry-specific impact of scheduling email overhead on productivity
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Primary KPI Section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4 bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg border border-primary/20">
+            <div className="text-center space-y-2">
+              <div className="text-3xl font-bold text-primary">{ebbData.avgEmailsPerMeeting}</div>
+              <div className="text-sm font-medium">Emails per meeting</div>
+              <div className="text-xs text-muted-foreground">Current average</div>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="text-3xl font-bold text-orange-600">{ebbData.adminTimePerMeeting} min</div>
+              <div className="text-sm font-medium">Admin time per meeting</div>
+              <div className="text-xs text-muted-foreground">Coordination overhead</div>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="text-3xl font-bold text-green-600">≤{ebbData.targetEmailsPerMeeting}</div>
+              <div className="text-sm font-medium">Target emails</div>
+              <div className="text-xs text-muted-foreground">Optimal automation</div>
+            </div>
+          </div>
+
+          {/* Industry Impact Breakdown */}
+          <div className="space-y-4">
+            <h4 className="font-semibold text-lg">Industry Impact Analysis</h4>
+            {ebbData.segments.map((segment, index) => (
+              <Card key={index} className={`border ${
+                segment.impact === 'Critical' 
+                  ? 'bg-red-50 border-red-200 dark:bg-red-900/10 dark:border-red-800' 
+                  : segment.impact === 'High' 
+                  ? 'bg-orange-50 border-orange-200 dark:bg-orange-900/10 dark:border-orange-800'
+                  : 'bg-blue-50 border-blue-200 dark:bg-blue-900/10 dark:border-blue-800'
+              }`}>
+                <CardContent className="pt-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="space-y-1">
+                      <h5 className="font-semibold">{segment.name}</h5>
+                      <p className="text-sm text-muted-foreground">{segment.note}</p>
+                    </div>
+                    <Badge 
+                      variant={segment.impact === 'Critical' ? 'destructive' : segment.impact === 'High' ? 'default' : 'secondary'}
+                      className="text-xs"
+                    >
+                      {segment.impact} Impact
+                    </Badge>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {segment.timeSpentPct && (
+                      <div className="text-center p-3 bg-background/80 rounded-lg border">
+                        <div className="text-2xl font-bold text-red-600">{segment.timeSpentPct}%</div>
+                        <div className="text-xs text-muted-foreground">Time on scheduling</div>
+                      </div>
+                    )}
+                    {segment.hoursPerWeek && (
+                      <div className="text-center p-3 bg-background/80 rounded-lg border">
+                        <div className="text-2xl font-bold text-blue-600">{segment.hoursPerWeek}h</div>
+                        <div className="text-xs text-muted-foreground">Meetings/week</div>
+                      </div>
+                    )}
+                    {segment.annualLossWeeks && (
+                      <div className="text-center p-3 bg-background/80 rounded-lg border">
+                        <div className="text-2xl font-bold text-orange-600">{segment.annualLossWeeks} wks</div>
+                        <div className="text-xs text-muted-foreground">Lost annually</div>
+                      </div>
+                    )}
+                    {segment.multiToolUsagePct && (
+                      <div className="text-center p-3 bg-background/80 rounded-lg border">
+                        <div className="text-2xl font-bold text-purple-600">{segment.multiToolUsagePct}%</div>
+                        <div className="text-xs text-muted-foreground">Use 3+ tools</div>
+                      </div>
+                    )}
+                    {segment.preferencesPct && (
+                      <div className="text-center p-3 bg-background/80 rounded-lg border">
+                        <div className="text-2xl font-bold text-green-600">{segment.preferencesPct}%</div>
+                        <div className="text-xs text-muted-foreground">Want online booking</div>
+                      </div>
+                    )}
+                    {segment.wouldSelfSchedulePct && (
+                      <div className="text-center p-3 bg-background/80 rounded-lg border">
+                        <div className="text-2xl font-bold text-teal-600">{segment.wouldSelfSchedulePct}%</div>
+                        <div className="text-xs text-muted-foreground">Would self-schedule</div>
+                      </div>
+                    )}
+                    {segment.largeOrgPenaltyHours && (
+                      <div className="text-center p-3 bg-background/80 rounded-lg border">
+                        <div className="text-2xl font-bold text-red-600">+{segment.largeOrgPenaltyHours}h</div>
+                        <div className="text-xs text-muted-foreground">Large org penalty</div>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* ROI Opportunity */}
+          <div className="p-4 bg-green-50 border border-green-200 dark:bg-green-900/10 dark:border-green-800 rounded-lg">
+            <h4 className="font-semibold text-green-800 dark:text-green-200 mb-3 flex items-center gap-2">
+              <Target className="h-4 w-4" />
+              Automation ROI Opportunity
+            </h4>
+            <div className="space-y-3">
+              <div className="flex justify-between text-sm">
+                <span>Current: {ebbData.avgEmailsPerMeeting} emails per meeting</span>
+                <span>Target: ≤{ebbData.targetEmailsPerMeeting} emails per meeting</span>
+              </div>
+              <div className="relative">
+                <Progress value={100} className="h-3 bg-red-200" />
+                <Progress 
+                  value={(ebbData.targetEmailsPerMeeting / ebbData.avgEmailsPerMeeting) * 100} 
+                  className="h-3 absolute top-0 left-0" 
+                />
+              </div>
+              <div className="text-sm text-center text-green-700 dark:text-green-200">
+                <strong>{Math.round((1 - (ebbData.targetEmailsPerMeeting / ebbData.avgEmailsPerMeeting)) * 100)}% reduction potential</strong> in email coordination overhead
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 text-center">
+                <div className="p-3 bg-background/60 rounded border">
+                  <div className="font-bold text-lg text-green-600">~13 min</div>
+                  <div className="text-xs text-muted-foreground">Time saved per meeting</div>
+                </div>
+                <div className="p-3 bg-background/60 rounded border">
+                  <div className="font-bold text-lg text-green-600">5.2 hrs</div>
+                  <div className="text-xs text-muted-foreground">Weekly savings (24 meetings)</div>
+                </div>
+                <div className="p-3 bg-background/60 rounded border">
+                  <div className="font-bold text-lg text-green-600">$12,480</div>
+                  <div className="text-xs text-muted-foreground">Annual value ($120/hr rate)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* User Base Comparison (Log Scale) */}
       <Card>
