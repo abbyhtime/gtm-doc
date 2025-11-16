@@ -55,7 +55,7 @@ export const Timeline: React.FC<TimelineProps> = ({ items, className }) => {
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground text-center py-8">
-            No activities to display on timeline
+            No activities with due dates. Set a due date on activities to see them here.
           </p>
         </CardContent>
       </Card>
