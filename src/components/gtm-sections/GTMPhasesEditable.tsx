@@ -406,7 +406,9 @@ export const GTMPhasesEditable = () => {
           <div className="lg:col-span-2 space-y-6">
             {/* Summary Card */}
             <ClickableTile
-              onClick={() => openParentTile({
+              onClick={() => {
+                setEditingPhase(currentPhase);
+                openParentTile({
                 id: currentPhase.id,
                 title: currentPhase.name,
                 description: "Edit phase details",
@@ -466,6 +468,45 @@ export const GTMPhasesEditable = () => {
                           height={200}
                         />
                       </div>
+                      <div>
+                        <label className="text-sm font-medium">Revenue Goals</label>
+                        <Textarea
+                          value={editingPhase?.revenue_goal || currentPhase.revenue_goal || ''}
+                          onChange={(e) => setEditingPhase({ 
+                            ...(editingPhase || currentPhase), 
+                            revenue_goal: e.target.value 
+                          })}
+                          placeholder="e.g., $150K ARR, 20% MoM growth"
+                          className="mt-1"
+                          rows={2}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium">User Goals</label>
+                        <Textarea
+                          value={editingPhase?.users_goal || currentPhase.users_goal || ''}
+                          onChange={(e) => setEditingPhase({ 
+                            ...(editingPhase || currentPhase), 
+                            users_goal: e.target.value 
+                          })}
+                          placeholder="e.g., 500 MAU, 75% activation rate"
+                          className="mt-1"
+                          rows={2}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium">Feature Goals</label>
+                        <Textarea
+                          value={editingPhase?.features_goal || currentPhase.features_goal || ''}
+                          onChange={(e) => setEditingPhase({ 
+                            ...(editingPhase || currentPhase), 
+                            features_goal: e.target.value 
+                          })}
+                          placeholder="e.g., Core Scheduling Suite, Calendar Integration"
+                          className="mt-1"
+                          rows={2}
+                        />
+                      </div>
                       <div className="flex gap-2 pt-4">
                         <Button onClick={handleSavePhase} size="sm">
                           <Save className="w-4 h-4 mr-2" />
@@ -497,7 +538,8 @@ export const GTMPhasesEditable = () => {
                     </div>
                   </div>
                 )
-              })}
+              });
+              }}
               className="cursor-pointer"
             >
               <Card>
