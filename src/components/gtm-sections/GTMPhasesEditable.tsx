@@ -113,7 +113,7 @@ export const GTMPhasesEditable = () => {
   // Parse goals as arrays
   const parseGoalsAsArray = (goals: string | undefined): string[] => {
     if (!goals) return [];
-    return goals.split(',').map(g => g.trim()).filter(g => g.length > 0);
+    return goals.split(/[\n,]+/).map(g => g.trim()).filter(g => g.length > 0);
   };
   
   const formatGoalsAsString = (goals: string[]): string => {
@@ -1090,11 +1090,11 @@ export const GTMPhasesEditable = () => {
 
       {/* Edit Phase Dialog */}
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] flex flex-col">
-          <DialogHeader>
+        <DialogContent className="max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
+          <DialogHeader className="flex-shrink-0">
             <DialogTitle>{editingPhase?.name || 'Edit Phase'}</DialogTitle>
           </DialogHeader>
-          <ScrollArea className="flex-1 pr-4">
+          <ScrollArea className="h-[60vh] pr-4">
             <div className="space-y-6 py-4">
               <div>
                 <label className="text-sm font-medium">Phase Name</label>
@@ -1157,7 +1157,7 @@ export const GTMPhasesEditable = () => {
                     ...editingPhase, 
                     revenue_goal: e.target.value 
                   })}
-                  placeholder="e.g., $150K ARR, 20% MoM growth"
+                  placeholder="Enter goals (one per line or comma-separated)&#10;Example:&#10;$150K ARR&#10;20% MoM growth&#10;Break even by Q3"
                   className="mt-1"
                   rows={3}
                 />
@@ -1170,7 +1170,7 @@ export const GTMPhasesEditable = () => {
                     ...editingPhase, 
                     users_goal: e.target.value 
                   })}
-                  placeholder="e.g., 500 MAU, 75% activation rate"
+                  placeholder="Enter goals (one per line or comma-separated)&#10;Example:&#10;500 MAU&#10;75% activation rate&#10;30% conversion"
                   className="mt-1"
                   rows={3}
                 />
@@ -1183,14 +1183,14 @@ export const GTMPhasesEditable = () => {
                     ...editingPhase, 
                     features_goal: e.target.value 
                   })}
-                  placeholder="e.g., Core Scheduling Suite, Calendar Integration"
+                  placeholder="Enter features (one per line or comma-separated)&#10;Example:&#10;Core Scheduling Suite&#10;Calendar Integration&#10;Email Notifications"
                   className="mt-1"
                   rows={3}
                 />
               </div>
             </div>
           </ScrollArea>
-          <div className="flex gap-2 pt-4 border-t">
+          <div className="flex gap-2 pt-4 border-t flex-shrink-0">
             <Button onClick={handleSavePhase} size="sm">
               <Save className="w-4 h-4 mr-2" />
               Save Changes
