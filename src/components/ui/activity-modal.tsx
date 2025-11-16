@@ -63,7 +63,10 @@ export const ActivityModal: React.FC<ActivityModalProps> = ({
     title: '',
     description: '',
     status: 'not-started',
-    priority: 'medium'
+    priority: 'medium',
+    due_date: null,
+    owner: '',
+    notes: ''
   });
 
   const handleActivityClick = (activity: GTMPhaseActivity) => {
@@ -91,7 +94,10 @@ export const ActivityModal: React.FC<ActivityModalProps> = ({
         title: '',
         description: '',
         status: 'not-started',
-        priority: 'medium'
+        priority: 'medium',
+        due_date: null,
+        owner: '',
+        notes: ''
       });
       setShowAddForm(false);
     }
@@ -133,47 +139,103 @@ export const ActivityModal: React.FC<ActivityModalProps> = ({
             {/* Add Activity Form */}
             {showAddForm && (
               <Card className="p-4 border-primary/20">
-                <div className="space-y-3">
-                  <Input
-                    placeholder="Activity title..."
-                    value={newActivity.title || ''}
-                    onChange={(e) => setNewActivity({ ...newActivity, title: e.target.value })}
-                  />
-                  <Textarea
-                    placeholder="Activity description..."
-                    value={newActivity.description || ''}
-                    onChange={(e) => setNewActivity({ ...newActivity, description: e.target.value })}
-                  />
-                  <div className="grid grid-cols-2 gap-2">
-                    <Select
-                      value={newActivity.priority || 'medium'}
-                      onValueChange={(value) => setNewActivity({ ...newActivity, priority: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Priority" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="low">Low</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="high">High</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Input
-                      placeholder="Owner..."
-                      value={newActivity.owner || ''}
-                      onChange={(e) => setNewActivity({ ...newActivity, owner: e.target.value })}
-                    />
+                <ScrollArea className="h-[400px]">
+                  <div className="space-y-4 pr-4">
+                    <div>
+                      <label className="text-sm font-medium">Title</label>
+                      <Input
+                        placeholder="Activity title..."
+                        value={newActivity.title || ''}
+                        onChange={(e) => setNewActivity({ ...newActivity, title: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium">Description</label>
+                      <Textarea
+                        rows={4}
+                        placeholder="Activity description..."
+                        value={newActivity.description || ''}
+                        onChange={(e) => setNewActivity({ ...newActivity, description: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-medium">Status</label>
+                        <Select
+                          value={newActivity.status || 'not-started'}
+                          onValueChange={(value) => setNewActivity({ ...newActivity, status: value })}
+                        >
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="not-started">Not Started</SelectItem>
+                            <SelectItem value="in-progress">In Progress</SelectItem>
+                            <SelectItem value="completed">Completed</SelectItem>
+                            <SelectItem value="blocked">Blocked</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium">Priority</label>
+                        <Select
+                          value={newActivity.priority || 'medium'}
+                          onValueChange={(value) => setNewActivity({ ...newActivity, priority: value })}
+                        >
+                          <SelectTrigger><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="low">Low</SelectItem>
+                            <SelectItem value="medium">Medium</SelectItem>
+                            <SelectItem value="high">High</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium">Due Date</label>
+                      <DatePicker
+                        date={newActivity.due_date ? new Date(newActivity.due_date) : undefined}
+                        onDateChange={(date) => 
+                          setNewActivity({ 
+                            ...newActivity, 
+                            due_date: date ? date.toISOString().split('T')[0] : null 
+                          })
+                        }
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium">Owner</label>
+                      <Input
+                        placeholder="Who is responsible for this activity?"
+                        value={newActivity.owner || ''}
+                        onChange={(e) => setNewActivity({ ...newActivity, owner: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium">Notes</label>
+                      <Textarea
+                        rows={3}
+                        placeholder="Additional notes or comments..."
+                        value={newActivity.notes || ''}
+                        onChange={(e) => setNewActivity({ ...newActivity, notes: e.target.value })}
+                      />
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Button size="sm" onClick={handleAddActivity}>
-                      <Save className="w-4 h-4 mr-2" />
-                      Save
-                    </Button>
-                    <Button size="sm" variant="outline" onClick={() => setShowAddForm(false)}>
-                      <X className="w-4 h-4 mr-2" />
-                      Cancel
-                    </Button>
-                  </div>
+                </ScrollArea>
+                
+                <div className="flex gap-2 mt-4">
+                  <Button size="sm" onClick={handleAddActivity}>
+                    <Save className="w-4 h-4 mr-2" />
+                    Save
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={() => setShowAddForm(false)}>
+                    <X className="w-4 h-4 mr-2" />
+                    Cancel
+                  </Button>
                 </div>
               </Card>
             )}
