@@ -34,6 +34,7 @@ import { Timeline } from "@/components/ui/timeline";
 import { ActivityModal } from "@/components/ui/activity-modal";
 import { useParentTile } from "@/hooks/useParentTile";
 import { HtmlContent } from "@/components/ui/html-content";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 const getStatusIcon = (status: string) => {
@@ -98,6 +99,7 @@ export const GTMPhasesEditable = () => {
   const [showAddMetric, setShowAddMetric] = useState(false);
   
   const [showActivityModal, setShowActivityModal] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   
   // Parent tile functionality
   const [currentParentIndex, setCurrentParentIndex] = useState(0);
@@ -205,6 +207,7 @@ export const GTMPhasesEditable = () => {
       await updatePhase(currentPhase.id, editingPhase);
       setIsEditMode(false);
       setEditingPhase(null);
+      setIsEditModalOpen(false);
       toast({ title: "Success", description: "Phase updated successfully" });
       console.log("Phase saved successfully");
     } catch (err) {
@@ -287,8 +290,8 @@ export const GTMPhasesEditable = () => {
     try {
       await deletePhase(currentPhase.id);
       
-      // Close the parent tile modal immediately
-      closeParentTile();
+      // Close the edit modal immediately
+      setIsEditModalOpen(false);
       
       // Switch to the first available phase after deletion
       const remainingPhases = displayPhases.filter(p => p.id !== currentPhase.id);
@@ -408,137 +411,7 @@ export const GTMPhasesEditable = () => {
             <ClickableTile
               onClick={() => {
                 setEditingPhase(currentPhase);
-                openParentTile({
-                id: currentPhase.id,
-                title: currentPhase.name,
-                description: "Edit phase details",
-                content: (
-                  <div className="space-y-4 p-4">
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-sm font-medium">Phase Name</label>
-                        <Input
-                          value={editingPhase?.name || currentPhase.name}
-                          onChange={(e) => setEditingPhase({ 
-                            ...(editingPhase || currentPhase), 
-                            name: e.target.value 
-                          })}
-                          className="mt-1"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium">Status</label>
-                        <Select
-                          value={editingPhase?.status || currentPhase.status}
-                          onValueChange={(value) => setEditingPhase({ 
-                            ...(editingPhase || currentPhase), 
-                            status: value 
-                          })}
-                        >
-                          <SelectTrigger className="mt-1">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="upcoming">Upcoming</SelectItem>
-                            <SelectItem value="in-progress">In Progress</SelectItem>
-                            <SelectItem value="completed">Completed</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium">Timeline</label>
-                        <Input
-                          value={editingPhase?.timeline || currentPhase.timeline}
-                          onChange={(e) => setEditingPhase({ 
-                            ...(editingPhase || currentPhase), 
-                            timeline: e.target.value 
-                          })}
-                          placeholder="e.g., Q1 2025 (3 months)"
-                          className="mt-1"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium">Description</label>
-                        <RichTextEditor
-                          value={editingPhase?.description || currentPhase.description}
-                          onChange={(value) => setEditingPhase({ 
-                            ...(editingPhase || currentPhase), 
-                            description: value || "" 
-                          })}
-                          height={200}
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium">Revenue Goals</label>
-                        <Textarea
-                          value={editingPhase?.revenue_goal || currentPhase.revenue_goal || ''}
-                          onChange={(e) => setEditingPhase({ 
-                            ...(editingPhase || currentPhase), 
-                            revenue_goal: e.target.value 
-                          })}
-                          placeholder="e.g., $150K ARR, 20% MoM growth"
-                          className="mt-1"
-                          rows={2}
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium">User Goals</label>
-                        <Textarea
-                          value={editingPhase?.users_goal || currentPhase.users_goal || ''}
-                          onChange={(e) => setEditingPhase({ 
-                            ...(editingPhase || currentPhase), 
-                            users_goal: e.target.value 
-                          })}
-                          placeholder="e.g., 500 MAU, 75% activation rate"
-                          className="mt-1"
-                          rows={2}
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium">Feature Goals</label>
-                        <Textarea
-                          value={editingPhase?.features_goal || currentPhase.features_goal || ''}
-                          onChange={(e) => setEditingPhase({ 
-                            ...(editingPhase || currentPhase), 
-                            features_goal: e.target.value 
-                          })}
-                          placeholder="e.g., Core Scheduling Suite, Calendar Integration"
-                          className="mt-1"
-                          rows={2}
-                        />
-                      </div>
-                      <div className="flex gap-2 pt-4">
-                        <Button onClick={handleSavePhase} size="sm">
-                          <Save className="w-4 h-4 mr-2" />
-                          Save Phase
-                        </Button>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="destructive" size="sm" disabled={displayPhases.length <= 1}>
-                              <Trash2 className="w-4 h-4 mr-2" />
-                              Delete Phase
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                This action cannot be undone. This will permanently delete the phase and all its associated activities, criteria, and metrics.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction onClick={handleDeletePhase} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </div>
-                    </div>
-                  </div>
-                )
-              });
+                setIsEditModalOpen(true);
               }}
               className="cursor-pointer"
             >
@@ -1214,6 +1087,145 @@ export const GTMPhasesEditable = () => {
         onUpdateActivity={handleUpdateActivity}
         onDeleteActivity={handleDeleteActivity}
       />
+
+      {/* Edit Phase Dialog */}
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <DialogContent className="max-w-3xl max-h-[90vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle>{editingPhase?.name || 'Edit Phase'}</DialogTitle>
+          </DialogHeader>
+          <ScrollArea className="flex-1 pr-4">
+            <div className="space-y-6 py-4">
+              <div>
+                <label className="text-sm font-medium">Phase Name</label>
+                <Input
+                  value={editingPhase?.name || ''}
+                  onChange={(e) => setEditingPhase({ 
+                    ...editingPhase, 
+                    name: e.target.value 
+                  })}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium">Status</label>
+                <Select
+                  value={editingPhase?.status || 'upcoming'}
+                  onValueChange={(value) => setEditingPhase({ 
+                    ...editingPhase, 
+                    status: value 
+                  })}
+                >
+                  <SelectTrigger className="mt-1">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="upcoming">Upcoming</SelectItem>
+                    <SelectItem value="in-progress">In Progress</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Timeline</label>
+                <Input
+                  value={editingPhase?.timeline || ''}
+                  onChange={(e) => setEditingPhase({ 
+                    ...editingPhase, 
+                    timeline: e.target.value 
+                  })}
+                  placeholder="e.g., Q1 2025 (3 months)"
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium">Description</label>
+                <RichTextEditor
+                  value={editingPhase?.description || ''}
+                  onChange={(value) => setEditingPhase({ 
+                    ...editingPhase, 
+                    description: value || '' 
+                  })}
+                  height={200}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium">Revenue Goals</label>
+                <Textarea
+                  value={editingPhase?.revenue_goal || ''}
+                  onChange={(e) => setEditingPhase({ 
+                    ...editingPhase, 
+                    revenue_goal: e.target.value 
+                  })}
+                  placeholder="e.g., $150K ARR, 20% MoM growth"
+                  className="mt-1"
+                  rows={3}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium">User Goals</label>
+                <Textarea
+                  value={editingPhase?.users_goal || ''}
+                  onChange={(e) => setEditingPhase({ 
+                    ...editingPhase, 
+                    users_goal: e.target.value 
+                  })}
+                  placeholder="e.g., 500 MAU, 75% activation rate"
+                  className="mt-1"
+                  rows={3}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium">Feature Goals</label>
+                <Textarea
+                  value={editingPhase?.features_goal || ''}
+                  onChange={(e) => setEditingPhase({ 
+                    ...editingPhase, 
+                    features_goal: e.target.value 
+                  })}
+                  placeholder="e.g., Core Scheduling Suite, Calendar Integration"
+                  className="mt-1"
+                  rows={3}
+                />
+              </div>
+            </div>
+          </ScrollArea>
+          <div className="flex gap-2 pt-4 border-t">
+            <Button onClick={handleSavePhase} size="sm">
+              <Save className="w-4 h-4 mr-2" />
+              Save Changes
+            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" size="sm" disabled={displayPhases.length <= 1}>
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete Phase
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete Phase?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will permanently delete the phase and all associated activities, criteria, and metrics. This action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction 
+                    onClick={handleDeletePhase} 
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            <Button variant="outline" onClick={() => setIsEditModalOpen(false)} size="sm">
+              Cancel
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Parent Tile Modal for Exit Criteria and Key Metrics */}
       <ParentTileModal
